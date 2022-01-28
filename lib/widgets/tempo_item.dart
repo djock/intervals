@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:focus/components/round_button.dart';
 import 'package:focus/utilities/constants.dart';
+import 'package:focus/widgets/round_button.dart';
 
-class NumberSelectionCard extends StatelessWidget {
-  const NumberSelectionCard({
-    @required this.value,
-    @required this.onChanged,
-    @required this.title,
+class TempoItem extends StatelessWidget {
+  const TempoItem({
+    required this.value,
+    required this.onChanged,
+    required this.title,
   });
 
   final int value;
@@ -30,12 +30,6 @@ class NumberSelectionCard extends StatelessWidget {
                     title,
                     style: kCardTitleTextStyle,
                   ),
-                  Text(
-                    value.toString(),
-                    style: TextStyle(
-                      fontSize: 45,
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -51,6 +45,15 @@ class NumberSelectionCard extends StatelessWidget {
                   onChanged(value - 1);
                 }
               },
+            ),
+            SizedBox(
+              width: 16,
+            ),
+            Text(
+              value.toString(),
+              style: TextStyle(
+                fontSize: 45,
+              ),
             ),
             SizedBox(
               width: 16,
