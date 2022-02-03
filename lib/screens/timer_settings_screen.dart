@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/utilities/providers.dart';
+import 'package:focus/widgets/create_tempo_widget.dart';
 import 'package:focus/widgets/tempo_item.dart';
 import 'package:focus/widgets/wide_button.dart';
 
@@ -38,10 +39,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
                       WideButton(
                           value: 0,
                           onChanged: (newValue) {
-                            ref.read(timerSettingsNotifier).updateTempos('Tempo '+(timerSettings.tempos.length+1).toString(), 0);
-                            setState(() {
-
-                            });
+                            _openBottomSheet(ref);
                           },
                           title: 'Add Tempo')
                     ],
@@ -109,13 +107,27 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         value: value,
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateTempos(key, newValue);
-          setState(() {});
         },
       ));
     });
 
     return Column(
       children: _tempos,
+    );
+  }
+
+  void _openBottomSheet(WidgetRef ref) {
+    showModalBottomSheet<void>(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: CreateTempoWidget(callback: (text, value) {
+              ref.read(timerSettingsNotifier).updateTempos(text, value);
+              Navigator.pop(context);
+            }));
+      },
     );
   }
 }

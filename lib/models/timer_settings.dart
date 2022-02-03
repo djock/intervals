@@ -18,5 +18,6 @@ class TimerSettings extends ChangeNotifier {
 
   void updateTempos(String text, int value) {
     tempos[text] = value;
+    notifyListeners();
   }
 }
