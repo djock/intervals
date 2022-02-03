@@ -337,9 +337,9 @@
 //                                 // width: MediaQuery.of(context).size.width - 50,
 //                                 height: MediaQuery.of(context).size.width - 50,
 //                                 child: buildStack(
-//                                   tickTime: tickTime,
-//                                   timeInSec: timeInSec,
-//                                   i: i,
+//                                   _tickTime: tickTime,
+//                                   _timeInSec: timeInSec,
+//                                   _index: i,
 //                                 ),
 //                               ),
 //                             ),

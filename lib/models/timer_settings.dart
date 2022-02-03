@@ -6,6 +6,8 @@ class TimerSettings extends ChangeNotifier {
   int time = 0;
   Map<String,int> tempos = {};
 
+  TimerSettings();
+
   void updateSets(int newValue) {
     sets = newValue;
     notifyListeners();
@@ -19,5 +21,12 @@ class TimerSettings extends ChangeNotifier {
   void updateTempos(String text, int value) {
     tempos[text] = value;
     notifyListeners();
+  }
+
+  int getTotalTime() {
+    var tempoTime = 0;
+    tempos.forEach((key, value) { tempoTime += value; });
+
+    return sets * reps * tempoTime;
   }
 }

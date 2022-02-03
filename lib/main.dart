@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/screens/timer_settings_screen.dart';
 
 void main() {
@@ -28,6 +29,7 @@ void main() {
       initialRoute: TimerSettingsScreen.id,
       routes: {
         TimerSettingsScreen.id: (context) => TimerSettingsScreen(),
+        TimerScreen.id: (context) => TimerScreen(),
       },
     ),
   ));

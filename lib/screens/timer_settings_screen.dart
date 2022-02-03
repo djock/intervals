@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/screens/timer_screen.dart';
+import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/providers.dart';
+import 'package:focus/widgets/add_button.dart';
 import 'package:focus/widgets/create_tempo_widget.dart';
 import 'package:focus/widgets/tempo_item.dart';
 import 'package:focus/widgets/wide_button.dart';
 
 class TimerSettingsScreen extends StatefulWidget {
-  static const String id = 'ConfigurationScreen';
+  static const String id = 'TimerSettingsScreen';
 
   @override
   TimerSettingsScreenState createState() => TimerSettingsScreenState();
@@ -41,7 +44,11 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
                           onChanged: (newValue) {
                             _openBottomSheet(ref);
                           },
-                          title: 'Add Tempo')
+                          title: 'Add Tempo'),
+                      AddButton(callback: () {
+                        activeTimerSettings = timerSettings;
+                        Navigator.of(context).pushNamed(TimerScreen.id);
+                      })
                     ],
                   )),
                 )));

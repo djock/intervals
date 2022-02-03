@@ -20,4 +20,4 @@ Color buttonColor = Color(0xFFFAFAFA);
 Color roundButtonIconColor = Colors.lightBlueAccent;
 double roundButtonIconSize = 30.0;
 
-TimerSettings? timerSettings;
+TimerSettings activeTimerSettings = new TimerSettings();
