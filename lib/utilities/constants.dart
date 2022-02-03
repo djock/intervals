@@ -2,24 +2,18 @@ import 'package:flutter/material.dart';
 
 typedef void ChangeCallback(double);
 
-Color kSettingsButtonColor = Color(0xFFFAFAFA);
-
-Color kSettingsButtonIconColor = Colors.lightBlueAccent;
-
-TextStyle kCardTitleTextStyle = TextStyle(
+TextStyle cardTitleTextStyle = TextStyle(
   fontSize: 20,
   color: Colors.grey,
 );
 
-TextStyle kTitleTextStyle = TextStyle(
+TextStyle titleTextStyle = TextStyle(
   fontWeight: FontWeight.w200,
   fontSize: 25,
   letterSpacing: 3,
   color: Colors.black,
 );
 
-TextStyle kBreathingTextStyle = TextStyle(
-  fontSize: 20,
-);
-
-double kSettingsButtonIconSize = 30.0;
+Color buttonColor = Color(0xFFFAFAFA);
+Color roundButtonIconColor = Colors.lightBlueAccent;
+double roundButtonIconSize = 30.0;

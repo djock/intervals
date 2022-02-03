@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:focus/screens/configuration_screen.dart';
+import 'package:focus/screens/timer_settings_screen.dart';
 
 void main() {
   Future.delayed(Duration(milliseconds: 1)).then(
@@ -25,9 +25,9 @@ void main() {
       theme: ThemeData(
         fontFamily: 'Roboto',
       ),
-      initialRoute: ConfigurationScreen.id,
+      initialRoute: TimerSettingsScreen.id,
       routes: {
-        ConfigurationScreen.id: (context) => ConfigurationScreen(),
+        TimerSettingsScreen.id: (context) => TimerSettingsScreen(),
       },
     ),
   ));
