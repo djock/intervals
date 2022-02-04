@@ -38,6 +38,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
                     children: [
                       _buildSetWidget(ref),
                       _buildRepsWidget(ref),
+                      _buildRestWidget(ref),
                       _buildTempos(ref),
                       WideButton(
                           value: 0,
@@ -95,28 +96,57 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         value: timerSettings.reps,
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateReps(newValue);
-          setState(() {});
         },
         title: 'Add Reps',
       );
     }
   }
 
-  Widget _buildTempos(WidgetRef ref) {
+  Widget _buildRestWidget(WidgetRef ref) {
     final timerSettings = ref.watch(timerSettingsNotifier);
 
-    List<Widget> _tempos =
-        List.generate(timerSettings.tempos.length, (index) => SizedBox());
-
-    timerSettings.tempos.forEach((key, value) {
-      _tempos.add(new TempoItem(
-        title: key,
-        value: value,
+    if (timerSettings.rest != 0) {
+      return TempoItem(
+        value: timerSettings.rest,
         onChanged: (newValue) {
-          ref.read(timerSettingsNotifier).updateTempos(key, newValue);
+          ref.read(timerSettingsNotifier).updateRest(newValue);
+        },
+        title: 'Rest',
+      );
+    } else {
+      return WideButton(
+        value: timerSettings.rest,
+        onChanged: (newValue) {
+          ref.read(timerSettingsNotifier).updateRest(newValue);
+        },
+        title: 'Add Rest',
+      );
+    }
+  }
+
+  Widget _buildTempos(WidgetRef ref) {
+    final timerSettings = ref.watch(timerSettingsNotifier);
+    List<Widget> _tempos = [];
+
+    for(var item in timerSettings.temposList) {
+      _tempos.add(new TempoItem(
+        title: item.key,
+        value: item.value,
+        onChanged: (newValue) {
+          ref.read(timerSettingsNotifier).updateTemposList(item.key, newValue);
         },
       ));
-    });
+    }
+
+    // timerSettings.tempos.forEach((key, value) {
+    //   _tempos.add(new TempoItem(
+    //     title: key,
+    //     value: value,
+    //     onChanged: (newValue) {
+    //       ref.read(timerSettingsNotifier).updateTempos(key, newValue);
+    //     },
+    //   ));
+    // });
 
     return Column(
       children: _tempos,
@@ -131,7 +161,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         return Padding(
             padding: MediaQuery.of(context).viewInsets,
             child: CreateTempoWidget(callback: (text, value) {
-              ref.read(timerSettingsNotifier).updateTempos(text, value);
+              ref.read(timerSettingsNotifier).updateTemposList(text, value);
               Navigator.pop(context);
             }));
       },

@@ -155,7 +155,9 @@ class TimerScreenState extends State<TimerScreen> {
       //   // audioPlayer.play('${timeInSec.value}-$voice.mp3');
       // }
       await Future.delayed(Duration(seconds: 1));
-      _timeInSec.value--;
+      if(this.mounted) {
+        _timeInSec.value--;
+      }
     }
   }
 
@@ -198,15 +200,21 @@ class TimerScreenState extends State<TimerScreen> {
         _currentRep.value = repIndex;
 
         for (int tempoIndex = 0;
-            tempoIndex < _timerSettings.tempos.length;
+            tempoIndex < _timerSettings.temposList.length;
             tempoIndex++) {
 
-          _titleName.value = _timerSettings.tempos.keys.elementAt(tempoIndex);
-          var currentTempo = _timerSettings.tempos.values.elementAt(tempoIndex);
+          _titleName.value = _timerSettings.temposList.elementAt(tempoIndex).key;
+          var currentTempo = _timerSettings.temposList.elementAt(tempoIndex).value;
           _timeInSec.value = currentTempo;
 
           await _runTimer(_timeInSec.value);
         }
+      }
+
+      if(_timerSettings.rest != 0) {
+        _timeInSec.value = _timerSettings.rest;
+        _titleName.value = 'Rest';
+        await _runTimer(_timeInSec.value);
       }
 
       // _currentRep.value = index + 1;
