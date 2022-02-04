@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:focus/models/timer_settings.dart';
 import 'package:focus/utilities/constants.dart';
-import 'package:focus/widgets/add_button.dart';
+import 'package:focus/utilities/localizations.dart';
 import 'package:focus/widgets/round_button.dart';
 
 class TimerScreen extends StatefulWidget {
@@ -19,9 +18,8 @@ class TimerScreenState extends State<TimerScreen> {
   bool _firstInstance = true;
   int? _totalTime;
 
-  ValueNotifier<String> _titleName = ValueNotifier<String>('Get Ready!');
+  ValueNotifier<String> _titleName = ValueNotifier<String>(AppLocalizations.getReady);
   ValueNotifier<int> _timeInSec = ValueNotifier<int>(5);
-  // ValueNotifier<double> _tickTime = ValueNotifier<double>(0);
   ValueNotifier<double> _progress = ValueNotifier<double>(0);
   ValueNotifier<bool> _resumeFlag = ValueNotifier<bool>(true);
   ValueNotifier<int> _currentRep = ValueNotifier<int>(1);
@@ -56,7 +54,7 @@ class TimerScreenState extends State<TimerScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tempo'),
+          // title: Text('Tempo'),
         ),
         body: Center(
           child: Column(
@@ -96,25 +94,22 @@ class TimerScreenState extends State<TimerScreen> {
                   ValueListenableBuilder(
                     valueListenable: _progress,
                     builder: (context, dynamic value, child) {
-                      return Text(
-                        'Set: ${_currentSet.value}',
+                      return Text(AppLocalizations.currentSet.replaceAll('{AMOUNT}', '${_currentSet.value}')
                       );
                     },
                   ),
                   ValueListenableBuilder(
                     valueListenable: _progress,
                     builder: (context, dynamic value, child) {
-                      return Text(
-                        'Rep: ${_currentRep.value}',
-                      );
+                      return Text(AppLocalizations.currentRep.replaceAll('{AMOUNT}', '${_currentRep.value}'
+                      ));
                     },
                   ),
                   ValueListenableBuilder(
                     valueListenable: _progress,
                     builder: (context, dynamic value, child) {
-                      return Text(
-                        'Progress: ${_progress.value.toStringAsFixed(0)}%',
-                      );
+                      return Text(AppLocalizations.currentProgress.replaceAll('{AMOUNT}', '${_progress.value}'
+                      ));
                     },
                   ),
                   ValueListenableBuilder(
@@ -213,42 +208,9 @@ class TimerScreenState extends State<TimerScreen> {
 
       if(_timerSettings.rest != 0) {
         _timeInSec.value = _timerSettings.rest;
-        _titleName.value = 'Rest';
+        _titleName.value = AppLocalizations.rest;
         await _runTimer(_timeInSec.value);
       }
-
-      // _currentRep.value = index + 1;
-      // s = _timerSettings![index].sets;
-      // for (_index.value = 1;
-      //     _index.value <= _timerSettings![index].sets!;
-      //     _index.value++) {
-      //   for (int j = 0; j < _timerSettings!.[index].timeList!.length; j++) {
-      //     // if (isVoice!) {
-      //     //   await audioPlayer.setAsset(
-      //     //       'assets/audio/$voice/${setList![index].timeList![j].isWork! ? 'start' : 'rest'}-$voice.mp3');
-      //     //   audioPlayer.play();
-      //     // }
-      //     // if (isVoice!){
-      //     //   audioPlayer.play(
-      //     //       '${setList![index].timeList![j].isWork! ? 'start' : 'rest'}-$voice.mp3');
-      //     _titleName.value =
-      //         '${setList![index].grpName}${isRest! ? '' : '-'}${setList![index].timeList![j].name}';
-      //     _timeInSec.value = setList![index].timeList![j].sec!;
-      //     if (_timeInSec.value > 0)
-      //       await _runTimer(setList![index].timeList![j].sec);
-      //     if (_index.value != s && isRest!) {
-      //       _titleName.value = breakT!.name!;
-      //       _timeInSec.value = breakT!.sec!;
-      //       // if (_index.value != s! + 1 && isVoice!) {
-      //       //   await audioPlayer
-      //       //       .setAsset('assets/audio/$voice/rest-$voice.mp3');
-      //       //   audioPlayer.play();
-      //       //   // audioPlayer.play('rest-$voice.mp3');
-      //       // }
-      //       if (_timeInSec.value > 0) await _runTimer(breakT!.sec);
-      //     }
-      //   }
-      // }
     }
     _timeInSec.value = 0;
     // if (isVoice!) {

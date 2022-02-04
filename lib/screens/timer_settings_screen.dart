@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/utilities/constants.dart';
+import 'package:focus/utilities/localizations.dart';
 import 'package:focus/utilities/providers.dart';
 import 'package:focus/widgets/add_button.dart';
 import 'package:focus/widgets/create_tempo_widget.dart';
@@ -29,7 +30,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
             },
             child: Scaffold(
                 appBar: AppBar(
-                  title: Text('Tempo'),
+                  title: Text(AppLocalizations.timerSettingsScreenTitle),
                 ),
                 body: SingleChildScrollView(
                   child: Center(
@@ -45,7 +46,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
                           onChanged: (newValue) {
                             _openBottomSheet(ref);
                           },
-                          title: 'Add Tempo'),
+                          title: AppLocalizations.addTempo),
                       AddButton(callback: () {
                         activeTimerSettings = timerSettings;
                         Navigator.of(context).pushNamed(TimerScreen.id);
@@ -66,7 +67,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateSets(newValue);
         },
-        title: 'Sets',
+        title: AppLocalizations.sets,
       );
     } else {
       return WideButton(
@@ -75,7 +76,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
           ref.read(timerSettingsNotifier).updateSets(newValue);
           setState(() {});
         },
-        title: 'Add Sets',
+        title: AppLocalizations.addSets,
       );
     }
   }
@@ -89,7 +90,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateReps(newValue);
         },
-        title: 'Reps',
+        title: AppLocalizations.reps,
       );
     } else {
       return WideButton(
@@ -97,7 +98,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateReps(newValue);
         },
-        title: 'Add Reps',
+        title: AppLocalizations.addReps,
       );
     }
   }
@@ -111,7 +112,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateRest(newValue);
         },
-        title: 'Rest',
+        title: AppLocalizations.rest,
       );
     } else {
       return WideButton(
@@ -119,7 +120,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateRest(newValue);
         },
-        title: 'Add Rest',
+        title: AppLocalizations.addRest,
       );
     }
   }
@@ -137,16 +138,6 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         },
       ));
     }
-
-    // timerSettings.tempos.forEach((key, value) {
-    //   _tempos.add(new TempoItem(
-    //     title: key,
-    //     value: value,
-    //     onChanged: (newValue) {
-    //       ref.read(timerSettingsNotifier).updateTempos(key, newValue);
-    //     },
-    //   ));
-    // });
 
     return Column(
       children: _tempos,
