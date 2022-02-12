@@ -1,4 +1,6 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:focus/utilities/audio_handler.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:focus/widgets/round_button.dart';
@@ -142,13 +144,12 @@ class TimerScreenState extends State<TimerScreen> {
       while (!_resumeFlag.value) {
         await Future.delayed(Duration(milliseconds: 10));
       }
-      if (_timeInSec.value != 0) _progress.value += 100 / _totalTime!;
-      // if (timeInSec.value <= 5 && timeInSec.value > 0 && isVoice!) {
-      //   await audioPlayer
-      //       .setAsset('assets/audio/$voice/${timeInSec.value}-$voice.mp3');
-      //   audioPlayer.play();
-      //   // audioPlayer.play('${timeInSec.value}-$voice.mp3');
-      // }
+      if (this.mounted && _timeInSec.value != 0) _progress.value += 100 / _totalTime!;
+
+      if(this.mounted){
+        AudioHandler.playTick();
+      }
+
       await Future.delayed(Duration(seconds: 1));
       if(this.mounted) {
         _timeInSec.value--;
@@ -157,37 +158,22 @@ class TimerScreenState extends State<TimerScreen> {
   }
 
   void _startTimer() async {
+    AudioHandler.playSwitch();
     _timeInSec.value = 5;
-    // if (isVoice!) {
-    //   await audioPlayer.setAsset('assets/audio/$voice/5-$voice.mp3');
-    //   audioPlayer.play();
-    //   // audioPlayer.play('5-$voice.mp3');
-    // }
     await Future.delayed(Duration(seconds: 1));
+    AudioHandler.playTick();
     _timeInSec.value = 4;
-    // if (isVoice!) {
-    //   await audioPlayer.setAsset('assets/audio/$voice/4-$voice.mp3');
-    //   audioPlayer.play();
-    // }
     await Future.delayed(Duration(seconds: 1));
+    AudioHandler.playTick();
     _timeInSec.value = 3;
-    // if (isVoice!) {
-    //   await audioPlayer.setAsset('assets/audio/$voice/3-$voice.mp3');
-    //   audioPlayer.play();
-    // }
     await Future.delayed(Duration(seconds: 1));
+    AudioHandler.playTick();
     _timeInSec.value = 2;
-    // if (isVoice!) {
-    //   await audioPlayer.setAsset('assets/audio/$voice/2-$voice.mp3');
-    //   audioPlayer.play();
-    // }
     await Future.delayed(Duration(seconds: 1));
+    AudioHandler.playTick();
     _timeInSec.value = 1;
-    // if (isVoice!) {
-    //   await audioPlayer.setAsset('assets/audio/$voice/1-$voice.mp3');
-    //   audioPlayer.play();
-    // }
     await Future.delayed(Duration(seconds: 1));
+    AudioHandler.playSwitch();
     for (int setIndex = 1; setIndex <= _timerSettings.sets; setIndex++) {
       _currentSet.value = setIndex;
 
@@ -197,6 +183,7 @@ class TimerScreenState extends State<TimerScreen> {
         for (int tempoIndex = 0;
             tempoIndex < _timerSettings.temposList.length;
             tempoIndex++) {
+          AudioHandler.playSwitch();
 
           _titleName.value = _timerSettings.temposList.elementAt(tempoIndex).key;
           var currentTempo = _timerSettings.temposList.elementAt(tempoIndex).value;
