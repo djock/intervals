@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
 class RoundButton extends StatelessWidget {
-  RoundButton({required this.child, required this.onPressed, required this.color, this.height = 55.0});
+  RoundButton({required this.child, required this.onPressed, required this.color, this.height = 55.0, this.width = 55.0});
 
   final Widget child;
   final Color color;
   final VoidCallback onPressed;
   final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     return ButtonTheme(
       padding: EdgeInsets.all(0),
-      minWidth: 55,
+      minWidth: width,
       child: MaterialButton(
-        elevation: 1,
+        elevation: 0,
         color: color,
         onPressed: onPressed,
         child: child,

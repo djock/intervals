@@ -7,7 +7,11 @@ import 'package:focus/utilities/providers.dart';
 import 'package:focus/widgets/add_button.dart';
 import 'package:focus/widgets/create_tempo_widget.dart';
 import 'package:focus/widgets/tempo_item.dart';
+import 'package:focus/widgets/tempo_list_item.dart';
 import 'package:focus/widgets/wide_button.dart';
+
+import '../widgets/timer_config_button.dart';
+import '../widgets/timer_config_empty_button.dart';
 
 class TimerSettingsScreen extends StatefulWidget {
   static const String id = 'TimerSettingsScreen';
@@ -37,20 +41,32 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      _buildSetWidget(ref),
-                      _buildRepsWidget(ref),
-                      _buildRestWidget(ref),
+                      Row(
+                        children: [
+                          _buildSetWidget(ref),
+                          _buildRepsWidget(ref),
+                          _buildRestWidget(ref),
+                        ],
+                      ),
                       _buildTempos(ref),
-                      WideButton(
-                          value: 0,
-                          onChanged: (newValue) {
-                            _openBottomSheet(ref);
-                          },
-                          title: AppLocalizations.addTempo),
-                      AddButton(callback: () {
-                        activeTimerSettings = timerSettings;
-                        Navigator.of(context).pushNamed(TimerScreen.id);
-                      })
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          AddButton(
+                            callback: () {
+                              _openBottomSheet(ref);
+                            },
+                            text: AppLocalizations.addTempo,
+                          )
+                        ],
+                      ),
+                      AddButton(
+                        callback: () {
+                          activeTimerSettings = timerSettings;
+                          Navigator.of(context).pushNamed(TimerScreen.id);
+                        },
+                        text: AppLocalizations.start,
+                      )
                     ],
                   )),
                 )));
@@ -62,7 +78,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
     final timerSettings = ref.watch(timerSettingsNotifier);
 
     if (timerSettings.sets != 0) {
-      return TempoItem(
+      return TimerConfigButton(
         value: timerSettings.sets,
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateSets(newValue);
@@ -70,7 +86,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         title: AppLocalizations.sets,
       );
     } else {
-      return WideButton(
+      return TimerConfigEmptyButton(
         value: timerSettings.sets,
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateSets(newValue);
@@ -85,7 +101,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
     final timerSettings = ref.watch(timerSettingsNotifier);
 
     if (timerSettings.reps != 0) {
-      return TempoItem(
+      return TimerConfigButton(
         value: timerSettings.reps,
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateReps(newValue);
@@ -93,7 +109,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         title: AppLocalizations.reps,
       );
     } else {
-      return WideButton(
+      return TimerConfigEmptyButton(
         value: timerSettings.reps,
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateReps(newValue);
@@ -107,7 +123,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
     final timerSettings = ref.watch(timerSettingsNotifier);
 
     if (timerSettings.rest != 0) {
-      return TempoItem(
+      return TimerConfigButton(
         value: timerSettings.rest,
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateRest(newValue);
@@ -115,7 +131,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         title: AppLocalizations.rest,
       );
     } else {
-      return WideButton(
+      return TimerConfigEmptyButton(
         value: timerSettings.rest,
         onChanged: (newValue) {
           ref.read(timerSettingsNotifier).updateRest(newValue);
@@ -129,7 +145,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
     final timerSettings = ref.watch(timerSettingsNotifier);
     List<Widget> _tempos = [];
 
-    for(var item in timerSettings.temposList) {
+    for (var item in timerSettings.temposList) {
       _tempos.add(new TempoItem(
         title: item.key,
         value: item.value,

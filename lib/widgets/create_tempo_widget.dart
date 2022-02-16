@@ -41,7 +41,9 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
               title: AppLocalizations.durationInSeconds),
           Padding(
             padding: const EdgeInsets.all(3),
-            child: AddButton(callback: () {
+            child: AddButton(
+              text: AppLocalizations.addTempo,
+                callback: () {
               widget.callback(_textFieldController.text, _duration);
             }),
           )

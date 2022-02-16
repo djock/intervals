@@ -18,6 +18,9 @@ TextStyle titleTextStyle = TextStyle(
 
 Color buttonColor = Color(0xFFFAFAFA);
 Color roundButtonIconColor = Colors.lightBlueAccent;
-double roundButtonIconSize = 30.0;
+double roundButtonIconSize = 25.0;
+
+double numberFontSize = 25;
+double buttonIconSize = 25;
 
 TimerSettings activeTimerSettings = new TimerSettings();
