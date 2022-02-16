@@ -6,10 +6,8 @@ import 'package:focus/utilities/localizations.dart';
 import 'package:focus/utilities/providers.dart';
 import 'package:focus/widgets/add_button.dart';
 import 'package:focus/widgets/create_tempo_widget.dart';
-import 'package:focus/widgets/tempo_item.dart';
-import 'package:focus/widgets/tempo_list_item.dart';
-import 'package:focus/widgets/wide_button.dart';
 
+import '../widgets/tempo_list_item.dart';
 import '../widgets/timer_config_button.dart';
 import '../widgets/timer_config_empty_button.dart';
 
@@ -146,11 +144,11 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
     List<Widget> _tempos = [];
 
     for (var item in timerSettings.temposList) {
-      _tempos.add(new TempoItem(
+      _tempos.add(new TempoListItem(
         title: item.key,
         value: item.value,
         onChanged: (newValue) {
-          ref.read(timerSettingsNotifier).updateTemposList(item.key, newValue);
+          ref.read(timerSettingsNotifier).updateTemposList(item.index, item.key, newValue);
         },
       ));
     }
@@ -161,6 +159,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
   }
 
   void _openBottomSheet(WidgetRef ref) {
+    final timerSettings = ref.watch(timerSettingsNotifier);
     showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
@@ -168,7 +167,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         return Padding(
             padding: MediaQuery.of(context).viewInsets,
             child: CreateTempoWidget(callback: (text, value) {
-              ref.read(timerSettingsNotifier).updateTemposList(text, value);
+              ref.read(timerSettingsNotifier).updateTemposList(timerSettings.listCount, text, value);
               Navigator.pop(context);
             }));
       },

@@ -35,14 +35,12 @@ class TimerConfigButton extends StatelessWidget {
                     width: roundButtonIconSize,
                     color: Colors.white,
                     child: Icon(
-                      Icons.remove,
-                      color: roundButtonIconColor,
+                      value == 1 ? Icons.delete : Icons.remove,
+                      color: value == 1 ? Colors.red : roundButtonIconColor,
                       size: buttonIconSize,
                     ),
                     onPressed: () {
-                      if (value > 1) {
                         onChanged(value - 1);
-                      }
                     },
                   ),
                   Text(

@@ -18,6 +18,7 @@ class RoundButton extends StatelessWidget {
         elevation: 0,
         color: color,
         onPressed: onPressed,
+        onLongPress: onPressed,
         child: child,
         shape: CircleBorder(),
         height: height,

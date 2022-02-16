@@ -42,14 +42,12 @@ class TempoListItem extends StatelessWidget {
                   width: 35,
                   color: Colors.white,
                   child: Icon(
-                    Icons.remove,
-                    color: roundButtonIconColor,
+                    value == 1 ? Icons.delete : Icons.remove,
+                    color:  value == 1 ? Colors.red : roundButtonIconColor,
                     size: roundButtonIconSize,
                   ),
                   onPressed: () {
-                    if (value > 1) {
-                      onChanged(value - 1);
-                    }
+                    onChanged(value - 1);
                   },
                 ),
                 SizedBox(

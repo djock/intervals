@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:focus/models/index_key_value_pair.dart';
 import 'package:focus/models/key_value_pair.dart';
 
 class TimerSettings extends ChangeNotifier {
@@ -7,7 +8,8 @@ class TimerSettings extends ChangeNotifier {
   int time = 0;
   int rest = 0;
   // Map<String,int> tempos = {};
-  List<KeyValuePair> temposList = [];
+  List<IndexKeyValuePair> temposList = [];
+  int listCount = 0;
 
   TimerSettings();
 
@@ -31,19 +33,32 @@ class TimerSettings extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void updateTemposList(String text, int value) {
-    var kvp = new KeyValuePair(text, value);
+  void updateTemposList(int index, String text, int value) {
+    var ikvp = new IndexKeyValuePair(index, text, value);
 
-    temposList.add(kvp);
+    if (temposList.any((element) => element.index == index)) {
+      var tempoToUpdate =
+          temposList.where((element) => element.index == index).first;
+
+      if(value > 0) {
+        tempoToUpdate.setValue(value);
+      }
+      else {
+        temposList.remove(tempoToUpdate);
+      }
+    } else {
+      temposList.add(ikvp);
+      listCount++;
+    }
+
     notifyListeners();
   }
 
   int getTotalTime() {
     var tempoTime = 0;
-    for(var item in temposList) {
+    for (var item in temposList) {
       tempoTime += item.value;
     }
-    // temposList.forEach((key, value) { tempoTime += value; });
 
     return sets * reps * tempoTime;
   }

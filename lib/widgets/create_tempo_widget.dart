@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
-import 'package:focus/widgets/tempo_item.dart';
+import 'package:focus/widgets/tempo_list_item.dart';
 
 import 'add_button.dart';
 
@@ -32,7 +32,7 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
                 key: _formKey,
                 child: _entryField(AppLocalizations.tempoNamePlaceholder, _textFieldController)),
           ),
-          TempoItem(
+          TempoListItem(
               value: _duration,
               onChanged: (newValue) {
                 _duration = newValue;
