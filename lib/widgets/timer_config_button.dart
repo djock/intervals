@@ -17,6 +17,7 @@ class TimerConfigButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Card(
+        color: Theme.of(context).colorScheme.secondary,
         elevation: 0,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 8.0),
@@ -25,7 +26,7 @@ class TimerConfigButton extends StatelessWidget {
             children: <Widget>[
               Text(
                 title,
-                style: cardTitleTextStyle,
+                style: Theme.of(context).textTheme.bodyText2,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -33,10 +34,10 @@ class TimerConfigButton extends StatelessWidget {
                   RoundButton(
                     height: roundButtonIconSize,
                     width: roundButtonIconSize,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primary,
                     child: Icon(
                       value == 1 ? Icons.delete : Icons.remove,
-                      color: value == 1 ? Colors.red : roundButtonIconColor,
+                      color: value == 1 ? Colors.red : Theme.of(context).colorScheme.primary,
                       size: buttonIconSize,
                     ),
                     onPressed: () {
@@ -50,12 +51,12 @@ class TimerConfigButton extends StatelessWidget {
                     ),
                   ),
                   RoundButton(
-                    height: 15,
-                    width: 15,
-                    color: Colors.white,
+                    height: roundButtonIconSize,
+                    width: roundButtonIconSize,
+                    color: Theme.of(context).colorScheme.primary,
                     child: Icon(
                       Icons.add,
-                      color: roundButtonIconColor,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: 20,
                     ),
                     onPressed: () {

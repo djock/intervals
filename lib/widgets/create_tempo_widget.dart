@@ -23,6 +23,7 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
   Widget build(BuildContext context) {
     return Container(
       height: 250,
+      color: Theme.of(context).colorScheme.secondary,
       padding: EdgeInsets.all(15),
       child: Column(
         children: [

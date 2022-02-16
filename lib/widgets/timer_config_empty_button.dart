@@ -17,6 +17,7 @@ class TimerConfigEmptyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Card(
+        color: Colors.grey.withOpacity(0.15),
         elevation: 0,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 8.0),
@@ -25,7 +26,7 @@ class TimerConfigEmptyButton extends StatelessWidget {
             children: <Widget>[
               Text(
                 title,
-                style: cardTitleTextStyle,
+                style: Theme.of(context).textTheme.headline6,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -33,10 +34,10 @@ class TimerConfigEmptyButton extends StatelessWidget {
                   RoundButton(
                     height: roundButtonIconSize,
                     width: roundButtonIconSize,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primary,
                     child: Icon(
                       Icons.add,
-                      color: roundButtonIconColor,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: buttonIconSize,
                     ),
                     onPressed: () {

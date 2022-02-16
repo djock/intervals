@@ -16,6 +16,7 @@ class TempoListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Theme.of(context).colorScheme.primary,
       elevation: 0,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -30,7 +31,7 @@ class TempoListItem extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     title,
-                    style: cardTitleTextStyle,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ],
               ),
@@ -38,12 +39,12 @@ class TempoListItem extends StatelessWidget {
             Row(
               children: [
                 RoundButton(
-                  height: 35,
-                  width: 35,
-                  color: Colors.white,
+                  height: roundButtonIconSize,
+                  width: roundButtonIconSize,
+                  color: Theme.of(context).colorScheme.primary,
                   child: Icon(
                     value == 1 ? Icons.delete : Icons.remove,
-                    color:  value == 1 ? Colors.red : roundButtonIconColor,
+                    color:  value == 1 ? Colors.red : Theme.of(context).colorScheme.onPrimary,
                     size: roundButtonIconSize,
                   ),
                   onPressed: () {
@@ -63,12 +64,12 @@ class TempoListItem extends StatelessWidget {
                   width: 16,
                 ),
                 RoundButton(
-                  height: 35,
-                  width: 35,
-                  color: Colors.white,
+                  height: roundButtonIconSize,
+                  width: roundButtonIconSize,
+                  color: Theme.of(context).colorScheme.primary,
                   child: Icon(
                     Icons.add,
-                    color: roundButtonIconColor,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     size: roundButtonIconSize,
                   ),
                   onPressed: () {

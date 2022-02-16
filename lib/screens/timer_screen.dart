@@ -1,4 +1,3 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:focus/utilities/audio_handler.dart';
 import 'package:focus/utilities/constants.dart';
@@ -118,10 +117,10 @@ class TimerScreenState extends State<TimerScreen> {
                     valueListenable: _resumeFlag,
                     builder: (context, dynamic value, child) {
                       return RoundButton(
-                        color: buttonColor,
+                        color: Theme.of(context).backgroundColor,
                         child: Icon(
                           _resumeFlag.value ? Icons.pause : Icons.play_arrow,
-                          color: roundButtonIconColor,
+                          color: Theme.of(context).colorScheme.primary,
                           size: roundButtonIconSize,
                         ),
                         onPressed: () {

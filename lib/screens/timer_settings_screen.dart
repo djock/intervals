@@ -23,51 +23,59 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        // final isDark = ref.watch(isDarkThemeProvider);
         final timerSettings = ref.watch(timerSettingsNotifier);
+        final themeSettings = ref.watch(appThemeStateNotifier);
 
-        return WillPopScope(
-            onWillPop: () async {
-              return true;
-            },
-            child: Scaffold(
-                appBar: AppBar(
-                  title: Text(AppLocalizations.timerSettingsScreenTitle),
-                ),
-                body: SingleChildScrollView(
-                  child: Center(
-                      child: Column(
+        return SingleChildScrollView(
+          child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      _buildSetWidget(ref),
+                      _buildRepsWidget(ref),
+                      _buildRestWidget(ref),
+                    ],
+                  ),
+                  _buildTempos(ref),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          _buildSetWidget(ref),
-                          _buildRepsWidget(ref),
-                          _buildRestWidget(ref),
-                        ],
-                      ),
-                      _buildTempos(ref),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          AddButton(
-                            callback: () {
-                              _openBottomSheet(ref);
-                            },
-                            text: AppLocalizations.addTempo,
-                          )
-                        ],
-                      ),
                       AddButton(
                         callback: () {
-                          activeTimerSettings = timerSettings;
-                          Navigator.of(context).pushNamed(TimerScreen.id);
+                          _openBottomSheet(ref);
                         },
-                        text: AppLocalizations.start,
+                        text: AppLocalizations.addTempo,
                       )
                     ],
-                  )),
-                )));
+                  ),
+                  AddButton(
+                    callback: () {
+                      // if(themeSettings.isDarkModeEnabled) {
+                      //   themeSettings.setLightTheme();
+                      // } else {
+                      //   themeSettings.setDarkTheme();
+                      // }
+
+                      activeTimerSettings = timerSettings;
+                      Navigator.of(context).pushNamed(TimerScreen.id);
+                    },
+                    text: AppLocalizations.start,
+                  ),
+                  AddButton(
+                    callback: () {
+                      if(themeSettings.isDarkModeEnabled) {
+                        themeSettings.setLightTheme();
+                      } else {
+                        themeSettings.setDarkTheme();
+                      }
+                    },
+                    text: 'Switch theme',
+                  )
+                ],
+              )),
+        );
       },
     );
   }

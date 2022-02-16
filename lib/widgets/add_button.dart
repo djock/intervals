@@ -16,7 +16,7 @@ class AddButtonState extends State<AddButton> {
   Widget build(BuildContext context) {
     return OutlinedButton(
       onPressed: widget.callback,
-      child: Text(widget.text),
+      child: Text(widget.text, style: Theme.of(context).textTheme.bodyText2,),
     );
   }
 }
