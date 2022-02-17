@@ -26,7 +26,7 @@ class TimerConfigButton extends StatelessWidget {
             children: <Widget>[
               Text(
                 title,
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.headline6,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -34,10 +34,10 @@ class TimerConfigButton extends StatelessWidget {
                   RoundButton(
                     height: roundButtonIconSize,
                     width: roundButtonIconSize,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.secondary,
                     child: Icon(
                       value == 1 ? Icons.delete : Icons.remove,
-                      color: value == 1 ? Colors.red : Theme.of(context).colorScheme.primary,
+                      color: value == 1 ? Colors.red : Theme.of(context).colorScheme.onSecondary,
                       size: buttonIconSize,
                     ),
                     onPressed: () {
@@ -53,11 +53,10 @@ class TimerConfigButton extends StatelessWidget {
                   RoundButton(
                     height: roundButtonIconSize,
                     width: roundButtonIconSize,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.secondary,
                     child: Icon(
                       Icons.add,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      size: 20,
+                      color: Theme.of(context).colorScheme.onSecondary,
                     ),
                     onPressed: () {
                       onChanged(value + 1);

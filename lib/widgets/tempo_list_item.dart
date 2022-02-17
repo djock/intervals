@@ -7,16 +7,18 @@ class TempoListItem extends StatelessWidget {
     required this.value,
     required this.onChanged,
     required this.title,
+    required this.color,
   });
 
   final int value;
   final ChangeCallback onChanged;
   final String title;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).colorScheme.primary,
+      color: color,
       elevation: 0,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -31,7 +33,7 @@ class TempoListItem extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                 ],
               ),

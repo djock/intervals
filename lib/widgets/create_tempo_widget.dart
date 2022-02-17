@@ -34,6 +34,7 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
                 child: _entryField(AppLocalizations.tempoNamePlaceholder, _textFieldController)),
           ),
           TempoListItem(
+            color: Colors.transparent,
               value: _duration,
               onChanged: (newValue) {
                 _duration = newValue;
@@ -45,7 +46,9 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
             child: AddButton(
               text: AppLocalizations.addTempo,
                 callback: () {
-              widget.callback(_textFieldController.text, _duration);
+                if(_formKey.currentState!.validate()) {
+                  widget.callback(_textFieldController.text, _duration);
+                }
             }),
           )
         ],
@@ -59,9 +62,10 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
         controller: controller,
         keyboardType: TextInputType.text,
         validator: (value) {
-          bool fieldValid = value!.length > 1;
+          bool fieldValid = value!.length > 1 && value != "0";
 
           if (!fieldValid) {
+
             return 'error';
           }
           return null;
@@ -73,22 +77,22 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
             ),
             errorBorder: new OutlineInputBorder(
               borderSide:
-                  BorderSide(color: Colors.red.withOpacity(0.7), width: 2),
+                  BorderSide(color: Theme.of(context).colorScheme.error.withOpacity(0.7), width: 2),
               borderRadius: const BorderRadius.all(
                 const Radius.circular(5),
               ),
             ),
             border: new OutlineInputBorder(
               borderSide:
-                  BorderSide(color: Colors.black.withOpacity(0.7), width: 2),
+                  BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
               borderRadius: const BorderRadius.all(
                 const Radius.circular(5),
               ),
             ),
             hintText: defaultText,
             contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
-            hintStyle: TextStyle(color: Colors.black38, fontSize: 18)),
-        style: TextStyle(color: Colors.black, fontSize: 20),
+            hintStyle: Theme.of(context).textTheme.subtitle2),
+        style: Theme.of(context).textTheme.headline6,
       ),
     );
   }

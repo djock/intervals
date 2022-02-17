@@ -24,7 +24,7 @@ class AppTheme {
       brightness: Brightness.dark,
       primary: Colors.white,
       onPrimary: Colors.black,
-      secondary: Colors.grey.withOpacity(0.5),
+      secondary: Colors.grey.withOpacity(0.15),
       onSecondary: Colors.black,
       error: Colors.red,
       onError: Colors.white,
@@ -40,11 +40,26 @@ class AppTheme {
       ),
     ),
     textTheme: TextTheme(
+      bodyText1: TextStyle(
+        color: Colors.black,
+      ),
       bodyText2: TextStyle(
+        color: Colors.black,
+      ),
+      headline5: TextStyle(
+        color: Colors.black,
+      ),
+      headline3: TextStyle(
         color: Colors.black,
       ),
       headline6: TextStyle(
         color: Colors.black,
+      ),
+      subtitle1: TextStyle(
+        color: Colors.grey,
+      ),
+      subtitle2: TextStyle(
+        color: Colors.grey,
       ),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -62,8 +77,8 @@ class AppTheme {
     colorScheme: ColorScheme(
       brightness: Brightness.light,
       primary: Colors.black,
-      onPrimary: Colors.white38,
-      secondary: Colors.black26,
+      onPrimary: Colors.white,
+      secondary: Colors.grey.withOpacity(0.15),
       onSecondary: Colors.white,
       error: Colors.red,
       onError: Colors.white,
@@ -75,21 +90,36 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       color: Colors.black,
       iconTheme: IconThemeData(
-        color: Colors.white,
+        color: Colors.black,
       ),
     ),
     textTheme: TextTheme(
+      bodyText1: TextStyle(
+        color: Colors.white,
+      ),
       bodyText2: TextStyle(
+        color: Colors.white,
+      ),
+      headline5: TextStyle(
+        color: Colors.white,
+      ),
+      headline3: TextStyle(
         color: Colors.white,
       ),
       headline6: TextStyle(
         color: Colors.white,
       ),
+      subtitle1: TextStyle(
+        color: Colors.grey,
+      ),
+      subtitle2: TextStyle(
+        color: Colors.grey,
+      ),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.black,
       selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white24,
+      unselectedItemColor: Colors.white54,
       showUnselectedLabels: false,
     ),
     // ... more

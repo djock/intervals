@@ -14,4 +14,16 @@ class CustomAppBar {
       centerTitle: true,
     );
   }
+
+  static PreferredSizeWidget buildNormal(BuildContext context, String text,
+      {double elevation = 0.0}) =>
+      AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: elevation,
+        title: Text(
+          text.toUpperCase(),
+          style: Theme.of(context).textTheme.headline5,
+        ),
+        centerTitle: true,
+      );
 }

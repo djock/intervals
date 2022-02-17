@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/screens/timer_settings_screen.dart';
+import 'package:focus/utilities/localizations.dart';
+import 'package:focus/widgets/custom_app_bar.dart';
 
 class NavigationScreen extends StatefulWidget {
   static const String id = 'NavigationScreen';
@@ -13,8 +15,6 @@ class NavigationScreenState extends State<NavigationScreen> {
   int _selectedScreenIndex = 0;
   List<Widget> _screens = [
     TimerSettingsScreen(),
-    TimerScreen(),
-    TimerSettingsScreen(),
   ];
 
   @override
@@ -24,26 +24,26 @@ class NavigationScreenState extends State<NavigationScreen> {
         return true;
       },
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: CustomAppBar.buildNormal(context, AppLocalizations.timerSettingsScreenTitle),
         body: _screens[_selectedScreenIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.timer),
-                label: 'Settings'
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.ac_unit_rounded),
-                label: 'Settings'
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-          onTap: _onItemTapped,
-          currentIndex: _selectedScreenIndex,
-        ),
+        // bottomNavigationBar: BottomNavigationBar(
+        //   items: [
+        //     BottomNavigationBarItem(
+        //         icon: Icon(Icons.timer),
+        //         label: 'Settings'
+        //     ),
+        //     // BottomNavigationBarItem(
+        //     //     icon: Icon(Icons.ac_unit_rounded),
+        //     //     label: 'Settings'
+        //     // ),
+        //     // BottomNavigationBarItem(
+        //     //   icon: Icon(Icons.settings),
+        //     //   label: 'Settings',
+        //     // ),
+        //   ],
+        //   onTap: _onItemTapped,
+        //   currentIndex: _selectedScreenIndex,
+        // ),
       ),
     );
   }

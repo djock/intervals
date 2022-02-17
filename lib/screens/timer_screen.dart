@@ -117,10 +117,10 @@ class TimerScreenState extends State<TimerScreen> {
                     valueListenable: _resumeFlag,
                     builder: (context, dynamic value, child) {
                       return RoundButton(
-                        color: Theme.of(context).backgroundColor,
+                        color: Theme.of(context).colorScheme.secondary,
                         child: Icon(
                           _resumeFlag.value ? Icons.pause : Icons.play_arrow,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme.of(context).colorScheme.onSecondary,
                           size: roundButtonIconSize,
                         ),
                         onPressed: () {

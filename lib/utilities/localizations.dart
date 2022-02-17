@@ -14,6 +14,7 @@ class AppLocalizations {
   static String currentSet = 'Set: {AMOUNT}';
   static String currentRep = 'Rep: {AMOUNT}';
   static String currentProgress = 'Progress: {AMOUNT}';
+  static String createTimer = 'Timed';
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);
