@@ -40,32 +40,31 @@ class AppTheme {
       ),
     ),
     textTheme: TextTheme(
-      bodyText1: TextStyle(
-        color: Colors.black,
-      ),
-      bodyText2: TextStyle(
-        color: Colors.black,
-      ),
-      headline5: TextStyle(
-        color: Colors.black,
-      ),
-      headline3: TextStyle(
-        color: Colors.black,
-      ),
-      headline6: TextStyle(
-        color: Colors.black,
-      ),
-      subtitle1: TextStyle(
-        color: Colors.grey,
-      ),
-      subtitle2: TextStyle(
-        color: Colors.grey,
-      ),
-      button: TextStyle(
-        color: Colors.black,
-        fontSize: 18
-      )
-    ),
+        bodyText1: TextStyle(
+          color: Colors.black,
+        ),
+        bodyText2: TextStyle(
+          color: Colors.black,
+        ),
+        headline6: TextStyle(
+          color: Colors.black,
+        ),
+        headline5: TextStyle(
+          color: Colors.black,
+        ),
+        headline3: TextStyle(
+          color: Colors.black,
+        ),
+        headline2: TextStyle(
+          color: Colors.black,
+        ),
+        subtitle1: TextStyle(
+          color: Colors.grey,
+        ),
+        subtitle2: TextStyle(
+          color: Colors.grey,
+        ),
+        button: TextStyle(color: Colors.black, fontSize: 18)),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
       selectedItemColor: Colors.black,
@@ -98,32 +97,31 @@ class AppTheme {
       ),
     ),
     textTheme: TextTheme(
-      bodyText1: TextStyle(
-        color: Colors.white,
-      ),
-      bodyText2: TextStyle(
-        color: Colors.white,
-      ),
-      headline5: TextStyle(
-        color: Colors.white,
-      ),
-      headline3: TextStyle(
-        color: Colors.white,
-      ),
-      headline6: TextStyle(
-        color: Colors.white,
-      ),
-      subtitle1: TextStyle(
-        color: Colors.grey,
-      ),
-      subtitle2: TextStyle(
-        color: Colors.grey,
-      ),
-      button: TextStyle(
-        color: Colors.white,
-        fontSize: 18
-      )
-    ),
+        bodyText1: TextStyle(
+          color: Colors.white,
+        ),
+        bodyText2: TextStyle(
+          color: Colors.white,
+        ),
+        headline6: TextStyle(
+          color: Colors.white,
+        ),
+        headline5: TextStyle(
+          color: Colors.white,
+        ),
+        headline3: TextStyle(
+          color: Colors.white,
+        ),
+        headline2: TextStyle(
+          color: Colors.white,
+        ),
+        subtitle1: TextStyle(
+          color: Colors.grey,
+        ),
+        subtitle2: TextStyle(
+          color: Colors.grey,
+        ),
+        button: TextStyle(color: Colors.white, fontSize: 18)),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.black,
       selectedItemColor: Colors.white,

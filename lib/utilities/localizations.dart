@@ -11,12 +11,14 @@ class AppLocalizations {
   static String tempoNamePlaceholder = 'Enter tempo name';
   static String durationInSeconds = 'Duration (seconds)';
   static String getReady = 'Get Ready';
-  static String currentSet = 'Set: {AMOUNT}';
-  static String currentRep = 'Rep: {AMOUNT}';
-  static String currentProgress = 'Progress: {AMOUNT}';
+  static String currentSet = 'Set';
+  static String currentRep = 'Rep';
+  static String currentProgress = 'Progress';
   static String createTimer = 'Timed';
   static String noTemposErrorTitle = 'No tempos added';
   static String noTemposErrorMessage = 'Add some tempos to start the timer';
+  static String resumeTimerButton = 'Resume';
+  static String pauseTimerButton = 'Pause';
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);

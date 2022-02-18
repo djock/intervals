@@ -42,7 +42,6 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
                   } else {
                     themeSettings.setDarkTheme();
                   }
-                  ;
                 })
           ]),
           body: Column(

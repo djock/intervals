@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:focus/utilities/audio_handler.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
-import 'package:focus/widgets/round_button.dart';
+import 'package:focus/widgets/expanded_test_button.dart';
+
+import '../widgets/custom_app_bar.dart';
+import '../widgets/timer_stat_widget.dart';
 
 class TimerScreen extends StatefulWidget {
   static const String id = 'TimerScreen';
@@ -19,8 +22,12 @@ class TimerScreenState extends State<TimerScreen> {
   bool _firstInstance = true;
   int? _totalTime;
 
-  ValueNotifier<String> _titleName = ValueNotifier<String>(AppLocalizations.getReady);
+  ValueNotifier<String> _titleName =
+      ValueNotifier<String>(AppLocalizations.getReady);
+  ValueNotifier<String> _nextTitle =
+      ValueNotifier<String>(AppLocalizations.getReady);
   ValueNotifier<int> _timeInSec = ValueNotifier<int>(5);
+  ValueNotifier<int> _currentTargetTime = ValueNotifier<int>(5);
   ValueNotifier<double> _progress = ValueNotifier<double>(0);
   ValueNotifier<bool> _resumeFlag = ValueNotifier<bool>(true);
   ValueNotifier<int> _currentRep = ValueNotifier<int>(1);
@@ -36,11 +43,13 @@ class TimerScreenState extends State<TimerScreen> {
   void dispose() {
     super.dispose();
     _titleName.dispose();
+    _nextTitle.dispose();
     _timeInSec.dispose();
     _progress.dispose();
     _resumeFlag.dispose();
     _currentRep.dispose();
     _currentSet.dispose();
+    _currentTargetTime.dispose();
   }
 
   @override
@@ -49,89 +58,118 @@ class TimerScreenState extends State<TimerScreen> {
     _startTimer();
     // _firstInstance = false;
     // }
+
     return WillPopScope(
       onWillPop: () async {
         return true;
       },
       child: Scaffold(
-        appBar: AppBar(
-          // title: Text('Tempo'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ValueListenableBuilder(
-                valueListenable: _titleName,
-                builder: (context, dynamic value, child) {
-                  return Text(
-                    '${_titleName.value}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      letterSpacing: 3,
-                      color: Colors.black45,
-                    ),
-                  );
-                },
-              ),
-              ValueListenableBuilder(
-                valueListenable: _timeInSec,
-                builder: (context, dynamic value, child) {
-                  return Text(
-                    '${_timeInSec.value}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40,
-                      letterSpacing: 3,
-                      color: Colors.black,
-                    ),
-                  );
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ValueListenableBuilder(
-                    valueListenable: _progress,
-                    builder: (context, dynamic value, child) {
-                      return Text(AppLocalizations.currentSet.replaceAll('{AMOUNT}', '${_currentSet.value}')
-                      );
-                    },
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: _progress,
-                    builder: (context, dynamic value, child) {
-                      return Text(AppLocalizations.currentRep.replaceAll('{AMOUNT}', '${_currentRep.value}'
-                      ));
-                    },
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: _progress,
-                    builder: (context, dynamic value, child) {
-                      return Text(AppLocalizations.currentProgress.replaceAll('{AMOUNT}', '${_progress.value}'
-                      ));
-                    },
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: _resumeFlag,
-                    builder: (context, dynamic value, child) {
-                      return RoundButton(
-                        color: Theme.of(context).colorScheme.secondary,
-                        child: Icon(
-                          _resumeFlag.value ? Icons.pause : Icons.play_arrow,
-                          color: Theme.of(context).colorScheme.onSecondary,
-                          size: roundButtonIconSize,
+        appBar: CustomAppBar.buildWithAction(context, '', [
+          IconButton(
+              icon: Icon(Icons.close_outlined),
+              color: Theme.of(context).colorScheme.onPrimary,
+              onPressed: () {
+                Navigator.of(context).pop();
+              })
+        ]),
+        body: Container(
+          padding: EdgeInsets.all(10),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    _buildSetsStatWidget(),
+                    _buildRepsStatWidget(),
+                    _buildProgressStatWidget(),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                ValueListenableBuilder(
+                  valueListenable: _titleName,
+                  builder: (context, dynamic value, child) {
+                    return Text(
+                      '${_titleName.value}',
+                      style: Theme.of(context).textTheme.headline5,
+                    );
+                  },
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 200,
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Container(
+                                height: 200,
+                                width: 200,
+                                child: new CircularProgressIndicator(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  strokeWidth: 8,
+                                  value: 1,
+                                ),
+                              ),
+                            ),
+                            Center(
+                              child: ValueListenableBuilder(
+                                valueListenable: _timeInSec,
+                                builder: (context, dynamic value, child) {
+                                  return Container(
+                                    height: 200,
+                                    width: 200,
+                                    child: new CircularProgressIndicator(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                      strokeWidth: 10,
+                                      value: (_timeInSec.value *
+                                              100 /
+                                              _currentTargetTime.value) /
+                                          100,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            Center(
+                              child: ValueListenableBuilder(
+                                valueListenable: _timeInSec,
+                                builder: (context, dynamic value, child) {
+                                  return Text(
+                                    '${_timeInSec.value}',
+                                    style:
+                                        Theme.of(context).textTheme.headline2,
+                                  );
+                                },
+                              ),
+                            )
+                          ],
                         ),
-                        onPressed: () {
-                          _resumeFlag.value = !_resumeFlag.value;
-                        },
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ],
-              )
-            ],
+                ),
+                ValueListenableBuilder(
+                  valueListenable: _resumeFlag,
+                  builder: (context, dynamic value, child) {
+                    return ExpandedTextButton(
+                        text: _resumeFlag.value
+                            ? AppLocalizations.pauseTimerButton
+                            : AppLocalizations.resumeTimerButton,
+                        callback: () {
+                          _resumeFlag.value = !_resumeFlag.value;
+                        });
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -143,14 +181,15 @@ class TimerScreenState extends State<TimerScreen> {
       while (!_resumeFlag.value) {
         await Future.delayed(Duration(milliseconds: 10));
       }
-      if (this.mounted && _timeInSec.value != 0) _progress.value += 100 / _totalTime!;
+      if (this.mounted && _timeInSec.value != 0)
+        _progress.value += 100 / _totalTime!;
 
-      if(this.mounted){
+      if (this.mounted) {
         AudioHandler.playTick();
       }
 
       await Future.delayed(Duration(seconds: 1));
-      if(this.mounted) {
+      if (this.mounted) {
         _timeInSec.value--;
       }
     }
@@ -184,16 +223,20 @@ class TimerScreenState extends State<TimerScreen> {
             tempoIndex++) {
           AudioHandler.playSwitch();
 
-          _titleName.value = _timerSettings.temposList.elementAt(tempoIndex).key;
-          var currentTempo = _timerSettings.temposList.elementAt(tempoIndex).value;
+          _titleName.value =
+              _timerSettings.temposList.elementAt(tempoIndex).key;
+          var currentTempo =
+              _timerSettings.temposList.elementAt(tempoIndex).value;
           _timeInSec.value = currentTempo;
+          _currentTargetTime.value = currentTempo;
 
           await _runTimer(_timeInSec.value);
         }
       }
 
-      if(_timerSettings.rest != 0) {
+      if (_timerSettings.rest != 0) {
         _timeInSec.value = _timerSettings.rest;
+        _currentTargetTime.value = _timerSettings.rest;
         _titleName.value = AppLocalizations.rest;
         await _runTimer(_timeInSec.value);
       }
@@ -208,5 +251,41 @@ class TimerScreenState extends State<TimerScreen> {
     //   isVoice = false;
     // }
     Navigator.pop(context);
+  }
+
+  Widget _buildSetsStatWidget() {
+    return ValueListenableBuilder(
+      valueListenable: _currentSet,
+      builder: (context, dynamic value, child) {
+        return TimerStatWidget(
+          value: _currentSet.value.toString(),
+          title: AppLocalizations.currentSet,
+        );
+      },
+    );
+  }
+
+  Widget _buildRepsStatWidget() {
+    return ValueListenableBuilder(
+      valueListenable: _currentRep,
+      builder: (context, dynamic value, child) {
+        return TimerStatWidget(
+          value: _currentRep.value.toString(),
+          title: AppLocalizations.currentRep,
+        );
+      },
+    );
+  }
+
+  Widget _buildProgressStatWidget() {
+    return ValueListenableBuilder(
+      valueListenable: _progress,
+      builder: (context, dynamic value, child) {
+        return TimerStatWidget(
+          value: _progress.value.toStringAsFixed(1) + '%',
+          title: AppLocalizations.currentProgress,
+        );
+      },
+    );
   }
 }

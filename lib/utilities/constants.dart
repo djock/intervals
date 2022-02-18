@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:focus/models/timer_settings.dart';
 
 typedef void ChangeCallback(double);

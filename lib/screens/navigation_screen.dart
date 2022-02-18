@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/screens/timer_settings_screen.dart';
-import 'package:focus/utilities/localizations.dart';
-import 'package:focus/widgets/custom_app_bar.dart';
 
 class NavigationScreen extends StatefulWidget {
   static const String id = 'NavigationScreen';
@@ -48,10 +45,10 @@ class NavigationScreenState extends State<NavigationScreen> {
     );
   }
 
-  void _onItemTapped(int selectedScreenIndex) {
-    debugPrint('tap ' + selectedScreenIndex.toString());
-    setState(() {
-      _selectedScreenIndex = selectedScreenIndex;
-    });
-  }
+  // void _onItemTapped(int selectedScreenIndex) {
+  //   debugPrint('tap ' + selectedScreenIndex.toString());
+  //   setState(() {
+  //     _selectedScreenIndex = selectedScreenIndex;
+  //   });
+  // }
 }
