@@ -24,8 +24,8 @@ class NavigationScreenState extends State<NavigationScreen> {
         return true;
       },
       child: Scaffold(
-        appBar: CustomAppBar.buildNormal(context, AppLocalizations.timerSettingsScreenTitle),
-        body: _screens[_selectedScreenIndex],
+
+        body: Container(padding: EdgeInsets.all(10),child: _screens[_selectedScreenIndex]),
         // bottomNavigationBar: BottomNavigationBar(
         //   items: [
         //     BottomNavigationBarItem(

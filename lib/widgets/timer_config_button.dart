@@ -20,16 +20,16 @@ class TimerConfigButton extends StatelessWidget {
         color: Theme.of(context).colorScheme.secondary,
         elevation: 0,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
                 title,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.button,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   RoundButton(
                     height: roundButtonIconSize,

@@ -15,6 +15,8 @@ class AppLocalizations {
   static String currentRep = 'Rep: {AMOUNT}';
   static String currentProgress = 'Progress: {AMOUNT}';
   static String createTimer = 'Timed';
+  static String noTemposErrorTitle = 'No tempos added';
+  static String noTemposErrorMessage = 'Add some tempos to start the timer';
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);

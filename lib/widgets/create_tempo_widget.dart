@@ -3,7 +3,7 @@ import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:focus/widgets/tempo_list_item.dart';
 
-import 'add_button.dart';
+import 'expanded_test_button.dart';
 
 class CreateTempoWidget extends StatefulWidget {
   final NewTempoCallback callback;
@@ -41,16 +41,12 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
                 setState(() {});
               },
               title: AppLocalizations.durationInSeconds),
-          Padding(
-            padding: const EdgeInsets.all(3),
-            child: AddButton(
-              text: AppLocalizations.addTempo,
-                callback: () {
+          ExpandedTextButton(text: AppLocalizations.addTempo,
+              callback: () {
                 if(_formKey.currentState!.validate()) {
                   widget.callback(_textFieldController.text, _duration);
                 }
-            }),
-          )
+              }),
         ],
       ),
     );

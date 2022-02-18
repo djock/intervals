@@ -24,6 +24,7 @@ dependencies:
   flutter_riverpod: ^1.0.3
   assets_audio_player: ^3.0.4+1
   numberpicker: ^2.1.1
+  another_flushbar: ^1.10.28
 
 dev_dependencies:
   flutter_test:

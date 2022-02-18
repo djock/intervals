@@ -61,6 +61,10 @@ class AppTheme {
       subtitle2: TextStyle(
         color: Colors.grey,
       ),
+      button: TextStyle(
+        color: Colors.black,
+        fontSize: 18
+      )
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
@@ -78,7 +82,7 @@ class AppTheme {
       brightness: Brightness.light,
       primary: Colors.black,
       onPrimary: Colors.white,
-      secondary: Colors.grey.withOpacity(0.15),
+      secondary: Colors.grey.withOpacity(0.25),
       onSecondary: Colors.white,
       error: Colors.red,
       onError: Colors.white,
@@ -115,6 +119,10 @@ class AppTheme {
       subtitle2: TextStyle(
         color: Colors.grey,
       ),
+      button: TextStyle(
+        color: Colors.white,
+        fontSize: 18
+      )
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.black,

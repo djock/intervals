@@ -26,7 +26,7 @@ class TimerConfigEmptyButton extends StatelessWidget {
             children: <Widget>[
               Text(
                 title,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.button,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
