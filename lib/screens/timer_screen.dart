@@ -258,7 +258,7 @@ class TimerScreenState extends State<TimerScreen> {
       valueListenable: _currentSet,
       builder: (context, dynamic value, child) {
         return TimerStatWidget(
-          value: _currentSet.value.toString(),
+          value: _currentSet.value.toString() + "/" + _timerSettings.sets.toString(),
           title: AppLocalizations.currentSet,
         );
       },
@@ -270,7 +270,7 @@ class TimerScreenState extends State<TimerScreen> {
       valueListenable: _currentRep,
       builder: (context, dynamic value, child) {
         return TimerStatWidget(
-          value: _currentRep.value.toString(),
+          value: _currentRep.value.toString() + "/" + _timerSettings.reps.toString(),
           title: AppLocalizations.currentRep,
         );
       },

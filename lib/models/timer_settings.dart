@@ -59,7 +59,7 @@ class TimerSettings extends ChangeNotifier {
       tempoTime += item.value;
     }
 
-    tempoTime += sets * reps * rest;
+    tempoTime += (sets - 1) * rest;
 
     return sets * reps * tempoTime;
   }
