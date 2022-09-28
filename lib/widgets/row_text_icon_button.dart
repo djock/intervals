@@ -19,7 +19,7 @@ class RowIconTextButton extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Icon(icon, color: Theme.of(context).colorScheme.onPrimary,),
           ),
-          Text(text, style: Theme.of(context).textTheme.button, )
+          Text(text, style: Theme.of(context).textTheme.bodyText1, )
         ],
       ),
     );

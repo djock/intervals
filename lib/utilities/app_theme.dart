@@ -22,7 +22,7 @@ class AppTheme {
     canvasColor: Colors.white,
     colorScheme: ColorScheme(
       brightness: Brightness.dark,
-      primary: Colors.white,
+      primary: new Color(0XFF4D358B),
       onPrimary: Colors.black,
       secondary: Colors.grey.withOpacity(0.15),
       onSecondary: Colors.black,
@@ -64,7 +64,7 @@ class AppTheme {
         subtitle2: TextStyle(
           color: Colors.grey,
         ),
-        button: TextStyle(color: Colors.black, fontSize: 18)),
+        button: TextStyle(color: Colors.white, fontSize: 18)),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
       selectedItemColor: Colors.black,

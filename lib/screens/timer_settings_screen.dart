@@ -32,7 +32,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
 
         return Scaffold(
           appBar: CustomAppBar.buildWithAction(
-              context, AppLocalizations.timerSettingsScreenTitle, [
+              context, AppLocalizations.createTimerScreenTitle, [
             IconButton(
                 icon: Icon(Icons.dark_mode_sharp),
                 color: Theme.of(context).colorScheme.onPrimary,

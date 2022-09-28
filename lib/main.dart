@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/screens/create_timer_screen.dart';
 import 'package:focus/screens/navigation_screen.dart';
 import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/screens/timer_settings_screen.dart';
@@ -8,6 +9,8 @@ import 'package:focus/utilities/app_theme.dart';
 import 'package:focus/utilities/providers.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   Future.delayed(Duration(milliseconds: 1))
       .then((value) => SystemChrome.setPreferredOrientations([
             DeviceOrientation.portraitUp,
@@ -46,6 +49,7 @@ class AppState extends State<App> {
             NavigationScreen.id: (context) => NavigationScreen(),
             TimerSettingsScreen.id: (context) => TimerSettingsScreen(),
             TimerScreen.id: (context) => TimerScreen(),
+            CreateTimerScreen.id: (context) => CreateTimerScreen(),
           },
         );
       },

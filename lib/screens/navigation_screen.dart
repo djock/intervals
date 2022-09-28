@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:focus/screens/timer_settings_screen.dart';
 
+import 'create_timer_screen.dart';
+
 class NavigationScreen extends StatefulWidget {
   static const String id = 'NavigationScreen';
 
@@ -11,7 +13,7 @@ class NavigationScreen extends StatefulWidget {
 class NavigationScreenState extends State<NavigationScreen> {
   int _selectedScreenIndex = 0;
   List<Widget> _screens = [
-    TimerSettingsScreen(),
+    CreateTimerScreen(),
   ];
 
   @override
@@ -21,8 +23,8 @@ class NavigationScreenState extends State<NavigationScreen> {
         return true;
       },
       child: Scaffold(
-
-        body: Container(padding: EdgeInsets.all(10),child: _screens[_selectedScreenIndex]),
+        resizeToAvoidBottomInset: false,
+        body: Container(padding: EdgeInsets.all(20),child: _screens[_selectedScreenIndex]),
         // bottomNavigationBar: BottomNavigationBar(
         //   items: [
         //     BottomNavigationBarItem(

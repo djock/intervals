@@ -1,5 +1,5 @@
 class AppLocalizations {
-  static String timerSettingsScreenTitle = 'Create Timer';
+  static String createTimerScreenTitle = 'Create Timer';
   static String start = 'Start';
   static String addTempo = 'Add Tempo';
   static String sets = 'Sets';
@@ -19,6 +19,16 @@ class AppLocalizations {
   static String noTemposErrorMessage = 'Add some tempos to start the timer';
   static String resumeTimerButton = 'Resume';
   static String pauseTimerButton = 'Pause';
+  static String closeAppTitle = 'Close App';
+  static String closeAppMessage = 'Are you sure you want to close the app?';
+  static String close = 'Close';
+  static String cancel = 'Cancel';
+  static String saveTimer = 'Save Timer';
+  static String timerType = 'Timer type';
+  static String forTime = 'Time';
+  static String forReps = 'Reps';
+  static String totalTime = 'Total Time';
+  static String addNameHere = 'Add name here';
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);

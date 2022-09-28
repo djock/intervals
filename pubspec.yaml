@@ -25,6 +25,9 @@ dependencies:
   assets_audio_player: ^3.0.4+3
   numberpicker: ^2.1.1
   another_flushbar: ^1.10.29
+  adaptive_dialog: ^1.8.0+1
+  simple_logger: ^1.9.0+1
+  flutter_slidable: ^2.0.0
 
 dev_dependencies:
   flutter_test:
