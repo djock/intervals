@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
-import 'package:focus/widgets/tempo_list_item.dart';
+import 'package:focus/widgets/input_interval_item.dart';
 
 import 'expanded_test_button.dart';
 
-class CreateTempoWidget extends StatefulWidget {
+class AddIntervalBottomSheet extends StatefulWidget {
   final NewTempoCallback callback;
 
-  const CreateTempoWidget({Key? key, required this.callback}) : super(key: key);
+  const AddIntervalBottomSheet({Key? key, required this.callback})
+      : super(key: key);
 
   @override
-  CreateTempoWidgetState createState() => CreateTempoWidgetState();
+  AddIntervalBottomSheetState createState() => AddIntervalBottomSheetState();
 }
 
-class CreateTempoWidgetState extends State<CreateTempoWidget> {
+class AddIntervalBottomSheetState extends State<AddIntervalBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _textFieldController = TextEditingController();
   int _duration = 0;
@@ -22,28 +23,22 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
+      height: 200,
       color: Theme.of(context).colorScheme.secondary,
       padding: EdgeInsets.all(15),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(3.0),
-            child: Form(
-                key: _formKey,
-                child: _entryField(AppLocalizations.tempoNamePlaceholder, _textFieldController)),
+          InputIntervalItem(
+            value: _duration,
+            onChanged: (newValue) {
+              _duration = newValue;
+              setState(() {});
+            },
           ),
-          TempoListItem(
-            color: Colors.transparent,
-              value: _duration,
-              onChanged: (newValue) {
-                _duration = newValue;
-                setState(() {});
-              },
-              title: AppLocalizations.durationInSeconds),
-          ExpandedTextButton(text: AppLocalizations.addTempo,
+          ExpandedTextButton(
+              text: AppLocalizations.addTempo,
               callback: () {
-                if(_formKey.currentState!.validate()) {
+                if (_formKey.currentState!.validate()) {
                   widget.callback(_textFieldController.text, _duration);
                 }
               }),
@@ -52,16 +47,15 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
     );
   }
 
-  Widget _entryField(String defaultText, TextEditingController controller) {
+  Widget _entryField(String defaultText) {
     return Center(
       child: TextFormField(
-        controller: controller,
+        controller: _textFieldController,
         keyboardType: TextInputType.text,
         validator: (value) {
           bool fieldValid = value!.length > 1 && value != "0";
 
           if (!fieldValid) {
-
             return 'error';
           }
           return null;
@@ -72,15 +66,16 @@ class CreateTempoWidgetState extends State<CreateTempoWidget> {
               fontStyle: FontStyle.italic,
             ),
             errorBorder: new OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: Theme.of(context).colorScheme.error.withOpacity(0.7), width: 2),
+              borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error.withOpacity(0.7),
+                  width: 2),
               borderRadius: const BorderRadius.all(
                 const Radius.circular(5),
               ),
             ),
             border: new OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+              borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.secondary, width: 2),
               borderRadius: const BorderRadius.all(
                 const Radius.circular(5),
               ),

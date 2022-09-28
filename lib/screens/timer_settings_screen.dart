@@ -4,7 +4,7 @@ import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:focus/utilities/providers.dart';
-import 'package:focus/widgets/create_tempo_widget.dart';
+import 'package:focus/widgets/add_interval_bottom_sheet.dart';
 import 'package:focus/widgets/notification_bar.dart';
 import 'package:focus/widgets/row_text_icon_button.dart';
 
@@ -58,7 +58,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
               ExpandedTextButton(
                   text: AppLocalizations.start,
                   callback: () {
-                    if (timerSettings.temposList.isEmpty) {
+                    if (timerSettings.intervals.isEmpty) {
                       NotificationBar.build(
                           context,
                           AppLocalizations.noTemposErrorTitle,
@@ -146,7 +146,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
     final timerSettings = ref.watch(timerSettingsNotifier);
     List<Widget> _tempos = [];
 
-    for (var item in timerSettings.temposList) {
+    for (var item in timerSettings.intervals) {
       _tempos.add(new TempoListItem(
         color: Theme.of(context).colorScheme.primary,
         title: item.key,
@@ -154,7 +154,7 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
         onChanged: (newValue) {
           ref
               .read(timerSettingsNotifier)
-              .updateTemposList(item.index, item.key, newValue);
+              .updateIntervals(item.index, item.key, newValue);
         },
       ));
     }
@@ -180,10 +180,10 @@ class TimerSettingsScreenState extends State<TimerSettingsScreen> {
       builder: (BuildContext context) {
         return Padding(
             padding: MediaQuery.of(context).viewInsets,
-            child: CreateTempoWidget(callback: (text, value) {
+            child: AddIntervalBottomSheet(callback: (text, value) {
               ref
                   .read(timerSettingsNotifier)
-                  .updateTemposList(timerSettings.listCount, text, value);
+                  .updateIntervals(timerSettings.listCount, text, value);
               Navigator.pop(context);
             }));
       },

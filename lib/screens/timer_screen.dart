@@ -219,14 +219,14 @@ class TimerScreenState extends State<TimerScreen> {
         _currentRep.value = repIndex;
 
         for (int tempoIndex = 0;
-            tempoIndex < _timerSettings.temposList.length;
+            tempoIndex < _timerSettings.intervals.length;
             tempoIndex++) {
           AudioHandler.playSwitch();
 
           _titleName.value =
-              _timerSettings.temposList.elementAt(tempoIndex).key;
+              _timerSettings.intervals.elementAt(tempoIndex).key;
           var currentTempo =
-              _timerSettings.temposList.elementAt(tempoIndex).value;
+              _timerSettings.intervals.elementAt(tempoIndex).value;
           _timeInSec.value = currentTempo;
           _currentTargetTime.value = currentTempo;
 

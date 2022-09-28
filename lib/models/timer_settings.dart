@@ -7,7 +7,7 @@ class TimerSettings extends ChangeNotifier {
   int time = 300;
   int rest = 60;
   // Map<String,int> tempos = {};
-  List<IndexKeyValuePair> temposList = [];
+  List<IndexKeyValuePair> intervals = [];
   int listCount = 0;
 
   TimerSettings();
@@ -37,21 +37,21 @@ class TimerSettings extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void updateTemposList(int index, String text, int value) {
+  void updateIntervals(int index, String text, int value) {
     var ikvp = new IndexKeyValuePair(index, text, value);
 
-    if (temposList.any((element) => element.index == index)) {
+    if (intervals.any((element) => element.index == index)) {
       var tempoToUpdate =
-          temposList.where((element) => element.index == index).first;
+          intervals.where((element) => element.index == index).first;
 
       if(value > 0) {
         tempoToUpdate.setValue(value);
       }
       else {
-        temposList.remove(tempoToUpdate);
+        intervals.remove(tempoToUpdate);
       }
     } else {
-      temposList.add(ikvp);
+      intervals.add(ikvp);
       listCount++;
     }
 
@@ -60,7 +60,7 @@ class TimerSettings extends ChangeNotifier {
 
   int getTotalTime() {
     var tempoTime = 0;
-    for (var item in temposList) {
+    for (var item in intervals) {
       tempoTime += item.value;
     }
 

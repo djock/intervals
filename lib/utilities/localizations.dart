@@ -8,7 +8,7 @@ class AppLocalizations {
   static String addReps = 'Add Reps';
   static String rest = 'Rest';
   static String addRest = 'Add Rest';
-  static String tempoNamePlaceholder = 'Enter tempo name';
+  static String enterIntervalName = 'Enter interval name';
   static String durationInSeconds = 'Duration (seconds)';
   static String getReady = 'Get Ready';
   static String currentSet = 'Set';
