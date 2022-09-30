@@ -6,22 +6,32 @@ import 'package:numberpicker/numberpicker.dart';
 
 import '../providers/providers.dart';
 import '../utilities/custom_style.dart';
-import 'expanded_test_button.dart';
+import '../widgets/expanded_test_button.dart';
 
-class AddIntervalBottomSheet extends ConsumerStatefulWidget {
+class EditIntervalBottomSheet extends ConsumerStatefulWidget {
+  final String title;
+  final int value;
+  final int index;
+
+  EditIntervalBottomSheet(this.title, this.value, this.index);
+
   @override
-  AddIntervalBottomSheetState createState() => AddIntervalBottomSheetState();
+  EditIntervalBottomSheetState createState() => EditIntervalBottomSheetState();
 }
 
-class AddIntervalBottomSheetState extends ConsumerState<AddIntervalBottomSheet> {
-  int _duration = 5;
+class EditIntervalBottomSheetState extends ConsumerState<EditIntervalBottomSheet> {
   String _intervalName = '';
+
+  int _duration = 5;
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
+    _duration = widget.value;
+    _intervalName = widget.title;
+
     super.initState();
   }
 
@@ -35,6 +45,7 @@ class AddIntervalBottomSheetState extends ConsumerState<AddIntervalBottomSheet> 
   Widget build(BuildContext context) {
     final timerSettingsWatcher = ref.watch(timerSettingsNotifier);
     var config = PickerConfig.interval;
+    _nameController.value = TextEditingValue(text: widget.title);
 
     _nameController.addListener(() {
       _intervalName = _nameController.text;
@@ -97,9 +108,9 @@ class AddIntervalBottomSheetState extends ConsumerState<AddIntervalBottomSheet> 
           ),
           SizedBox(height: 10,),
           ExpandedTextButton(
-              text: AppLocalizations.addInterval,
+              text: AppLocalizations.saveInterval,
               callback: () {
-                timerSettingsWatcher.updateIntervals(timerSettingsWatcher.listCount, _intervalName, _duration);
+                timerSettingsWatcher.updateInterval(widget.index, _intervalName, _duration);
                 Navigator.pop(context);
               }),
         ],

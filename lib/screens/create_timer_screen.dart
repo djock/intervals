@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/screens/edit_interval_bottom_sheet.dart';
 import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:focus/utilities/picker_config.dart';
 import 'package:focus/providers/providers.dart';
-import 'package:focus/widgets/add_interval_bottom_sheet.dart';
+import 'package:focus/screens/add_interval_bottom_sheet.dart';
 import 'package:focus/widgets/notification_bar.dart';
 import 'package:focus/widgets/row_text_icon_button.dart';
 
@@ -14,6 +15,7 @@ import '../utilities/utils.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/expanded_test_button.dart';
 import '../widgets/picker_interval_item.dart';
+import '../widgets/slider_interval_item.dart';
 import '../widgets/tempo_list_item.dart';
 import 'pop_scope_screen.dart';
 
@@ -56,7 +58,9 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
           padding: EdgeInsets.all(0.0),
           child: Column(
             children: [
-              Expanded(child: SingleChildScrollView(child: Column(
+              Expanded(
+                  child: SingleChildScrollView(
+                      child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -106,19 +110,16 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
     List<Widget> _tempos = [];
 
     for (var item in timerSettingsWatcher.intervals) {
-      _tempos.add(new TempoListItem(
-        color: Theme.of(context).colorScheme.secondary,
-        title: item.key,
-        value: item.value,
-        onChanged: (newValue) {
-          timerSettingsWatcher.updateIntervals(item.index, item.key, newValue);
-        },
-      ));
+      _tempos.add(new SliderIntervalItem(item.value, item.key, () {
+        _openEditIntervalBottomSheet(ref, item.key, item.value, item.index);
+      }, () {
+        timerSettingsWatcher.deleteInterval(item.index);
+      }));
     }
 
     _tempos.add(RowIconTextButton(
       callback: () {
-        _openBottomSheet(ref);
+        _openAddIntervalBottomSheet(ref);
       },
       text: AppLocalizations.addInterval,
       icon: Icons.add,
@@ -129,7 +130,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
     );
   }
 
-  void _openBottomSheet(WidgetRef ref) {
+  void _openAddIntervalBottomSheet(WidgetRef ref) {
     showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
@@ -137,6 +138,18 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
         return Padding(
             padding: MediaQuery.of(context).viewInsets,
             child: AddIntervalBottomSheet());
+      },
+    );
+  }
+
+  void _openEditIntervalBottomSheet(WidgetRef ref, String title, int value, int index) {
+    showModalBottomSheet<void>(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: EditIntervalBottomSheet(title, value, index));
       },
     );
   }
@@ -154,7 +167,10 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
             child: Center(
                 child: Text(
               'icon',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .copyWith(color: Theme.of(context).hintColor),
             ))),
         SizedBox(width: 20.0),
         Expanded(
@@ -234,6 +250,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
           },
           title: AppLocalizations.sets,
           config: PickerConfig.sets,
+          canSlide: false,
         ),
         SizedBox(height: 10.0),
         PickerIntervalItem(
@@ -245,6 +262,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
           },
           title: AppLocalizations.reps,
           config: PickerConfig.sets,
+          canSlide: false,
         ),
         SizedBox(height: 10.0),
         PickerIntervalItem(
@@ -256,6 +274,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
           },
           title: AppLocalizations.rest,
           config: PickerConfig.totalTime,
+          canSlide: false,
         )
       ],
     );
@@ -273,6 +292,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
       },
       title: AppLocalizations.totalTime,
       config: PickerConfig.totalTime,
+      canSlide: false,
     );
   }
 }

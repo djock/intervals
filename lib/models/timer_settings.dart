@@ -37,6 +37,13 @@ class TimerSettings extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteInterval(int index) {
+    var interval = intervals.firstWhere((element) => element.index == index);
+
+    intervals.remove(interval);
+    notifyListeners();
+  }
+
   void updateIntervals(int index, String text, int value) {
     var ikvp = new IndexKeyValuePair(index, text, value);
 
@@ -54,6 +61,14 @@ class TimerSettings extends ChangeNotifier {
       intervals.add(ikvp);
       listCount++;
     }
+
+    notifyListeners();
+  }
+
+  void updateInterval(int index, String text, int value) {
+    var interval = intervals.firstWhere((element) => element.index == index);
+    interval.key = text;
+    interval.value = value;
 
     notifyListeners();
   }

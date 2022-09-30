@@ -30,6 +30,7 @@ class AppLocalizations {
   static String totalTime = 'Total time';
   static String addNameHere = 'Add name here';
   static String addTimerName = 'Please add a name for the timer';
+  static String saveInterval = 'Save interval';
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);

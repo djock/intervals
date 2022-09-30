@@ -26,7 +26,7 @@ class AppTheme {
     colorScheme: ColorScheme(
       brightness: Brightness.dark,
       primary: new Color(0XFF4D358B),
-      onPrimary: Colors.black,
+      onPrimary: Colors.white,
       secondary: new Color(0XFFEEEEEE),
       onSecondary: Colors.black,
       error: Colors.red,
@@ -50,7 +50,7 @@ class AppTheme {
           color: Colors.black,
         ),
         headline6: TextStyle(
-          color: Colors.black,
+          color: new Color(0XFF4D358B),
         ),
         headline5: TextStyle(
           color: Colors.black,
