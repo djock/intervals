@@ -29,8 +29,9 @@ class CustomAppBar {
   static PreferredSizeWidget buildWithAction(BuildContext context, String text, List<Widget> actions,
       {double elevation = 0.0}) =>
       AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).canvasColor,
         elevation: elevation,
+        leading: SizedBox(),
         actions: actions,
         title: Text(
           text.toUpperCase(),

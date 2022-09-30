@@ -42,6 +42,7 @@ class AppTheme {
         color: Colors.white,
       ),
     ),
+    fontFamily: 'Poppins',
     textTheme: TextTheme(
         bodyText1: TextStyle(
           color: Colors.black,
@@ -51,15 +52,23 @@ class AppTheme {
         ),
         headline6: TextStyle(
           color: new Color(0XFF4D358B),
+            fontWeight: FontWeight.w600
         ),
         headline5: TextStyle(
-          color: Colors.black,
+          color: new Color(0XFF4D358B),
+          fontWeight: FontWeight.w600,
+        ),
+        headline4: TextStyle(
+            color: new Color(0XFF4D358B),
+            fontWeight: FontWeight.w600
         ),
         headline3: TextStyle(
-          color: Colors.black,
+          color: new Color(0XFF4D358B),
+          fontWeight: FontWeight.w600
         ),
         headline2: TextStyle(
-          color: Colors.black,
+          color: new Color(0XFF4D358B),
+          fontWeight: FontWeight.w600
         ),
         subtitle1: TextStyle(
           color: Colors.grey,
@@ -99,6 +108,7 @@ class AppTheme {
         color: Colors.black,
       ),
     ),
+    fontFamily: 'Poppins',
     textTheme: TextTheme(
         bodyText1: TextStyle(
           color: Colors.white,

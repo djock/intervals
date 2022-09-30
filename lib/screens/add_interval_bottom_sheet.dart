@@ -80,7 +80,10 @@ class AddIntervalBottomSheetState extends ConsumerState<AddIntervalBottomSheet> 
                   width: 120,
                   child: NumberPicker(
                       axis: Axis.horizontal,
-                      textStyle: Theme.of(context).textTheme.bodyText2,
+                      textStyle: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: Theme.of(context).hintColor),
                       selectedTextStyle: Theme.of(context).textTheme.headline6,
                       itemWidth: 40,
                       value: _duration,

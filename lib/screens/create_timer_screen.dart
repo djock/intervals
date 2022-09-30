@@ -115,6 +115,8 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
       }, () {
         timerSettingsWatcher.deleteInterval(item.index);
       }));
+
+      _tempos.add(SizedBox(height: 10,));
     }
 
     _tempos.add(RowIconTextButton(

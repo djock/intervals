@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:focus/utilities/audio_handler.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
-import 'package:focus/widgets/expanded_test_button.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../utilities/utils.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/timer_stat_widget.dart';
 
@@ -36,12 +38,14 @@ class TimerScreenState extends State<TimerScreen> {
   @override
   void initState() {
     super.initState();
-    _totalTime = _timerSettings.getTotalTime();
+    _totalTime = _timerSettings.getTotalSeconds();
+    log.info('Total time ' + _totalTime.toString());
   }
 
   @override
   void dispose() {
     super.dispose();
+    _timeInSec.value = 0;
     _titleName.dispose();
     _nextTitle.dispose();
     _timeInSec.dispose();
@@ -66,8 +70,11 @@ class TimerScreenState extends State<TimerScreen> {
       child: Scaffold(
         appBar: CustomAppBar.buildWithAction(context, '', [
           IconButton(
-              icon: Icon(Icons.close_outlined),
-              color: Theme.of(context).colorScheme.onPrimary,
+              icon: Icon(
+                Icons.close_outlined,
+                size: 30,
+              ),
+              color: Theme.of(context).errorColor,
               onPressed: () {
                 Navigator.of(context).pop();
               })
@@ -80,94 +87,71 @@ class TimerScreenState extends State<TimerScreen> {
               children: [
                 Row(
                   children: [
-                    _buildSetsStatWidget(),
-                    _buildRepsStatWidget(),
-                    _buildProgressStatWidget(),
+                    _buildInfoText(_currentSet, _timerSettings.sets,
+                        AppLocalizations.currentSet),
+                    _buildInfoText(_currentRep, _timerSettings.reps,
+                        AppLocalizations.currentRep),
                   ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                ValueListenableBuilder(
-                  valueListenable: _titleName,
-                  builder: (context, dynamic value, child) {
-                    return Text(
-                      '${_titleName.value}',
-                      style: Theme.of(context).textTheme.headline5,
-                    );
-                  },
                 ),
                 Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: 200,
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Container(
-                                height: 200,
-                                width: 200,
-                                child: new CircularProgressIndicator(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  strokeWidth: 8,
-                                  value: 1,
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: ValueListenableBuilder(
-                                valueListenable: _timeInSec,
-                                builder: (context, dynamic value, child) {
-                                  return Container(
-                                    height: 200,
-                                    width: 200,
-                                    child: new CircularProgressIndicator(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary,
-                                      strokeWidth: 10,
-                                      value: (_timeInSec.value *
-                                              100 /
-                                              _currentTargetTime.value) /
-                                          100,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            Center(
-                              child: ValueListenableBuilder(
-                                valueListenable: _timeInSec,
-                                builder: (context, dynamic value, child) {
-                                  return Text(
-                                    '${_timeInSec.value}',
-                                    style:
-                                        Theme.of(context).textTheme.headline2,
-                                  );
-                                },
-                              ),
-                            )
-                          ],
-                        ),
+                      ValueListenableBuilder(
+                        valueListenable: _titleName,
+                        builder: (context, dynamic value, child) {
+                          return Text(
+                            '${_titleName.value}',
+                            style: Theme.of(context).textTheme.headline5,
+                          );
+                        },
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ValueListenableBuilder(
+                          valueListenable: _timeInSec,
+                          builder: (context, dynamic value, child) {
+                            var value = _timeInSec.value *
+                                100 /
+                                _currentTargetTime.value /
+                                100;
+
+                            return CircularPercentIndicator(
+                              radius: 125.0,
+                              backgroundWidth: 15,
+                              animateFromLastPercent: true,
+                              lineWidth: 28.0,
+                              restartAnimation: true,
+                              animation: true,
+                              animationDuration: 1000,
+                              circularStrokeCap: CircularStrokeCap.round,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              percent: value,
+                              center: Text(
+                                '${_timeInSec.value}',
+                                style: Theme.of(context).textTheme.headline2,
+                              ),
+                              progressColor: Theme.of(context).primaryColor,
+                            );
+                          })
                     ],
                   ),
                 ),
-                ValueListenableBuilder(
-                  valueListenable: _resumeFlag,
-                  builder: (context, dynamic value, child) {
-                    return ExpandedTextButton(
-                        text: _resumeFlag.value
-                            ? AppLocalizations.pauseTimerButton
-                            : AppLocalizations.resumeTimerButton,
-                        callback: () {
-                          _resumeFlag.value = !_resumeFlag.value;
-                        });
-                  },
-                ),
+                _buildProgressStatWidget(),
+                // ValueListenableBuilder(
+                //   valueListenable: _resumeFlag,
+                //   builder: (context, dynamic value, child) {
+                //     return ExpandedTextButton(
+                //         text: _resumeFlag.value
+                //             ? AppLocalizations.pauseTimerButton
+                //             : AppLocalizations.resumeTimerButton,
+                //         callback: () {
+                //           _resumeFlag.value = !_resumeFlag.value;
+                //         });
+                //   },
+                // ),
               ],
             ),
           ),
@@ -177,20 +161,24 @@ class TimerScreenState extends State<TimerScreen> {
   }
 
   Future<void> _runTimer(int? time) async {
-    while (_timeInSec.value >= 0) {
-      while (!_resumeFlag.value) {
-        await Future.delayed(Duration(milliseconds: 10));
-      }
-      if (this.mounted && _timeInSec.value != 0)
-        _progress.value += 100 / _totalTime!;
+    if(this.mounted) {
+      while (_timeInSec.value >= 0) {
+        while (!_resumeFlag.value) {
+          await Future.delayed(Duration(milliseconds: 10));
+        }
+        if (this.mounted && _timeInSec.value != 0)
+          _progress.value += 100 / _totalTime!;
 
-      if (this.mounted) {
-        AudioHandler.playTick();
-      }
+        if (this.mounted) {
+          if (_timeInSec.value == 0 || _timeInSec.value == 1 || _timeInSec.value == 2) {
+            AudioHandler.playTick();
+          }
+        }
 
-      await Future.delayed(Duration(seconds: 1));
-      if (this.mounted) {
-        _timeInSec.value--;
+        await Future.delayed(Duration(seconds: 1));
+        if (this.mounted) {
+          _timeInSec.value--;
+        }
       }
     }
   }
@@ -223,8 +211,7 @@ class TimerScreenState extends State<TimerScreen> {
             tempoIndex++) {
           AudioHandler.playSwitch();
 
-          _titleName.value =
-              _timerSettings.intervals.elementAt(tempoIndex).key;
+          _titleName.value = _timerSettings.intervals.elementAt(tempoIndex).key;
           var currentTempo =
               _timerSettings.intervals.elementAt(tempoIndex).value;
           _timeInSec.value = currentTempo;
@@ -253,25 +240,13 @@ class TimerScreenState extends State<TimerScreen> {
     Navigator.pop(context);
   }
 
-  Widget _buildSetsStatWidget() {
+  Widget _buildInfoText(ValueNotifier valueNotifier, int max, String title) {
     return ValueListenableBuilder(
-      valueListenable: _currentSet,
+      valueListenable: valueNotifier,
       builder: (context, dynamic value, child) {
         return TimerStatWidget(
-          value: _currentSet.value.toString() + "/" + _timerSettings.sets.toString(),
-          title: AppLocalizations.currentSet,
-        );
-      },
-    );
-  }
-
-  Widget _buildRepsStatWidget() {
-    return ValueListenableBuilder(
-      valueListenable: _currentRep,
-      builder: (context, dynamic value, child) {
-        return TimerStatWidget(
-          value: _currentRep.value.toString() + "/" + _timerSettings.reps.toString(),
-          title: AppLocalizations.currentRep,
+          value: valueNotifier.value.toString() + "/" + max.toString(),
+          title: title,
         );
       },
     );
@@ -281,6 +256,80 @@ class TimerScreenState extends State<TimerScreen> {
     return ValueListenableBuilder(
       valueListenable: _progress,
       builder: (context, dynamic value, child) {
+        return Container(
+            height: 85,
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    AppLocalizations.progress,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(color: Theme.of(context).primaryColor),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                new LinearPercentIndicator(
+                  animateFromLastPercent: true,
+                  animation: true,
+                  animationDuration: 1000,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  progressColor: Theme.of(context).primaryColor,
+                  width: 350,
+                  lineHeight: 15,
+                  barRadius: Radius.circular(10),
+                  percent: 0.5,
+                  // center: Container(height: 20, width: 20, color: Colors.red,)
+                  // widgetIndicator: Container(
+                  //   height: 20,
+                  //   width: 20,
+                  //   decoration: BoxDecoration(
+                  //       color: Theme.of(context).colorScheme.primary,
+                  //       borderRadius: BorderRadius.all(Radius.circular(100))),
+                  //   child: Center(
+                  //     child: Container(
+                  //       height: 15,
+                  //       width: 15,
+                  //       decoration: BoxDecoration(
+                  //           color: Theme.of(context).canvasColor,
+                  //           borderRadius:
+                  //               BorderRadius.all(Radius.circular(100))),
+                  //     ),
+                  //   ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      Text(
+                        '5 min',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(color: Theme.of(context).primaryColor)
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        ' / 75%',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(color: Theme.of(context).primaryColor),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ));
         return TimerStatWidget(
           value: _progress.value.toStringAsFixed(1) + '%',
           title: AppLocalizations.currentProgress,

@@ -73,14 +73,15 @@ class TimerSettings extends ChangeNotifier {
     notifyListeners();
   }
 
-  int getTotalTime() {
-    var tempoTime = 0;
+  int getTotalSeconds() {
+    var totalTime = 0;
+
     for (var item in intervals) {
-      tempoTime += item.value;
+      totalTime += item.value;
     }
 
-    tempoTime += (sets - 1) * rest;
+    totalTime += (sets - 1) * rest;
 
-    return sets * reps * tempoTime;
+    return sets * reps * totalTime;
   }
 }
