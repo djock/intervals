@@ -2,7 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:focus/utilities/localizations.dart';
 
-import '../utilities/logger.dart';
+import '../utilities/utils.dart';
 
 class PopScopeScreen extends StatelessWidget {
   final Widget child;
@@ -22,7 +22,7 @@ class PopScopeScreen extends StatelessWidget {
             defaultType: OkCancelAlertDefaultType.cancel,
             isDestructiveAction: true,
           );
-          logger.info('Close app result: $result');
+          log.info('Close app result: $result');
 
           if (result == OkCancelResult.ok) {
             return true;

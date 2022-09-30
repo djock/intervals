@@ -3,15 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
-import 'package:focus/utilities/providers.dart';
+import 'package:focus/utilities/picker_config.dart';
+import 'package:focus/providers/providers.dart';
 import 'package:focus/widgets/add_interval_bottom_sheet.dart';
 import 'package:focus/widgets/notification_bar.dart';
 import 'package:focus/widgets/row_text_icon_button.dart';
 
-import '../utilities/logger.dart';
+import '../utilities/custom_style.dart';
+import '../utilities/utils.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/expanded_test_button.dart';
-import '../widgets/interval_item.dart';
 import '../widgets/picker_interval_item.dart';
 import '../widgets/tempo_list_item.dart';
 import 'pop_scope_screen.dart';
@@ -54,23 +55,29 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
         body: Container(
           padding: EdgeInsets.all(0.0),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _buildIconAndInput(),
-              _buildTimerTypeSelector(),
-              _timerType == TimerType.reps ? _buildTypeReps() : _buildTypeTime(),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 1,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(child: SingleChildScrollView(child: _buildTempos(ref))),
+              Expanded(child: SingleChildScrollView(child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildIconAndInput(),
+                  _buildTimerTypeSelector(),
+                  _timerType == TimerType.reps
+                      ? _buildTypeReps()
+                      : _buildTypeTime(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 1,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _buildIntervalsList(ref),
+                ],
+              ))),
               ExpandedTextButton(
                   text: AppLocalizations.saveTimer,
                   callback: () {
@@ -82,12 +89,6 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                           Theme.of(context).colorScheme.error);
                     } else {
                       if (_formKey.currentState!.validate()) {
-                        NotificationBar.build(
-                            context,
-                            AppLocalizations.noTemposErrorTitle,
-                            AppLocalizations.noTemposErrorMessage,
-                            Theme.of(context).colorScheme.error);
-                      } else {
                         activeTimerSettings = timerSettings;
                         Navigator.of(context).pushNamed(TimerScreen.id);
                       }
@@ -100,13 +101,13 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
     );
   }
 
-  Widget _buildTempos(WidgetRef ref) {
+  Widget _buildIntervalsList(WidgetRef ref) {
     final timerSettingsWatcher = ref.watch(timerSettingsNotifier);
     List<Widget> _tempos = [];
 
     for (var item in timerSettingsWatcher.intervals) {
       _tempos.add(new TempoListItem(
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.secondary,
         title: item.key,
         value: item.value,
         onChanged: (newValue) {
@@ -119,7 +120,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
       callback: () {
         _openBottomSheet(ref);
       },
-      text: AppLocalizations.addTempo,
+      text: AppLocalizations.addInterval,
       icon: Icons.add,
     ));
 
@@ -129,19 +130,13 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
   }
 
   void _openBottomSheet(WidgetRef ref) {
-    final timerSettings = ref.watch(timerSettingsNotifier);
     showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
         return Padding(
             padding: MediaQuery.of(context).viewInsets,
-            child: AddIntervalBottomSheet(callback: (text, value) {
-              ref
-                  .read(timerSettingsNotifier)
-                  .updateIntervals(timerSettings.listCount, text, value);
-              Navigator.pop(context);
-            }));
+            child: AddIntervalBottomSheet());
       },
     );
   }
@@ -163,27 +158,19 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
             ))),
         SizedBox(width: 20.0),
         Expanded(
-          child: TextFormField(
-            controller: _textEditingController,
-            style: Theme.of(context).textTheme.headline6,
-            decoration: InputDecoration(
-              hintText: AppLocalizations.addNameHere,
-                hintStyle: Theme.of(context).textTheme.headline6,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-                filled: true,
-                fillColor: Theme.of(context).colorScheme.secondary,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    borderSide: BorderSide(
-                        width: 0.2,
-                        color: Theme.of(context).colorScheme.secondary))),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter some text';
-              }
-              return null;
-            },
+          child: Form(
+            key: _formKey,
+            child: TextFormField(
+              controller: _textEditingController,
+              style: Theme.of(context).textTheme.headline6,
+              decoration: CustomStyle.inputDecoration(context),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return AppLocalizations.addTimerName;
+                }
+                return null;
+              },
+            ),
           ),
         )
       ],
@@ -207,10 +194,10 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                 toggleStates[i] = i == index;
 
                 if (i == index) {
-                  if(_timerType != _timerTypes[i]) {
+                  if (_timerType != _timerTypes[i]) {
                     _timerType = _timerTypes[i];
                     setState(() {
-                      logger.info('Selected ' + _timerType.toString());
+                      log.info('Selected ' + _timerType.toString());
                     });
                   }
                 }
@@ -238,32 +225,37 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
 
     return Column(
       children: [
-        IntervalItem(
+        PickerIntervalItem(
           value: timerSettingsWatcher.sets,
           onChanged: (newValue) {
-            if(newValue > 0) {
+            if (newValue > 0) {
               timerSettingsWatcher.updateSets(newValue);
             }
           },
           title: AppLocalizations.sets,
+          config: PickerConfig.sets,
         ),
-        IntervalItem(
+        SizedBox(height: 10.0),
+        PickerIntervalItem(
           value: timerSettingsWatcher.reps,
           onChanged: (newValue) {
-            if(newValue > 0) {
+            if (newValue > 0) {
               timerSettingsWatcher.updateReps(newValue);
             }
           },
           title: AppLocalizations.reps,
+          config: PickerConfig.sets,
         ),
+        SizedBox(height: 10.0),
         PickerIntervalItem(
           value: timerSettingsWatcher.rest,
           onChanged: (newValue) {
-            if(newValue > 0) {
+            if (newValue > 0) {
               timerSettingsWatcher.updateRest(newValue);
             }
           },
           title: AppLocalizations.rest,
+          config: PickerConfig.totalTime,
         )
       ],
     );
@@ -275,11 +267,12 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
     return PickerIntervalItem(
       value: timerSettingsWatcher.time,
       onChanged: (newValue) {
-        if(newValue > 0) {
+        if (newValue > 0) {
           timerSettingsWatcher.updateTotalTime(newValue);
         }
       },
       title: AppLocalizations.totalTime,
+      config: PickerConfig.totalTime,
     );
   }
 }

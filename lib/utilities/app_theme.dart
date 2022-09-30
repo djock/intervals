@@ -20,11 +20,14 @@ class AppTheme {
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     canvasColor: Colors.white,
+    primaryColor: new Color(0XFF4D358B),
+    primaryColorDark: Colors.black,
+    hintColor: new Color(0XFFBBBBBB),
     colorScheme: ColorScheme(
       brightness: Brightness.dark,
       primary: new Color(0XFF4D358B),
       onPrimary: Colors.black,
-      secondary: Colors.grey.withOpacity(0.15),
+      secondary: new Color(0XFFEEEEEE),
       onSecondary: Colors.black,
       error: Colors.red,
       onError: Colors.white,

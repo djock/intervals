@@ -4,18 +4,23 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-import '../utilities/logger.dart';
+import '../utilities/picker_config.dart';
+import '../utilities/utils.dart';
+
+
 
 class PickerIntervalItem extends ConsumerStatefulWidget {
   PickerIntervalItem({
     required this.value,
     required this.onChanged,
     required this.title,
+    required this.config
   });
 
   final int value;
   final ChangeCallback onChanged;
   final String title;
+  final PickerConfig config;
 
   @override
   PickerIntervalItemState createState() => PickerIntervalItemState();
@@ -23,12 +28,18 @@ class PickerIntervalItem extends ConsumerStatefulWidget {
 
 class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
   void doNothing(BuildContext context) {
-    logger.info('doNothing');
+    log.info('doNothing');
   }
 
-  final TextEditingController _textEditingController = TextEditingController();
+  int _currentIntValue = 0;
 
-  int _currentIntValue = 10;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _currentIntValue = widget.value;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +76,9 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
                   selectedTextStyle: Theme.of(context).textTheme.headline6,
                   itemWidth: 40,
                   value: _currentIntValue,
-                  minValue: 0,
-                  maxValue: 300,
-                  step: 5,
+                  minValue: widget.config.min,
+                  maxValue: widget.config.max,
+                  step: widget.config.step,
                   haptics: true,
                   onChanged: (value) => setState(() {
                     widget.onChanged(value);

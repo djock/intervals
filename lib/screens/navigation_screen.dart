@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:focus/screens/timer_settings_screen.dart';
 
 import 'create_timer_screen.dart';
 

@@ -4,9 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/screens/create_timer_screen.dart';
 import 'package:focus/screens/navigation_screen.dart';
 import 'package:focus/screens/timer_screen.dart';
-import 'package:focus/screens/timer_settings_screen.dart';
 import 'package:focus/utilities/app_theme.dart';
-import 'package:focus/utilities/providers.dart';
+import 'package:focus/providers/providers.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +46,6 @@ class AppState extends State<App> {
           initialRoute: NavigationScreen.id,
           routes: {
             NavigationScreen.id: (context) => NavigationScreen(),
-            TimerSettingsScreen.id: (context) => TimerSettingsScreen(),
             TimerScreen.id: (context) => TimerScreen(),
             CreateTimerScreen.id: (context) => CreateTimerScreen(),
           },

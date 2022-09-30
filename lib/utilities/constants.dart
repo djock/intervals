@@ -1,7 +1,7 @@
 import 'package:focus/models/timer_settings.dart';
 
 typedef void ChangeCallback(double);
-typedef void NewTempoCallback(text, value);
+typedef void NewIntervalCallback(text, value);
 
 double roundButtonIconSize = 25.0;
 

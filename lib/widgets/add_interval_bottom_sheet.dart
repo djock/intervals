@@ -1,90 +1,110 @@
 import 'package:flutter/material.dart';
-import 'package:focus/utilities/constants.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/utilities/localizations.dart';
-import 'package:focus/widgets/input_interval_item.dart';
+import 'package:focus/utilities/picker_config.dart';
+import 'package:numberpicker/numberpicker.dart';
 
+import '../providers/providers.dart';
+import '../utilities/custom_style.dart';
 import 'expanded_test_button.dart';
 
-class AddIntervalBottomSheet extends StatefulWidget {
-  final NewTempoCallback callback;
-
-  const AddIntervalBottomSheet({Key? key, required this.callback})
-      : super(key: key);
-
+class AddIntervalBottomSheet extends ConsumerStatefulWidget {
   @override
   AddIntervalBottomSheetState createState() => AddIntervalBottomSheetState();
 }
 
-class AddIntervalBottomSheetState extends State<AddIntervalBottomSheet> {
+class AddIntervalBottomSheetState extends ConsumerState<AddIntervalBottomSheet> {
+  int _duration = 5;
+  String _intervalName = '';
+
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _textFieldController = TextEditingController();
-  int _duration = 0;
+  final TextEditingController _nameController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void dispose() {
+    _nameController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final timerSettingsWatcher = ref.watch(timerSettingsNotifier);
+    var config = PickerConfig.interval;
+
+    _nameController.addListener(() {
+      _intervalName = _nameController.text;
+    });
+
     return Container(
-      height: 200,
-      color: Theme.of(context).colorScheme.secondary,
+      height: 150,
+      color: Theme.of(context).canvasColor,
       padding: EdgeInsets.all(15),
       child: Column(
         children: [
-          InputIntervalItem(
-            value: _duration,
-            onChanged: (newValue) {
-              _duration = newValue;
-              setState(() {});
-            },
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    child: Form(
+                      key: _formKey,
+                      child: TextFormField(
+                        controller: _nameController,
+                        keyboardType: TextInputType.text,
+                        style: Theme.of(context).textTheme.headline6,
+                        decoration: CustomStyle.inputDecoration(context),
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ) {
+                            return AppLocalizations.enterIntervalName;
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  width: 120,
+                  child: NumberPicker(
+                      axis: Axis.horizontal,
+                      textStyle: Theme.of(context).textTheme.bodyText2,
+                      selectedTextStyle: Theme.of(context).textTheme.headline6,
+                      itemWidth: 40,
+                      value: _duration,
+                      minValue: config.min,
+                      maxValue: config.max,
+                      step: config.step,
+                      haptics: true,
+                      onChanged: (value) => setState(() {
+                        _duration = value;
+                      })),
+                )
+              ],
+            ),
           ),
+          SizedBox(height: 10,),
           ExpandedTextButton(
-              text: AppLocalizations.addTempo,
+              text: AppLocalizations.addInterval,
               callback: () {
-                if (_formKey.currentState!.validate()) {
-                  widget.callback(_textFieldController.text, _duration);
-                }
+                timerSettingsWatcher.updateIntervals(timerSettingsWatcher.listCount, _intervalName, _duration);
+                Navigator.pop(context);
               }),
         ],
       ),
     );
   }
 
-  Widget _entryField(String defaultText) {
-    return Center(
-      child: TextFormField(
-        controller: _textFieldController,
-        keyboardType: TextInputType.text,
-        validator: (value) {
-          bool fieldValid = value!.length > 1 && value != "0";
-
-          if (!fieldValid) {
-            return 'error';
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-            errorStyle: TextStyle(
-              color: Colors.white.withOpacity(0.7),
-              fontStyle: FontStyle.italic,
-            ),
-            errorBorder: new OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.error.withOpacity(0.7),
-                  width: 2),
-              borderRadius: const BorderRadius.all(
-                const Radius.circular(5),
-              ),
-            ),
-            border: new OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.secondary, width: 2),
-              borderRadius: const BorderRadius.all(
-                const Radius.circular(5),
-              ),
-            ),
-            hintText: defaultText,
-            contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
-            hintStyle: Theme.of(context).textTheme.subtitle2),
-        style: Theme.of(context).textTheme.headline6,
-      ),
-    );
-  }
 }

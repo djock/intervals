@@ -3,21 +3,23 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:focus/widgets/round_button.dart';
 
-import '../utilities/logger.dart';
+import '../utilities/utils.dart';
 
 class IntervalItem extends StatelessWidget {
   IntervalItem({
     required this.value,
     required this.onChanged,
     required this.title,
+    required this.canSlide,
   });
 
   final int value;
   final ChangeCallback onChanged;
   final String title;
+  final bool canSlide;
 
   void doNothing(BuildContext context) {
-    logger.info('doNothing');
+    log.info('doNothing');
   }
 
   final _formKey = GlobalKey<FormState>();

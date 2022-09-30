@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:focus/models/index_key_value_pair.dart';
 
 class TimerSettings extends ChangeNotifier {
+  String name = '';
   int sets = 3;
   int reps = 8;
   int time = 300;
   int rest = 60;
-  // Map<String,int> tempos = {};
   List<IndexKeyValuePair> intervals = [];
   int listCount = 0;
 
   TimerSettings();
+
+  void updateName(String name) {
+    this.name = name;
+    notifyListeners();
+  }
 
   void updateSets(int newValue) {
     sets = newValue;
@@ -31,11 +36,6 @@ class TimerSettings extends ChangeNotifier {
     time = newValue;
     notifyListeners();
   }
-
-  // void updateTempos(String text, int value) {
-  //   tempos[text] = value;
-  //   notifyListeners();
-  // }
 
   void updateIntervals(int index, String text, int value) {
     var ikvp = new IndexKeyValuePair(index, text, value);
