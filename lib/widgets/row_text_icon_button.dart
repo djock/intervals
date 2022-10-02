@@ -19,13 +19,15 @@ class RowIconTextButton extends StatelessWidget {
     return TextButton(
       onPressed: callback,
       child: Row(
-        mainAxisAlignment: axisAlignment,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              icon,
-              color: Theme.of(context).colorScheme.primary,
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                icon,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           ),
           Text(
@@ -33,7 +35,7 @@ class RowIconTextButton extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .bodyText1!
-                .copyWith(color: Theme.of(context).primaryColor),
+                .copyWith(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600),
           )
         ],
       ),

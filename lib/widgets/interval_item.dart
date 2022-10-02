@@ -65,31 +65,34 @@ class IntervalItem extends StatelessWidget {
                 ),
                 Container(
                   width: 60,
-                  child: TextFormField(
-                    textAlign: TextAlign.center,
-                    controller: _textEditingController,
-                    keyboardType: TextInputType.number,
-                    style: Theme.of(context).textTheme.headline6,
-                    decoration: InputDecoration(
-                        alignLabelWithHint: true,
-                        hintText: value.toString(),
-                        hintStyle: Theme.of(context).textTheme.headline6,
-                        contentPadding: EdgeInsets.zero,
-                        filled: true,
-                        fillColor: Theme.of(context).colorScheme.secondary,
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(
-                                width: 0.2,
-                                color:
-                                    Theme.of(context).colorScheme.secondary))),
-                    validator: (value) {
-                      if (value == null || value.isEmpty || value.toString() == '0') {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
+                  child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      controller: _textEditingController,
+                      keyboardType: TextInputType.number,
+                      style: Theme.of(context).textTheme.headline6,
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          hintText: value.toString(),
+                          hintStyle: Theme.of(context).textTheme.headline6,
+                          contentPadding: EdgeInsets.zero,
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.secondary,
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                              borderSide: BorderSide(
+                                  width: 0.2,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary))),
+                      validator: (value) {
+                        if (value == null || value.isEmpty || value.toString() == '0') {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                 ),
                 RoundButton(

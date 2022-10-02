@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:focus/models/index_key_value_pair.dart';
+import 'package:focus/models/key_value_pair.dart';
 
 class TimerSettings extends ChangeNotifier {
   String name = '';

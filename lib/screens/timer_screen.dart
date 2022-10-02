@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/providers/providers.dart';
 import 'package:focus/utilities/audio_handler.dart';
-import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../models/timer_settings.dart';
 import '../utilities/utils.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/timer_stat_widget.dart';
 
-class TimerScreen extends StatefulWidget {
+class TimerScreen extends ConsumerStatefulWidget {
   static const String id = 'TimerScreen';
 
   @override
   TimerScreenState createState() => TimerScreenState();
 }
 
-class TimerScreenState extends State<TimerScreen> {
+class TimerScreenState extends ConsumerState<TimerScreen> {
   // late AudioPlayer audioPlayer;
 
-  var _timerSettings = activeTimerSettings;
-
-  bool _firstInstance = true;
+  TimerSettings? _timerSettings;
   int? _totalTime;
 
   ValueNotifier<String> _titleName =
@@ -36,14 +36,8 @@ class TimerScreenState extends State<TimerScreen> {
   ValueNotifier<int> _currentSet = ValueNotifier<int>(1);
 
   @override
-  void initState() {
-    super.initState();
-    _totalTime = _timerSettings.getTotalSeconds();
-    log.info('Total time ' + _totalTime.toString());
-  }
-
-  @override
   void dispose() {
+    log.info('TimerScreen dispose');
     super.dispose();
     _timeInSec.value = 0;
     _titleName.dispose();
@@ -58,6 +52,10 @@ class TimerScreenState extends State<TimerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _timerSettings = ref.watch(timerSettingsNotifier);
+
+    _totalTime = _timerSettings!.getTotalSeconds();
+
     // if(_firstInstance) {
     _startTimer();
     // _firstInstance = false;
@@ -87,9 +85,9 @@ class TimerScreenState extends State<TimerScreen> {
               children: [
                 Row(
                   children: [
-                    _buildInfoText(_currentSet, _timerSettings.sets,
+                    _buildInfoText(_currentSet, _timerSettings!.sets,
                         AppLocalizations.currentSet),
-                    _buildInfoText(_currentRep, _timerSettings.reps,
+                    _buildInfoText(_currentRep, _timerSettings!.reps,
                         AppLocalizations.currentRep),
                   ],
                 ),
@@ -112,25 +110,32 @@ class TimerScreenState extends State<TimerScreen> {
                       ValueListenableBuilder(
                           valueListenable: _timeInSec,
                           builder: (context, dynamic value, child) {
-                            var value = _timeInSec.value *
+                            debugPrint('Time ' +
+                                _timeInSec.value.toString() +
+                                ' ' +
+                                _currentTargetTime.value.toString());
+
+                            var progress = (_timeInSec.value - 1) *
                                 100 /
-                                _currentTargetTime.value /
+                                (_currentTargetTime.value - 1) /
                                 100;
 
                             return CircularPercentIndicator(
                               radius: 125.0,
                               backgroundWidth: 15,
                               animateFromLastPercent: true,
-                              lineWidth: 28.0,
                               restartAnimation: true,
+                              lineWidth: 28.0,
                               animation: true,
                               animationDuration: 1000,
                               circularStrokeCap: CircularStrokeCap.round,
                               backgroundColor:
                                   Theme.of(context).colorScheme.secondary,
-                              percent: value,
+                              percent: progress,
                               center: Text(
-                                '${_timeInSec.value}',
+                                _timeInSec.value == _currentTargetTime.value
+                                    ? _titleName.value
+                                    : '${_timeInSec.value}',
                                 style: Theme.of(context).textTheme.headline2,
                               ),
                               progressColor: Theme.of(context).primaryColor,
@@ -161,8 +166,8 @@ class TimerScreenState extends State<TimerScreen> {
   }
 
   Future<void> _runTimer(int? time) async {
-    if(this.mounted) {
-      while (_timeInSec.value >= 0) {
+    if (this.mounted) {
+      while (_timeInSec.value > 0) {
         while (!_resumeFlag.value) {
           await Future.delayed(Duration(milliseconds: 10));
         }
@@ -170,11 +175,12 @@ class TimerScreenState extends State<TimerScreen> {
           _progress.value += 100 / _totalTime!;
 
         if (this.mounted) {
-          if (_timeInSec.value == 0 || _timeInSec.value == 1 || _timeInSec.value == 2) {
+          if (_timeInSec.value == 0 ||
+              _timeInSec.value == 1 ||
+              _timeInSec.value == 2) {
             AudioHandler.playTick();
           }
         }
-
         await Future.delayed(Duration(seconds: 1));
         if (this.mounted) {
           _timeInSec.value--;
@@ -184,60 +190,67 @@ class TimerScreenState extends State<TimerScreen> {
   }
 
   void _startTimer() async {
+    _currentTargetTime.value = 10;
+
+    for (var i = 10; i > 0; i--) {
+      if (!this.mounted) return;
+      _timeInSec.value = i;
+      await Future.delayed(Duration(seconds: 1));
+    }
+
     AudioHandler.playSwitch();
-    _timeInSec.value = 5;
-    await Future.delayed(Duration(seconds: 1));
-    AudioHandler.playTick();
-    _timeInSec.value = 4;
-    await Future.delayed(Duration(seconds: 1));
-    AudioHandler.playTick();
-    _timeInSec.value = 3;
-    await Future.delayed(Duration(seconds: 1));
-    AudioHandler.playTick();
-    _timeInSec.value = 2;
-    await Future.delayed(Duration(seconds: 1));
-    AudioHandler.playTick();
-    _timeInSec.value = 1;
-    await Future.delayed(Duration(seconds: 1));
-    AudioHandler.playSwitch();
-    for (int setIndex = 1; setIndex <= _timerSettings.sets; setIndex++) {
-      _currentSet.value = setIndex;
 
-      for (int repIndex = 1; repIndex <= _timerSettings.reps; repIndex++) {
-        _currentRep.value = repIndex;
+    if (this.mounted) {
+      for (int setIndex = 1; setIndex <= _timerSettings!.sets; setIndex++) {
+        if (!this.mounted) return;
+        _currentSet.value = setIndex;
 
-        for (int tempoIndex = 0;
-            tempoIndex < _timerSettings.intervals.length;
-            tempoIndex++) {
-          AudioHandler.playSwitch();
+        for (int repIndex = 1; repIndex <= _timerSettings!.reps; repIndex++) {
+          if (!this.mounted) return;
+          _currentRep.value = repIndex;
 
-          _titleName.value = _timerSettings.intervals.elementAt(tempoIndex).key;
-          var currentTempo =
-              _timerSettings.intervals.elementAt(tempoIndex).value;
-          _timeInSec.value = currentTempo;
-          _currentTargetTime.value = currentTempo;
+          for (int tempoIndex = 0;
+              tempoIndex < _timerSettings!.intervals.length;
+              tempoIndex++) {
+            AudioHandler.playSwitch();
 
+            if (!this.mounted) return;
+            _titleName.value =
+                _timerSettings!.intervals.elementAt(tempoIndex).key;
+
+            if (!this.mounted) return;
+            var currentTempo =
+                _timerSettings!.intervals.elementAt(tempoIndex).value;
+
+            if (!this.mounted) return;
+            _timeInSec.value = currentTempo;
+
+            if (!this.mounted) return;
+            _currentTargetTime.value = currentTempo;
+
+            await _runTimer(_timeInSec.value);
+          }
+        }
+
+        if (!this.mounted) return;
+        if (_timerSettings!.rest != 0) {
+          _timeInSec.value = _timerSettings!.rest;
+          _currentTargetTime.value = _timerSettings!.rest;
+          _titleName.value = AppLocalizations.rest;
           await _runTimer(_timeInSec.value);
         }
       }
-
-      if (_timerSettings.rest != 0) {
-        _timeInSec.value = _timerSettings.rest;
-        _currentTargetTime.value = _timerSettings.rest;
-        _titleName.value = AppLocalizations.rest;
-        await _runTimer(_timeInSec.value);
-      }
+      _timeInSec.value = 0;
+      // if (isVoice!) {
+      //   await audioPlayer.setAsset('assets/audio/$voice/finish-$voice.mp3');
+      //   audioPlayer.play();
+      //   // AudioCache finishPlayer = AudioCache(prefix: 'assets/audio/$voice/');
+      //   // finishPlayer.play('finish-$voice.mp3');
+      //   // audioPlayer.clearCache();
+      //   isVoice = false;
+      // }
+      Navigator.pop(context);
     }
-    _timeInSec.value = 0;
-    // if (isVoice!) {
-    //   await audioPlayer.setAsset('assets/audio/$voice/finish-$voice.mp3');
-    //   audioPlayer.play();
-    //   // AudioCache finishPlayer = AudioCache(prefix: 'assets/audio/$voice/');
-    //   // finishPlayer.play('finish-$voice.mp3');
-    //   // audioPlayer.clearCache();
-    //   isVoice = false;
-    // }
-    Navigator.pop(context);
   }
 
   Widget _buildInfoText(ValueNotifier valueNotifier, int max, String title) {
@@ -330,10 +343,6 @@ class TimerScreenState extends State<TimerScreen> {
                 )
               ],
             ));
-        return TimerStatWidget(
-          value: _progress.value.toStringAsFixed(1) + '%',
-          title: AppLocalizations.currentProgress,
-        );
       },
     );
   }

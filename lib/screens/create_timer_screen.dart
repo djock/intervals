@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/screens/edit_interval_bottom_sheet.dart';
 import 'package:focus/screens/timer_screen.dart';
-import 'package:focus/utilities/constants.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:focus/utilities/picker_config.dart';
 import 'package:focus/providers/providers.dart';
@@ -16,7 +15,6 @@ import '../widgets/custom_app_bar.dart';
 import '../widgets/expanded_test_button.dart';
 import '../widgets/picker_interval_item.dart';
 import '../widgets/slider_interval_item.dart';
-import '../widgets/tempo_list_item.dart';
 import 'pop_scope_screen.dart';
 
 enum TimerType { reps, time }
@@ -64,7 +62,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildIconAndInput(),
+                  // _buildIconAndInput(),
                   _buildTimerTypeSelector(),
                   _timerType == TimerType.reps
                       ? _buildTypeReps()
@@ -83,7 +81,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                 ],
               ))),
               ExpandedTextButton(
-                  text: AppLocalizations.saveTimer,
+                  text: AppLocalizations.start,
                   callback: () {
                     if (timerSettings.intervals.isEmpty) {
                       NotificationBar.build(
@@ -92,10 +90,9 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                           AppLocalizations.noTemposErrorMessage,
                           Theme.of(context).colorScheme.error);
                     } else {
-                      if (_formKey.currentState!.validate()) {
-                        activeTimerSettings = timerSettings;
+                      // if (_formKey.currentState!.validate()) {
                         Navigator.of(context).pushNamed(TimerScreen.id);
-                      }
+                      // }
                     }
                   }),
             ],

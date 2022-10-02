@@ -15,8 +15,8 @@ class AppLocalizations {
   static String currentRep = 'Rep';
   static String currentProgress = 'Progress';
   static String createTimer = 'Timed';
-  static String noTemposErrorTitle = 'No tempos added';
-  static String noTemposErrorMessage = 'Add some tempos to start the timer';
+  static String noTemposErrorTitle = 'No intervals added';
+  static String noTemposErrorMessage = 'Add intervals tempos to start the timer';
   static String resumeTimerButton = 'Resume';
   static String pauseTimerButton = 'Pause';
   static String closeAppTitle = 'Close app';
