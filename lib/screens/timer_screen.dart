@@ -36,6 +36,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   ValueNotifier<bool> _resumeFlag = ValueNotifier<bool>(true);
   ValueNotifier<int> _currentRep = ValueNotifier<int>(1);
   ValueNotifier<int> _currentSet = ValueNotifier<int>(1);
+  ValueNotifier<bool> _isLoading = ValueNotifier<bool>(true);
 
   @override
   void dispose() {
@@ -129,7 +130,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                                   Theme.of(context).colorScheme.secondary,
                               percent: progress >= 0 ? progress : 0,
                               center: Text(
-                                _timeInSec.value == _currentTargetTime.value
+                                _timeInSec.value == _currentTargetTime.value && !_isLoading.value
                                     ? _titleName.value
                                     : '${_timeInSec.value}',
                                 style: Theme.of(context).textTheme.headline2,
@@ -187,12 +188,15 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
 
     for (var i = 10; i > 0; i--) {
       if (!this.mounted) return;
+      _isLoading.value = true;
       _timeInSec.value = i;
       await Future.delayed(Duration(seconds: 1));
     }
 
     AudioHandler.playSwitch();
     _runProgressTimer();
+
+    _isLoading.value = false;
 
     if (this.mounted) {
       for (int setIndex = 1; setIndex <= _timerSettings!.sets; setIndex++) {
