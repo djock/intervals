@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:focus/models/index_key_value_pair.dart';
 import 'package:focus/models/key_value_pair.dart';
 
+import '../utilities/utils.dart';
+
 class TimerSettings extends ChangeNotifier {
   String name = '';
   int sets = 3;
@@ -81,8 +83,8 @@ class TimerSettings extends ChangeNotifier {
       totalTime += item.value;
     }
 
-    totalTime += (sets - 1) * rest;
+    var result = (sets * reps * totalTime) + ((sets-1) * rest);
 
-    return sets * reps * totalTime;
+    return result;
   }
 }

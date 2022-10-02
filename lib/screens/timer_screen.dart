@@ -24,6 +24,8 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   TimerSettings? _timerSettings;
   int? _totalTime;
 
+  int _timePassedSoFar = 0;
+
   ValueNotifier<String> _titleName =
       ValueNotifier<String>(AppLocalizations.getReady);
   ValueNotifier<String> _nextTitle =
@@ -37,7 +39,6 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
 
   @override
   void dispose() {
-    log.info('TimerScreen dispose');
     super.dispose();
     _timeInSec.value = 0;
     _titleName.dispose();
@@ -110,11 +111,6 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                       ValueListenableBuilder(
                           valueListenable: _timeInSec,
                           builder: (context, dynamic value, child) {
-                            debugPrint('Time ' +
-                                _timeInSec.value.toString() +
-                                ' ' +
-                                _currentTargetTime.value.toString());
-
                             var progress = (_timeInSec.value - 1) *
                                 100 /
                                 (_currentTargetTime.value - 1) /
@@ -131,7 +127,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                               circularStrokeCap: CircularStrokeCap.round,
                               backgroundColor:
                                   Theme.of(context).colorScheme.secondary,
-                              percent: progress,
+                              percent: progress >= 0 ? progress : 0,
                               center: Text(
                                 _timeInSec.value == _currentTargetTime.value
                                     ? _titleName.value
@@ -145,18 +141,6 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                   ),
                 ),
                 _buildProgressStatWidget(),
-                // ValueListenableBuilder(
-                //   valueListenable: _resumeFlag,
-                //   builder: (context, dynamic value, child) {
-                //     return ExpandedTextButton(
-                //         text: _resumeFlag.value
-                //             ? AppLocalizations.pauseTimerButton
-                //             : AppLocalizations.resumeTimerButton,
-                //         callback: () {
-                //           _resumeFlag.value = !_resumeFlag.value;
-                //         });
-                //   },
-                // ),
               ],
             ),
           ),
@@ -165,14 +149,23 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
     );
   }
 
+  Future<void> _runProgressTimer() async {
+    for (var i = 1; i <= _totalTime!; i++) {
+      _timePassedSoFar += 1;
+
+      if (this.mounted) {
+        _progress.value = _timePassedSoFar * 100 / _totalTime! / 100;
+      }
+      await Future.delayed(Duration(seconds: 1));
+    }
+  }
+
   Future<void> _runTimer(int? time) async {
     if (this.mounted) {
       while (_timeInSec.value > 0) {
         while (!_resumeFlag.value) {
           await Future.delayed(Duration(milliseconds: 10));
         }
-        if (this.mounted && _timeInSec.value != 0)
-          _progress.value += 100 / _totalTime!;
 
         if (this.mounted) {
           if (_timeInSec.value == 0 ||
@@ -199,14 +192,19 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
     }
 
     AudioHandler.playSwitch();
+    _runProgressTimer();
 
     if (this.mounted) {
       for (int setIndex = 1; setIndex <= _timerSettings!.sets; setIndex++) {
         if (!this.mounted) return;
+        log.info(':::: set ' + setIndex.toString());
         _currentSet.value = setIndex;
 
         for (int repIndex = 1; repIndex <= _timerSettings!.reps; repIndex++) {
           if (!this.mounted) return;
+
+          log.info(':::: rep ' + repIndex.toString());
+
           _currentRep.value = repIndex;
 
           for (int tempoIndex = 0;
@@ -223,20 +221,27 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                 _timerSettings!.intervals.elementAt(tempoIndex).value;
 
             if (!this.mounted) return;
-            _timeInSec.value = currentTempo;
+            {
+              _timeInSec.value = currentTempo;
+            }
 
             if (!this.mounted) return;
             _currentTargetTime.value = currentTempo;
 
+            log.info('here');
             await _runTimer(_timeInSec.value);
           }
         }
 
         if (!this.mounted) return;
+
+        log.info('here ' + _timerSettings!.rest.toString());
+
         if (_timerSettings!.rest != 0) {
           _timeInSec.value = _timerSettings!.rest;
           _currentTargetTime.value = _timerSettings!.rest;
           _titleName.value = AppLocalizations.rest;
+          log.info('here');
           await _runTimer(_timeInSec.value);
         }
       }
@@ -269,6 +274,8 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
     return ValueListenableBuilder(
       valueListenable: _progress,
       builder: (context, dynamic value, child) {
+        debugPrint('progress ' + _progress.value.toString());
+
         return Container(
             height: 85,
             width: double.infinity,
@@ -297,7 +304,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                   width: 350,
                   lineHeight: 15,
                   barRadius: Radius.circular(10),
-                  percent: 0.5,
+                  percent: _progress.value,
                   // center: Container(height: 20, width: 20, color: Colors.red,)
                   // widgetIndicator: Container(
                   //   height: 20,
@@ -324,19 +331,19 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                   child: Row(
                     children: [
                       Text(
-                        '5 min',
+                        '${(_progress.value * 100).toInt()}%',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(color: Theme.of(context).primaryColor),
+                      ),
+                      Text(
+                        ' / ' + Utils.formatTime(_totalTime!),
                         style: Theme.of(context)
                             .textTheme
                             .bodyText2!
                             .copyWith(color: Theme.of(context).primaryColor)
                             .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        ' / 75%',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ),

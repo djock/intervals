@@ -267,9 +267,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
         PickerIntervalItem(
           value: timerSettingsWatcher.rest,
           onChanged: (newValue) {
-            if (newValue > 0) {
-              timerSettingsWatcher.updateRest(newValue);
-            }
+            timerSettingsWatcher.updateRest(newValue);
           },
           title: AppLocalizations.rest,
           config: PickerConfig.totalTime,
