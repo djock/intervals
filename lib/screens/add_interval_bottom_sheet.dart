@@ -33,7 +33,8 @@ class AddIntervalBottomSheetState extends ConsumerState<AddIntervalBottomSheet> 
 
   @override
   Widget build(BuildContext context) {
-    final timerSettingsWatcher = ref.watch(timerSettingsNotifier);
+    var activeTimerWatcher = ref.watch(activeTimerProvider);
+
     var config = PickerConfig.interval;
 
     _nameController.addListener(() {
@@ -102,7 +103,7 @@ class AddIntervalBottomSheetState extends ConsumerState<AddIntervalBottomSheet> 
           ExpandedTextButton(
               text: AppLocalizations.addInterval,
               callback: () {
-                timerSettingsWatcher.updateIntervals(timerSettingsWatcher.listCount, _intervalName, _duration);
+                activeTimerWatcher.updateIntervals(activeTimerWatcher.timer.listCount, _intervalName, _duration);
                 Navigator.pop(context);
               }),
         ],

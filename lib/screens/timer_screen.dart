@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/handlers/timer_handler.dart';
 import 'package:focus/providers/providers.dart';
 import 'package:focus/utilities/audio_handler.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import '../models/timer_settings.dart';
 import '../utilities/utils.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/timer_stat_widget.dart';
@@ -21,7 +21,7 @@ class TimerScreen extends ConsumerStatefulWidget {
 class TimerScreenState extends ConsumerState<TimerScreen> {
   // late AudioPlayer audioPlayer;
 
-  TimerSettings? _timerSettings;
+  ActiveTimer? _timerInstance;
   int? _totalTime;
 
   int _timePassedSoFar = 0;
@@ -54,9 +54,9 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _timerSettings = ref.watch(timerSettingsNotifier);
+    _timerInstance = ref.watch(activeTimerProvider);
 
-    _totalTime = _timerSettings!.getTotalSeconds();
+    _totalTime = _timerInstance!.getTotalSeconds();
 
     // if(_firstInstance) {
     _startTimer();
@@ -87,9 +87,9 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
               children: [
                 Row(
                   children: [
-                    _buildInfoText(_currentSet, _timerSettings!.sets,
+                    _buildInfoText(_currentSet, _timerInstance!.timer.sets,
                         AppLocalizations.currentSet),
-                    _buildInfoText(_currentRep, _timerSettings!.reps,
+                    _buildInfoText(_currentRep, _timerInstance!.timer.reps,
                         AppLocalizations.currentRep),
                   ],
                 ),
@@ -199,12 +199,12 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
     _isLoading.value = false;
 
     if (this.mounted) {
-      for (int setIndex = 1; setIndex <= _timerSettings!.sets; setIndex++) {
+      for (int setIndex = 1; setIndex <= _timerInstance!.timer.sets; setIndex++) {
         if (!this.mounted) return;
         log.info(':::: set ' + setIndex.toString());
         _currentSet.value = setIndex;
 
-        for (int repIndex = 1; repIndex <= _timerSettings!.reps; repIndex++) {
+        for (int repIndex = 1; repIndex <= _timerInstance!.timer.reps; repIndex++) {
           if (!this.mounted) return;
 
           log.info(':::: rep ' + repIndex.toString());
@@ -212,17 +212,17 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
           _currentRep.value = repIndex;
 
           for (int tempoIndex = 0;
-              tempoIndex < _timerSettings!.intervals.length;
+              tempoIndex < _timerInstance!.timer.intervals.length;
               tempoIndex++) {
             AudioHandler.playSwitch();
 
             if (!this.mounted) return;
             _titleName.value =
-                _timerSettings!.intervals.elementAt(tempoIndex).key;
+                _timerInstance!.timer.intervals.elementAt(tempoIndex).key;
 
             if (!this.mounted) return;
             var currentTempo =
-                _timerSettings!.intervals.elementAt(tempoIndex).value;
+                _timerInstance!.timer.intervals.elementAt(tempoIndex).value;
 
             if (!this.mounted) return;
             {
@@ -239,11 +239,11 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
 
         if (!this.mounted) return;
 
-        log.info('here ' + _timerSettings!.rest.toString());
+        log.info('here ' + _timerInstance!.timer.rest.toString());
 
-        if (_timerSettings!.rest != 0) {
-          _timeInSec.value = _timerSettings!.rest;
-          _currentTargetTime.value = _timerSettings!.rest;
+        if (_timerInstance!.timer.rest != 0) {
+          _timeInSec.value = _timerInstance!.timer.rest;
+          _currentTargetTime.value = _timerInstance!.timer.rest;
           _titleName.value = AppLocalizations.rest;
           log.info('here');
           await _runTimer(_timeInSec.value);

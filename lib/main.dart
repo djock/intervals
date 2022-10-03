@@ -7,7 +7,11 @@ import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/utilities/app_theme.dart';
 import 'package:focus/providers/providers.dart';
 
+import 'handlers/hive_handler.dart';
+
 void main() {
+  HiveHandler.init();
+
   WidgetsFlutterBinding.ensureInitialized();
 
   Future.delayed(Duration(milliseconds: 1))
@@ -16,40 +20,39 @@ void main() {
             DeviceOrientation.portraitDown,
           ]));
 
-  runApp(
-      ProviderScope(
+  runApp(ProviderScope(
     child: App(),
   ));
 }
 
-class App extends StatefulWidget {
+class App extends ConsumerStatefulWidget {
   static const String id = 'TimerSettingsScreen';
 
   @override
   AppState createState() => AppState();
 }
 
-class AppState extends State<App> {
+class AppState extends ConsumerState<App> {
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        final appThemeState = ref.watch(appThemeStateNotifier);
-        appThemeState.setOverlayStyle();
+    final appThemeState = ref.watch(appThemeStateNotifier);
+    appThemeState.setOverlayStyle();
 
-        return MaterialApp(
-          debugShowMaterialGrid: false,
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: appThemeState.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
-          initialRoute: NavigationScreen.id,
-          routes: {
-            NavigationScreen.id: (context) => NavigationScreen(),
-            TimerScreen.id: (context) => TimerScreen(),
-            CreateTimerScreen.id: (context) => CreateTimerScreen(),
-          },
-        );
+    var timersManagerWatcher = ref.read(timersManagerProvider);
+    timersManagerWatcher.getHiveTimers();
+
+    return MaterialApp(
+      debugShowMaterialGrid: false,
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode:
+          appThemeState.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
+      initialRoute: NavigationScreen.id,
+      routes: {
+        NavigationScreen.id: (context) => NavigationScreen(),
+        TimerScreen.id: (context) => TimerScreen(),
+        CreateTimerScreen.id: (context) => CreateTimerScreen(),
       },
     );
   }

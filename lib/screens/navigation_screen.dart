@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/providers/providers.dart';
 
 import 'create_timer_screen.dart';
 
-class NavigationScreen extends StatefulWidget {
+class NavigationScreen extends ConsumerStatefulWidget {
   static const String id = 'NavigationScreen';
 
   @override
   NavigationScreenState createState() => NavigationScreenState();
 }
 
-class NavigationScreenState extends State<NavigationScreen> {
+class NavigationScreenState extends ConsumerState<NavigationScreen> {
   int _selectedScreenIndex = 0;
   List<Widget> _screens = [
     CreateTimerScreen(),

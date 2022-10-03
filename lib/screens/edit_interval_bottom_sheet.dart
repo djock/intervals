@@ -43,7 +43,8 @@ class EditIntervalBottomSheetState extends ConsumerState<EditIntervalBottomSheet
 
   @override
   Widget build(BuildContext context) {
-    final timerSettingsWatcher = ref.watch(timerSettingsNotifier);
+    var activeTimerWatcher = ref.watch(activeTimerProvider);
+
     var config = PickerConfig.interval;
     _nameController.value = TextEditingValue(text: widget.title);
 
@@ -113,7 +114,7 @@ class EditIntervalBottomSheetState extends ConsumerState<EditIntervalBottomSheet
           ExpandedTextButton(
               text: AppLocalizations.saveInterval,
               callback: () {
-                timerSettingsWatcher.updateInterval(widget.index, _intervalName, _duration);
+                activeTimerWatcher.updateInterval(widget.index, _intervalName, _duration);
                 Navigator.pop(context);
               }),
         ],
