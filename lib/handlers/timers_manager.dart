@@ -21,5 +21,7 @@ class TimersManager extends ChangeNotifier {
   void saveTimerToHive(TimerModel timer) {
     timers.add(timer);
     HiveHandler.saveTimersToBox(timers);
+
+    notifyListeners();
   }
 }

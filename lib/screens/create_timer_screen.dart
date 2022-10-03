@@ -46,60 +46,60 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
   @override
   Widget build(BuildContext context) {
     final activeTimerWatcher = ref.watch(activeTimerProvider);
+    activeTimerWatcher.newTimer();
 
-    return PopScopeScreen(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: CustomAppBar.buildNormal(
-            context, AppLocalizations.createTimerScreenTitle),
-        body: Container(
-          padding: EdgeInsets.all(0.0),
-          child: Column(
-            children: [
-              Expanded(
-                  child: SingleChildScrollView(
-                      child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // _buildIconAndInput(),
-                  _buildTimerTypeSelector(),
-                  _timerType == TimerType.reps
-                      ? _buildTypeSetsReps()
-                      : _buildTypeTime(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 1,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  _buildIntervalsList(ref),
-                ],
-              ))),
-              ExpandedTextButton(
-                  text: AppLocalizations.saveTimer,
-                  callback: () {
-                    if (activeTimerWatcher.timer.intervals.isEmpty) {
-                      NotificationBar.build(
-                          context,
-                          AppLocalizations.noTemposErrorTitle,
-                          AppLocalizations.noTemposErrorMessage,
-                          Theme.of(context).colorScheme.error);
-                    } else {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: CustomAppBar.buildNormal(
+          context, AppLocalizations.createTimerScreenTitle),
+      body: Container(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Expanded(
+                child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _buildIconAndInput(),
+                        _buildTimerTypeSelector(),
+                        _timerType == TimerType.reps
+                            ? _buildTypeSetsReps()
+                            : _buildTypeTime(),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        _buildIntervalsList(ref),
+                      ],
+                    ))),
+            ExpandedTextButton(
+                text: AppLocalizations.saveTimer,
+                callback: () {
+                  if (activeTimerWatcher.timer.intervals.isEmpty) {
+                    NotificationBar.build(
+                        context,
+                        AppLocalizations.noTemposErrorTitle,
+                        AppLocalizations.noTemposErrorMessage,
+                        Theme.of(context).colorScheme.error);
+                  } else {
+                    if (_formKey.currentState!.validate()) {
+                      activeTimerWatcher.updateName(_textEditingController.text);
+
                       var timersManager = ref.watch(timersManagerProvider);
                       timersManager.saveTimerToHive(activeTimerWatcher.timer);
-
-                      // if (_formKey.currentState!.validate()) {
-                      //   Navigator.of(context).pushNamed(TimerScreen.id);
-                      // }
+                      Navigator.pop(context);
                     }
-                  }),
-            ],
-          ),
+                  }
+                }),
+          ],
         ),
       ),
     );

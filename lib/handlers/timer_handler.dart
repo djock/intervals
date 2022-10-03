@@ -11,7 +11,12 @@ class ActiveTimer extends ChangeNotifier {
 
   ActiveTimer();
 
-  set timer(TimerModel timerModel) {
+  void newTimer() {
+    _timer = new TimerModel('', 3, 8, 300, 60, [], 0);
+    notifyListeners();
+  }
+
+  void setTimer(TimerModel timerModel) {
     _timer = timerModel;
     notifyListeners();
   }

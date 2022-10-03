@@ -14,7 +14,7 @@ class AppLocalizations {
   static String currentSet = 'Set';
   static String currentRep = 'Rep';
   static String currentProgress = 'Progress';
-  static String createTimer = 'Timed';
+  static String createTimer = 'Create new Timer';
   static String noTemposErrorTitle = 'No intervals added';
   static String noTemposErrorMessage = 'Add intervals tempos to start the timer';
   static String resumeTimerButton = 'Resume';
@@ -32,6 +32,8 @@ class AppLocalizations {
   static String addTimerName = 'Please add a name for the timer';
   static String saveInterval = 'Save interval';
   static String progress = 'Progress';
+  static String timersScreenTitle = 'My timers';
+  static String noTimers = 'No saved timers, why don\'t you create one?';
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);

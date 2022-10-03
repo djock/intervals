@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:focus/providers/providers.dart';
-
-import 'create_timer_screen.dart';
+import 'package:focus/screens/pop_scope_screen.dart';
+import 'package:focus/screens/timers_screen.dart';
 
 class NavigationScreen extends ConsumerStatefulWidget {
   static const String id = 'NavigationScreen';
@@ -14,15 +13,13 @@ class NavigationScreen extends ConsumerStatefulWidget {
 class NavigationScreenState extends ConsumerState<NavigationScreen> {
   int _selectedScreenIndex = 0;
   List<Widget> _screens = [
-    CreateTimerScreen(),
+    TimersScreen(),
+    // CreateTimerScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return true;
-      },
+    return PopScopeScreen(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(padding: EdgeInsets.all(20),child: _screens[_selectedScreenIndex]),
