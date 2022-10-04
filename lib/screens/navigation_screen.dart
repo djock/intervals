@@ -22,7 +22,7 @@ class NavigationScreenState extends ConsumerState<NavigationScreen> {
     return PopScopeScreen(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Container(padding: EdgeInsets.all(20),child: _screens[_selectedScreenIndex]),
+        body: Container(child: _screens[_selectedScreenIndex]),
         // bottomNavigationBar: BottomNavigationBar(
         //   items: [
         //     BottomNavigationBarItem(

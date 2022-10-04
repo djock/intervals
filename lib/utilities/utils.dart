@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:simple_logger/simple_logger.dart';
+import 'package:crypto/crypto.dart';
 
 final SimpleLogger log = SimpleLogger()
   ..mode = LoggerMode.print
@@ -14,5 +17,9 @@ class Utils {
     String minute = min != 0 ? '${min}m' : '';
     String second = sec != 0 ? '${sec}s' : '';
     return "$minute$second";
+  }
+
+  static String generateMd5(String input) {
+    return md5.convert(utf8.encode(input)).toString();
   }
 }

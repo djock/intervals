@@ -16,7 +16,7 @@ class ExpandedTextButton extends StatelessWidget {
           Expanded(
               child: OutlinedButton(
             style: OutlinedButton.styleFrom(
-                minimumSize: Size(200, 50),
+                minimumSize: Size(250, 50),
                 side: BorderSide.none,
                 backgroundColor: Theme.of(context).colorScheme.primary),
             onPressed: callback,

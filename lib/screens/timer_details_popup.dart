@@ -42,6 +42,7 @@ class TimerDetailsPopup extends ConsumerWidget {
                   crossAxisSpacing: 10,
                   children: [
                     TimerListItemTile(
+                        icon: Icons.timer,
                         title: AppLocalizations.intervals,
                         crossAxisCellCount: 2,
                         mainAxisCellCount: timer.intervals.length > 2 ? 2 : 1,
@@ -135,6 +136,7 @@ class TimerDetailsPopup extends ConsumerWidget {
   Widget _buildTimerType(BuildContext context) {
     if (timer.type == TimerType.reps) {
       return TimerListItemTile(
+          icon: Icons.timer,
           title: AppLocalizations.setsReps,
           crossAxisCellCount: 2,
           mainAxisCellCount: 1,
@@ -148,6 +150,7 @@ class TimerDetailsPopup extends ConsumerWidget {
           style: TimerTileStyleConfig.dark(context));
     } else {
       return TimerListItemTile(
+          icon: Icons.timer,
           title: AppLocalizations.totalTime,
           crossAxisCellCount: 2,
           mainAxisCellCount: 1,
@@ -165,6 +168,7 @@ class TimerDetailsPopup extends ConsumerWidget {
   Widget _buildRest(BuildContext context) {
     if (timer.rest != 0 && timer.type == TimerType.reps) {
       return TimerListItemTile(
+          icon: Icons.timer,
           title: AppLocalizations.rest,
           crossAxisCellCount: 2,
           mainAxisCellCount: 1,

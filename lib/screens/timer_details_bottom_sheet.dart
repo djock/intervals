@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:focus/screens/pop_scope_screen.dart';
 import 'package:focus/screens/timer_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../models/timer_model.dart';
 import '../models/timer_tile_style.dart';
@@ -37,6 +38,7 @@ class TimerDetailsBottomSheet extends ConsumerWidget {
                 crossAxisSpacing: 10,
                 children: [
                   TimerListItemTile(
+                      icon: Icons.timer,
                       title: AppLocalizations.intervals,
                       crossAxisCellCount: 2,
                       mainAxisCellCount: timer.intervals.length > 2 ? 2 : 1,
@@ -129,6 +131,7 @@ class TimerDetailsBottomSheet extends ConsumerWidget {
   Widget _buildTimerType(BuildContext context) {
     if (timer.type == TimerType.reps) {
       return TimerListItemTile(
+          icon: FontAwesomeIcons.dumbbell,
           title: AppLocalizations.setsReps,
           crossAxisCellCount: 2,
           mainAxisCellCount: 1,
@@ -142,6 +145,7 @@ class TimerDetailsBottomSheet extends ConsumerWidget {
           style: TimerTileStyleConfig.dark(context));
     } else {
       return TimerListItemTile(
+          icon: FontAwesomeIcons.dumbbell,
           title: AppLocalizations.totalTime,
           crossAxisCellCount: 2,
           mainAxisCellCount: 1,
@@ -159,6 +163,7 @@ class TimerDetailsBottomSheet extends ConsumerWidget {
   Widget _buildRest(BuildContext context) {
     if (timer.rest != 0 && timer.type == TimerType.reps) {
       return TimerListItemTile(
+          icon: Icons.timer,
           title: AppLocalizations.rest,
           crossAxisCellCount: 2,
           mainAxisCellCount: 1,

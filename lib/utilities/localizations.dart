@@ -33,7 +33,7 @@ class AppLocalizations {
   static String saveInterval = 'Save interval';
   static String progress = 'Progress';
   static String timersScreenTitle = 'My timers';
-  static String noTimers = 'No saved timers, why don\'t you create one?';
+  static String noTimers = 'No saved timers, tap on the + icon to create one';
   static String intervals = 'Intervals';
   static String setsReps = 'Sets x Reps';
 

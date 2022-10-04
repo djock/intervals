@@ -1,23 +1,27 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:focus/models/timer_type_enum.dart';
 
 import '../models/index_key_value_pair.dart';
 import '../models/timer_model.dart';
+import '../utilities/utils.dart';
 
 class ActiveTimer extends ChangeNotifier {
-  TimerModel? _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps);
+  TimerModel? _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps, '');
   TimerModel get timer => _timer!;
 
   ActiveTimer();
 
   void clear() {
-    _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps);
+    _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps, '');
   }
 
   void setTimer(TimerModel timerModel) {
     _timer = timerModel;
+    notifyListeners();
+  }
+
+  void createMd5() {
+    _timer!.id = Utils.generateMd5(timer.name);
     notifyListeners();
   }
 
@@ -73,8 +77,13 @@ class ActiveTimer extends ChangeNotifier {
         _timer!.intervals.remove(tempoToUpdate);
       }
     } else {
+      log.info('Adding new interval ' + ikvp.toString());
       _timer!.intervals.add(ikvp);
       _timer!.listCount++;
+    }
+
+    for(var item in _timer!.intervals) {
+      log.info(item.key.toString());
     }
 
     notifyListeners();

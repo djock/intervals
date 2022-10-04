@@ -41,10 +41,10 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
   final List<bool> toggleStates = <bool>[true, false];
   final TextEditingController _textEditingController = TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
     final activeTimerWatcher = ref.watch(activeTimerProvider);
-    activeTimerWatcher.clear();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

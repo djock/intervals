@@ -13,7 +13,8 @@ class AddIntervalBottomSheet extends ConsumerStatefulWidget {
   AddIntervalBottomSheetState createState() => AddIntervalBottomSheetState();
 }
 
-class AddIntervalBottomSheetState extends ConsumerState<AddIntervalBottomSheet> {
+class AddIntervalBottomSheetState
+    extends ConsumerState<AddIntervalBottomSheet> {
   int _duration = 5;
   String _intervalName = '';
 
@@ -61,9 +62,8 @@ class AddIntervalBottomSheetState extends ConsumerState<AddIntervalBottomSheet> 
                         style: Theme.of(context).textTheme.headline6,
                         decoration: CustomStyle.inputDecoration(context),
                         validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ) {
-                            return AppLocalizations.enterIntervalName;
+                          if (value == null || value.isEmpty) {
+                            return '';
                           }
                           return null;
                         },
@@ -93,22 +93,28 @@ class AddIntervalBottomSheetState extends ConsumerState<AddIntervalBottomSheet> 
                       step: config.step,
                       haptics: true,
                       onChanged: (value) => setState(() {
-                        _duration = value;
-                      })),
+                            _duration = value;
+                          })),
                 )
               ],
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           ExpandedTextButton(
               text: AppLocalizations.addInterval,
               callback: () {
-                activeTimerWatcher.updateIntervals(activeTimerWatcher.timer.listCount, _intervalName, _duration);
-                Navigator.pop(context);
+                if (_formKey.currentState!.validate()) {
+                  activeTimerWatcher.updateIntervals(
+                      activeTimerWatcher.timer.listCount,
+                      _intervalName,
+                      _duration);
+                  Navigator.pop(context);
+                }
               }),
         ],
       ),
     );
   }
-
 }

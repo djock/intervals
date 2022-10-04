@@ -74,7 +74,7 @@ class EditIntervalBottomSheetState extends ConsumerState<EditIntervalBottomSheet
                         validator: (value) {
                           if (value == null ||
                               value.isEmpty ) {
-                            return AppLocalizations.enterIntervalName;
+                            return '';
                           }
                           return null;
                         },

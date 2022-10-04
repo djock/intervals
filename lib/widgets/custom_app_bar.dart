@@ -19,6 +19,7 @@ class CustomAppBar {
       AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         elevation: elevation,
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         title: Text(
           text.toUpperCase(),
           style: Theme.of(context).textTheme.headline5,
