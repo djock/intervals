@@ -30,4 +30,17 @@ class TimerModel extends HiveObject {
         rest = t.rest,
         intervals = t.intervals,
         listCount = t.listCount;
+
+  int getTotalSeconds() {
+    var totalTime = 0;
+
+    for (var item in intervals) {
+      totalTime += item.value;
+    }
+
+    var result = (sets * reps * totalTime) +
+        ((sets - 1) * rest);
+
+    return result;
+  }
 }
