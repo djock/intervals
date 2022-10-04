@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:focus/models/index_key_value_pair_adapter.dart';
 import 'package:focus/models/timer_model.dart';
 import 'package:focus/models/timer_model_adapter.dart';
+import 'package:focus/models/timer_type_enum_adapter.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -10,6 +11,7 @@ class HiveHandler {
   static void init() {
     Hive.registerAdapter(TimerModelAdapter());
     Hive.registerAdapter(IndexKeyValuePairAdapter());
+    Hive.registerAdapter(TimerTypeEnumAdapter());
   }
 
   static Future<List<TimerModel>> openHiveBoxes() async {

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:focus/models/timer_tile_style.dart';
+import 'package:focus/models/timer_type_enum.dart';
 import 'package:focus/widgets/timer_list_item_tile.dart';
 
 import '../models/timer_model.dart';
 import '../providers/providers.dart';
+import '../screens/timer_details_bottom_sheet.dart';
+import '../screens/timer_details_popup.dart';
 import '../screens/timer_screen.dart';
 import '../utilities/localizations.dart';
+import '../utilities/utils.dart';
 import 'expanded_test_button.dart';
 
 class TimerListItem extends ConsumerWidget {
@@ -15,9 +20,57 @@ class TimerListItem extends ConsumerWidget {
   TimerListItem(this.timer);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    return ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      child: GestureDetector(
+        onTap: () {
+
+          if(timer.type == TimerType.reps){
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => TimerDetailsPopup(timer: timer));
+          } else {
+            showModalBottomSheet<void>(
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return Padding(
+                    padding: MediaQuery.of(context).viewInsets,
+                    child: TimerDetailsBottomSheet(timer: timer));
+              },
+            );
+          }
+        },
+        child: Container(
+          color: Theme.of(context).colorScheme.secondary,
+          height: 65,
+          padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  timer.name,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 30,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ],
+            ),
+        ),
+      ),
+    );
+
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(10)),
       child: ExpansionTile(
+        childrenPadding: EdgeInsets.all(10),
+        onExpansionChanged: (bool isExpanded) {
+          debugPrint('Timer ' + timer.type.toString());
+        },
         collapsedBackgroundColor: Theme.of(context).colorScheme.secondary,
         backgroundColor: Theme.of(context).colorScheme.secondary,
         collapsedIconColor: Theme.of(context).colorScheme.primary,
@@ -28,79 +81,27 @@ class TimerListItem extends ConsumerWidget {
         ),
         children: <Widget>[
           StaggeredGrid.count(
-            crossAxisCount: 3,
-            mainAxisSpacing: 1,
-            crossAxisSpacing: 1,
+            crossAxisCount: 4,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
             children: [
               TimerListItemTile(
-                title: AppLocalizations.intervals,
-                crossAxisCellCount: 2,
-                mainAxisCellCount: 1,
-                child: Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: _buildIntervals(context),
+                  title: AppLocalizations.intervals,
+                  crossAxisCellCount: 2,
+                  mainAxisCellCount: timer.intervals.length > 2 ? 2 : 1,
+                  child: Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: _buildIntervals(context),
+                      ),
                     ),
                   ),
-                ),
-                padding: EdgeInsets.only(left: 10, right: 5),
-              ),
-              TimerListItemTile(
-                title: AppLocalizations.setsReps,
-                crossAxisCellCount: 1,
-                mainAxisCellCount: 1,
-                child: Text(
-                  timer.sets.toString() + 'x' + timer.reps.toString() ,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                padding: EdgeInsets.only(right: 10, left: 5),
-              ),
-              timer.rest != 0 ? TimerListItemTile(
-                title: AppLocalizations.rest,
-                crossAxisCellCount: 1,
-                mainAxisCellCount: 1,
-                child: Text(
-                  timer.rest.toString() + 's',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                padding: EdgeInsets.all(10),
-              ) : SizedBox(),
-              // TimerListItemTile(
-              //   title: AppLocalizations.totalTime,
-              //   crossAxisCellCount: 1,
-              //   mainAxisCellCount: 1,
-              //   child: Text(
-              //     timer.getTotalSeconds().toString() + 's',
-              //     style: Theme.of(context).textTheme.headline6,
-              //   ),
-              //   padding: EdgeInsets.all(10),),
-              // TimerListItemTile(
-              //   title: AppLocalizations.intervals,
-              //   crossAxisCellCount: 2,
-              //   mainAxisCellCount: 1,
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: _buildIntervals(context),
-              //   ),
-              //   padding: EdgeInsets.all(10),
-              // ),
-              StaggeredGridTile.count(
-                crossAxisCellCount: timer.rest > 0 ?  2 : 3,
-                mainAxisCellCount: 1,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ExpandedTextButton(
-                      text: AppLocalizations.start,
-                      callback: () {
-                        var activeTimerWatcher = ref.watch(activeTimerProvider);
-                        activeTimerWatcher.setTimer(timer);
-
-                        Navigator.of(context).pushNamed(TimerScreen.id);
-                      }),
-                ),
-              ),
+                  style: TimerTileStyleConfig.light(context)),
+              _buildTimerType(context),
+              _buildRest(context),
+              _buildStartButton(context, ref),
             ],
           ),
         ],
@@ -121,5 +122,83 @@ class TimerListItem extends ConsumerWidget {
     }
 
     return result;
+  }
+
+  Widget _buildTimerType(BuildContext context) {
+    if (timer.type == TimerType.reps) {
+      return TimerListItemTile(
+          title: AppLocalizations.setsReps,
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 1,
+          child: Text(
+            timer.sets.toString() + 'x' + timer.reps.toString(),
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+          ),
+          style: TimerTileStyleConfig.dark(context));
+    } else {
+      return TimerListItemTile(
+          title: AppLocalizations.totalTime,
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 1,
+          child: Text(
+            Utils.formatTime(timer.time),
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+          ),
+          style: TimerTileStyleConfig.dark(context));
+    }
+  }
+
+  Widget _buildRest(BuildContext context) {
+    if (timer.rest != 0 && timer.type == TimerType.reps) {
+      return TimerListItemTile(
+          title: AppLocalizations.rest,
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 1,
+          child: Text(
+            Utils.formatTime(timer.rest),
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          style: TimerTileStyleConfig.light(context));
+    } else {
+      return SizedBox();
+    }
+  }
+
+  Widget _buildStartButton(BuildContext context, WidgetRef ref) {
+    var objectWidth = 4;
+
+    if (timer.type == TimerType.reps) {
+      objectWidth = 2; // it has rest timer included
+    }
+
+    if (timer.type == TimerType.reps && timer.intervals.length > 2) {
+      objectWidth = 4;
+    }
+
+    if(timer.type == TimerType.time && timer.intervals.length > 2){
+      objectWidth = 2;
+    }
+
+    return StaggeredGridTile.count(
+      crossAxisCellCount: objectWidth,
+      mainAxisCellCount: 1,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: ExpandedTextButton(
+            text: AppLocalizations.start,
+            callback: () {
+              var activeTimerWatcher = ref.watch(activeTimerProvider);
+              activeTimerWatcher.setTimer(timer);
+
+              Navigator.of(context).pushNamed(TimerScreen.id);
+            }),
+      ),
+    );
   }
 }

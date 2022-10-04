@@ -1,4 +1,5 @@
 import 'package:focus/models/timer_model.dart';
+import 'package:focus/models/timer_type_enum.dart';
 import 'package:hive/hive.dart';
 
 import 'index_key_value_pair.dart';
@@ -19,6 +20,7 @@ class TimerModelAdapter extends TypeAdapter<TimerModel> {
       fields[4] as int,
       (fields[5] as List).cast<IndexKeyValuePair>(),
       fields[6] as int,
+      fields[7] as TimerType,
     );
   }
 
@@ -28,7 +30,7 @@ class TimerModelAdapter extends TypeAdapter<TimerModel> {
   @override
   void write(BinaryWriter writer, TimerModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -42,7 +44,8 @@ class TimerModelAdapter extends TypeAdapter<TimerModel> {
       ..writeByte(5)
       ..write(obj.intervals)
       ..writeByte(6)
-      ..write(obj.listCount);
+      ..write(obj.listCount)
+      ..writeByte(7)
+      ..write(obj.type);
   }
-
 }

@@ -7,6 +7,7 @@ import 'package:focus/utilities/localizations.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../models/timer_type_enum.dart';
 import '../utilities/utils.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/timer_stat_widget.dart';
@@ -21,7 +22,7 @@ class TimerScreen extends ConsumerStatefulWidget {
 class TimerScreenState extends ConsumerState<TimerScreen> {
   // late AudioPlayer audioPlayer;
 
-  ActiveTimer? _timerInstance;
+  ActiveTimer? _activeTimerInstance;
   int? _totalTime;
 
   int _timePassedSoFar = 0;
@@ -54,9 +55,9 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _timerInstance = ref.watch(activeTimerProvider);
+    _activeTimerInstance = ref.watch(activeTimerProvider);
 
-    _totalTime = _timerInstance!.getTotalSeconds();
+    _totalTime = _activeTimerInstance!.getTotalSeconds();
 
     // if(_firstInstance) {
     _startTimer();
@@ -68,7 +69,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
         return true;
       },
       child: Scaffold(
-        appBar: CustomAppBar.buildWithAction(context, '', [
+        appBar: CustomAppBar.buildWithAction(context, _activeTimerInstance!.timer.name, [
           IconButton(
               icon: Icon(
                 Icons.close_outlined,
@@ -85,14 +86,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    _buildInfoText(_currentSet, _timerInstance!.timer.sets,
-                        AppLocalizations.currentSet),
-                    _buildInfoText(_currentRep, _timerInstance!.timer.reps,
-                        AppLocalizations.currentRep),
-                  ],
-                ),
+                _buildHeader(),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -198,31 +192,85 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
 
     _isLoading.value = false;
 
-    if (this.mounted) {
-      for (int setIndex = 1; setIndex <= _timerInstance!.timer.sets; setIndex++) {
-        if (!this.mounted) return;
-        log.info(':::: set ' + setIndex.toString());
-        _currentSet.value = setIndex;
+    if(_activeTimerInstance!.timer.type == TimerType.reps) {
+      if (this.mounted) {
+        for (int setIndex = 1; setIndex <= _activeTimerInstance!.timer.sets; setIndex++) {
+          if (!this.mounted) return;
+          log.info(':::: set ' + setIndex.toString());
+          _currentSet.value = setIndex;
 
-        for (int repIndex = 1; repIndex <= _timerInstance!.timer.reps; repIndex++) {
+          for (int repIndex = 1; repIndex <= _activeTimerInstance!.timer.reps; repIndex++) {
+            if (!this.mounted) return;
+
+            log.info(':::: rep ' + repIndex.toString());
+
+            _currentRep.value = repIndex;
+
+            for (int tempoIndex = 0;
+            tempoIndex < _activeTimerInstance!.timer.intervals.length;
+            tempoIndex++) {
+              AudioHandler.playSwitch();
+
+              if (!this.mounted) return;
+              _titleName.value =
+                  _activeTimerInstance!.timer.intervals.elementAt(tempoIndex).key;
+
+              if (!this.mounted) return;
+              var currentTempo =
+                  _activeTimerInstance!.timer.intervals.elementAt(tempoIndex).value;
+
+              if (!this.mounted) return;
+              {
+                _timeInSec.value = currentTempo;
+              }
+
+              if (!this.mounted) return;
+              _currentTargetTime.value = currentTempo;
+
+              log.info('here');
+              await _runTimer(_timeInSec.value);
+            }
+          }
+
           if (!this.mounted) return;
 
-          log.info(':::: rep ' + repIndex.toString());
+          log.info('here ' + _activeTimerInstance!.timer.rest.toString());
 
-          _currentRep.value = repIndex;
+          if (_activeTimerInstance!.timer.rest != 0) {
+            _timeInSec.value = _activeTimerInstance!.timer.rest;
+            _currentTargetTime.value = _activeTimerInstance!.timer.rest;
+            _titleName.value = AppLocalizations.rest;
+            log.info('here');
+            await _runTimer(_timeInSec.value);
+          }
+        }
+        _timeInSec.value = 0;
+        // if (isVoice!) {
+        //   await audioPlayer.setAsset('assets/audio/$voice/finish-$voice.mp3');
+        //   audioPlayer.play();
+        //   // AudioCache finishPlayer = AudioCache(prefix: 'assets/audio/$voice/');
+        //   // finishPlayer.play('finish-$voice.mp3');
+        //   // audioPlayer.clearCache();
+        //   isVoice = false;
+        // }
+        Navigator.pop(context);
+      }
+    } else {
+      if(this.mounted) {
+        while(_timePassedSoFar < _activeTimerInstance!.timer.time) {
 
-          for (int tempoIndex = 0;
-              tempoIndex < _timerInstance!.timer.intervals.length;
-              tempoIndex++) {
+          for (int i = 0;
+          i < _activeTimerInstance!.timer.intervals.length;
+          i++) {
             AudioHandler.playSwitch();
 
             if (!this.mounted) return;
             _titleName.value =
-                _timerInstance!.timer.intervals.elementAt(tempoIndex).key;
+                _activeTimerInstance!.timer.intervals.elementAt(i).key;
 
             if (!this.mounted) return;
             var currentTempo =
-                _timerInstance!.timer.intervals.elementAt(tempoIndex).value;
+                _activeTimerInstance!.timer.intervals.elementAt(i).value;
 
             if (!this.mounted) return;
             {
@@ -236,29 +284,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
             await _runTimer(_timeInSec.value);
           }
         }
-
-        if (!this.mounted) return;
-
-        log.info('here ' + _timerInstance!.timer.rest.toString());
-
-        if (_timerInstance!.timer.rest != 0) {
-          _timeInSec.value = _timerInstance!.timer.rest;
-          _currentTargetTime.value = _timerInstance!.timer.rest;
-          _titleName.value = AppLocalizations.rest;
-          log.info('here');
-          await _runTimer(_timeInSec.value);
-        }
       }
-      _timeInSec.value = 0;
-      // if (isVoice!) {
-      //   await audioPlayer.setAsset('assets/audio/$voice/finish-$voice.mp3');
-      //   audioPlayer.play();
-      //   // AudioCache finishPlayer = AudioCache(prefix: 'assets/audio/$voice/');
-      //   // finishPlayer.play('finish-$voice.mp3');
-      //   // audioPlayer.clearCache();
-      //   isVoice = false;
-      // }
-      Navigator.pop(context);
     }
   }
 
@@ -271,6 +297,24 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
           title: title,
         );
       },
+    );
+  }
+
+  Widget _buildHeader() {
+    List<Widget> children = [];
+
+    if(_activeTimerInstance!.timer.type == TimerType.reps) {
+      children.add(_buildInfoText(_currentSet, _activeTimerInstance!.timer.sets, AppLocalizations.currentSet));
+      children.add(_buildInfoText(_currentRep, _activeTimerInstance!.timer.reps, AppLocalizations.currentRep));
+    } else {
+      children.add(TimerStatWidget(
+        value: Utils.formatTime(_activeTimerInstance!.timer.time),
+        title: AppLocalizations.totalTime,
+      ));
+    }
+
+    return Row(
+      children: children,
     );
   }
 

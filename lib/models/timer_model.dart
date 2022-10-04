@@ -1,3 +1,4 @@
+import 'package:focus/models/timer_type_enum.dart';
 import 'package:hive/hive.dart';
 
 import 'index_key_value_pair.dart';
@@ -18,9 +19,11 @@ class TimerModel extends HiveObject {
   List<IndexKeyValuePair> intervals;
   @HiveField(6)
   int listCount;
+  @HiveField(7)
+  TimerType type;
 
   TimerModel(this.name, this.sets, this.reps, this.time, this.rest,
-      this.intervals, this.listCount);
+      this.intervals, this.listCount, this.type);
 
   TimerModel.copy(TimerModel t)
       : name = t.name,
@@ -29,6 +32,7 @@ class TimerModel extends HiveObject {
         time = t.time,
         rest = t.rest,
         intervals = t.intervals,
+        type = t.type,
         listCount = t.listCount;
 
   int getTotalSeconds() {

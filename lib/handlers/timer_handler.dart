@@ -1,22 +1,28 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:focus/models/timer_type_enum.dart';
 
 import '../models/index_key_value_pair.dart';
 import '../models/timer_model.dart';
 
 class ActiveTimer extends ChangeNotifier {
-  TimerModel? _timer = new TimerModel('', 3, 8, 300, 60, [], 0);
+  TimerModel? _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps);
   TimerModel get timer => _timer!;
 
   ActiveTimer();
 
   void clear() {
-    _timer = new TimerModel('', 3, 8, 300, 60, [], 0);
+    _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps);
   }
 
   void setTimer(TimerModel timerModel) {
     _timer = timerModel;
+    notifyListeners();
+  }
+
+  void updateType(TimerType timerType) {
+    _timer!.type = timerType;
     notifyListeners();
   }
 

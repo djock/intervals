@@ -7,5 +7,5 @@ class PickerConfig {
 
   static PickerConfig get totalTime => PickerConfig(0, 300, 5);
   static PickerConfig get sets => PickerConfig(1, 100, 1);
-  static PickerConfig get interval => PickerConfig(0, 960, 1);
+  static PickerConfig get interval => PickerConfig(1, 960, 1);
 }

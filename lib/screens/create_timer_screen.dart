@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/models/timer_model.dart';
 import 'package:focus/screens/edit_interval_bottom_sheet.dart';
-import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:focus/utilities/picker_config.dart';
 import 'package:focus/providers/providers.dart';
@@ -10,15 +9,13 @@ import 'package:focus/screens/add_interval_bottom_sheet.dart';
 import 'package:focus/widgets/notification_bar.dart';
 import 'package:focus/widgets/row_text_icon_button.dart';
 
+import '../models/timer_type_enum.dart';
 import '../utilities/custom_style.dart';
 import '../utilities/utils.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/expanded_test_button.dart';
 import '../widgets/picker_interval_item.dart';
 import '../widgets/slider_interval_item.dart';
-import 'pop_scope_screen.dart';
-
-enum TimerType { reps, time }
 
 class CreateTimerScreen extends ConsumerStatefulWidget {
   static const String id = 'CreateTimerScreen';
@@ -47,6 +44,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
   @override
   Widget build(BuildContext context) {
     final activeTimerWatcher = ref.watch(activeTimerProvider);
+    activeTimerWatcher.clear();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -59,27 +57,27 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
             Expanded(
                 child: SingleChildScrollView(
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _buildIconAndInput(),
-                        _buildTimerTypeSelector(),
-                        _timerType == TimerType.reps
-                            ? _buildTypeSetsReps()
-                            : _buildTypeTime(),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 1,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        _buildIntervalsList(ref),
-                      ],
-                    ))),
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildIconAndInput(),
+                _buildTimerTypeSelector(),
+                _timerType == TimerType.reps
+                    ? _buildTypeSetsReps()
+                    : _buildTypeTime(),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: 1,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                _buildIntervalsList(ref),
+              ],
+            ))),
             ExpandedTextButton(
                 text: AppLocalizations.saveTimer,
                 callback: () {
@@ -91,7 +89,8 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                         Theme.of(context).colorScheme.error);
                   } else {
                     if (_formKey.currentState!.validate()) {
-                      activeTimerWatcher.updateName(_textEditingController.text);
+                      activeTimerWatcher
+                          .updateName(_textEditingController.text);
 
                       var timersManager = ref.watch(timersManagerProvider);
 
@@ -116,17 +115,19 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
 
     for (var item in activeTimerWatcher.timer.intervals) {
       _tempos.add(new SliderIntervalItem(item.value, item.key, () {
-        _openEditIntervalBottomSheet(ref, item.key, item.value, item.index);
+        _openEditIntervalBottomSheet(item.key, item.value, item.index);
       }, () {
         activeTimerWatcher.deleteInterval(item.index);
       }));
 
-      _tempos.add(SizedBox(height: 10,));
+      _tempos.add(SizedBox(
+        height: 10,
+      ));
     }
 
     _tempos.add(RowIconTextButton(
       callback: () {
-        _openAddIntervalBottomSheet(ref);
+        _openAddIntervalBottomSheet();
       },
       text: AppLocalizations.addInterval,
       icon: Icons.add,
@@ -137,7 +138,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
     );
   }
 
-  void _openAddIntervalBottomSheet(WidgetRef ref) {
+  void _openAddIntervalBottomSheet() {
     showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
@@ -149,7 +150,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
     );
   }
 
-  void _openEditIntervalBottomSheet(WidgetRef ref, String title, int value, int index) {
+  void _openEditIntervalBottomSheet(String title, int value, int index) {
     showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
@@ -219,6 +220,9 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                 if (i == index) {
                   if (_timerType != _timerTypes[i]) {
                     _timerType = _timerTypes[i];
+                    var activeTimerWatcher = ref.watch(activeTimerProvider);
+                    activeTimerWatcher.updateType(_timerType);
+
                     setState(() {
                       log.info('Selected ' + _timerType.toString());
                     });

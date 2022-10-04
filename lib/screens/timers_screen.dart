@@ -30,7 +30,7 @@ class TimersScreen extends ConsumerWidget {
                child: SingleChildScrollView(
                  child: Column(
                    mainAxisAlignment: MainAxisAlignment.start,
-                   crossAxisAlignment: CrossAxisAlignment.start,
+                   crossAxisAlignment: CrossAxisAlignment.center,
                    children: _buildTimers(ref),
                  ),
                ),
