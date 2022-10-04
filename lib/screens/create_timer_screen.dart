@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/models/timer_model.dart';
 import 'package:focus/screens/edit_interval_bottom_sheet.dart';
 import 'package:focus/screens/timer_screen.dart';
 import 'package:focus/utilities/localizations.dart';
@@ -46,7 +47,6 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
   @override
   Widget build(BuildContext context) {
     final activeTimerWatcher = ref.watch(activeTimerProvider);
-    activeTimerWatcher.newTimer();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -94,7 +94,11 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                       activeTimerWatcher.updateName(_textEditingController.text);
 
                       var timersManager = ref.watch(timersManagerProvider);
-                      timersManager.saveTimerToHive(activeTimerWatcher.timer);
+
+                      var newTimer = TimerModel.copy(activeTimerWatcher.timer);
+                      activeTimerWatcher.clear();
+
+                      timersManager.saveTimerToHive(newTimer);
                       Navigator.pop(context);
                     }
                   }

@@ -11,9 +11,8 @@ class ActiveTimer extends ChangeNotifier {
 
   ActiveTimer();
 
-  void newTimer() {
+  void clear() {
     _timer = new TimerModel('', 3, 8, 300, 60, [], 0);
-    notifyListeners();
   }
 
   void setTimer(TimerModel timerModel) {
@@ -47,7 +46,6 @@ class ActiveTimer extends ChangeNotifier {
   }
 
   void deleteInterval(int index) {
-
     var _ = _timer!;
 
     var interval = _.intervals.firstWhere((element) => element.index == index);
@@ -63,10 +61,9 @@ class ActiveTimer extends ChangeNotifier {
       var tempoToUpdate =
           _timer!.intervals.where((element) => element.index == index).first;
 
-      if(value > 0) {
+      if (value > 0) {
         tempoToUpdate.setValue(value);
-      }
-      else {
+      } else {
         _timer!.intervals.remove(tempoToUpdate);
       }
     } else {
@@ -78,7 +75,8 @@ class ActiveTimer extends ChangeNotifier {
   }
 
   void updateInterval(int index, String text, int value) {
-    var interval = _timer!.intervals.firstWhere((element) => element.index == index);
+    var interval =
+        _timer!.intervals.firstWhere((element) => element.index == index);
     interval.key = text;
     interval.value = value;
 
@@ -92,7 +90,8 @@ class ActiveTimer extends ChangeNotifier {
       totalTime += item.value;
     }
 
-    var result = (_timer!.sets * _timer!.reps * totalTime) + ((_timer!.sets-1) * _timer!.rest);
+    var result = (_timer!.sets * _timer!.reps * totalTime) +
+        ((_timer!.sets - 1) * _timer!.rest);
 
     return result;
   }

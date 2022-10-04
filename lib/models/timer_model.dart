@@ -21,4 +21,13 @@ class TimerModel extends HiveObject {
 
   TimerModel(this.name, this.sets, this.reps, this.time, this.rest,
       this.intervals, this.listCount);
+
+  TimerModel.copy(TimerModel t)
+      : name = t.name,
+        sets = t.sets,
+        reps = t.reps,
+        time = t.time,
+        rest = t.rest,
+        intervals = t.intervals,
+        listCount = t.listCount;
 }
