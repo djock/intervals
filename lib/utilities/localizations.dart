@@ -36,6 +36,7 @@ class AppLocalizations {
   static String noTimers = 'No saved timers, tap on the + icon to create one';
   static String intervals = 'Intervals';
   static String setsReps = 'Sets x Reps';
+  static String target = 'Target';
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);

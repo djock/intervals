@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/screens/pop_scope_screen.dart';
+import 'package:focus/screens/tiled_timers_screen.dart';
 import 'package:focus/screens/timers_screen.dart';
 
 class NavigationScreen extends ConsumerStatefulWidget {
@@ -13,7 +14,8 @@ class NavigationScreen extends ConsumerStatefulWidget {
 class NavigationScreenState extends ConsumerState<NavigationScreen> {
   int _selectedScreenIndex = 0;
   List<Widget> _screens = [
-    TimersScreen(),
+    TiledTimersScreen(),
+    // TimersScreen(),
     // CreateTimerScreen(),
   ];
 
