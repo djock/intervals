@@ -1,4 +1,4 @@
-package com.kappiapps.tempoapp
+package com.ionutmocanu.intervalsapp
 
 import io.flutter.embedding.android.FlutterActivity
 

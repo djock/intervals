@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kappiapps.tempoapp">
+    package="com.ionutmocanu.intervalsapp">
    <application
         android:label="Timed"
         android:icon="@mipmap/ic_launcher">
