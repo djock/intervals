@@ -5,7 +5,7 @@ import 'package:focus/screens/pop_scope_screen.dart';
 import '../providers/providers.dart';
 import '../utilities/localizations.dart';
 import '../widgets/custom_app_bar.dart';
-import '../widgets/timer_list_item.dart';
+import '../widgets/expandable_timer_list_item.dart';
 import 'create_timer_screen.dart';
 
 class TimersScreen extends ConsumerWidget {
@@ -66,7 +66,7 @@ class TimersScreen extends ConsumerWidget {
       result.add(Container(width: double.infinity, child: Center(child: Text(AppLocalizations.noTimers))));
     } else {
       for (var item in timerManagerWatcher.timers) {
-        result.add(TimerListItem(item));
+        result.add(ExpandableTimerListItem(item));
         result.add(SizedBox(
           height: 10,
         ));

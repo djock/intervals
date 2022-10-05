@@ -12,7 +12,7 @@ import '../providers/providers.dart';
 import '../utilities/localizations.dart';
 import '../utilities/utils.dart';
 import '../widgets/expanded_test_button.dart';
-import '../widgets/timer_list_item_tile.dart';
+import 'timer_list_item_tile.dart';
 
 class TimerDetailsBottomSheet extends ConsumerWidget {
   final TimerModel timer;

@@ -34,17 +34,5 @@ class TimerStatWidget extends StatelessWidget {
     );
   }
 
-
-  // Widget _bult() {
-  //   return Card(
-  //     color: Theme.of(context).colorScheme.secondary,
-  //     elevation: 0,
-  //     child: Padding(
-  //       padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 8.0),
-  //       child: ,
-  //     ),
-  //   );
-  // }
-
 }
 
