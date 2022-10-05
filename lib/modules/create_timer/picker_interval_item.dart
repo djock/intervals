@@ -4,8 +4,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:focus/utilities/constants.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-import '../utilities/picker_config.dart';
-import '../utilities/utils.dart';
+import '../../utilities/picker_config.dart';
+import '../../utilities/utils.dart';
 
 class PickerIntervalItem extends ConsumerStatefulWidget {
   PickerIntervalItem(

@@ -14,6 +14,6 @@ class TimerTileStyleConfig {
   }
 
   static TimerTileStyle light(BuildContext context) {
-    return new TimerTileStyle(Theme.of(context).canvasColor, Theme.of(context).primaryColorDark, EdgeInsets.all(0));
+    return new TimerTileStyle(Theme.of(context).canvasColor, Theme.of(context).primaryColor, EdgeInsets.all(0));
   }
 }

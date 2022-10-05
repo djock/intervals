@@ -14,9 +14,9 @@ import 'package:flutter/material.dart';
 /// caption      12.0  regular  0.4
 /// overline     10.0  regular  1.5
 ///
-class AppTheme {
+class AppThemeModel {
   // Private Constructor
-  AppTheme._();
+  AppThemeModel._();
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     canvasColor: Colors.white,

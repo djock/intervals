@@ -4,16 +4,17 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:focus/models/timer_tile_style.dart';
 import 'package:focus/models/timer_type_enum.dart';
-import 'package:focus/widgets/timer_info_tile.dart';
-import 'package:focus/not_used/timer_list_item_tile.dart';
+import 'package:focus/modules/timers_list/timer_icon_text_row.dart';
+import 'package:focus/modules/timers_list/timer_info_tile.dart';
+import 'package:focus/modules/timers_list/timer_info_tile_header.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../models/timer_model.dart';
-import '../providers/providers.dart';
-import '../screens/timer_screen.dart';
-import '../utilities/localizations.dart';
-import '../utilities/utils.dart';
-import 'expanded_test_button.dart';
+import '../../models/timer_model.dart';
+import '../../providers/providers.dart';
+import '../active_timer/timer_screen.dart';
+import '../../utilities/localizations.dart';
+import '../../utilities/utils.dart';
+import '../../widgets/expanded_test_button.dart';
 
 class ExpandableTimerListItem extends ConsumerWidget {
   final TimerModel timer;
@@ -77,16 +78,27 @@ class ExpandableTimerListItem extends ConsumerWidget {
 
   Widget _timerInfo(BuildContext context) {
     return TimerInfoTile(
-      header: SizedBox(),
+        header: TimerInfoTileHeader(
+          title: AppLocalizations.timerInfo,
+          color: TimerTileStyleConfig.light(context).textColor,
+          icon: FontAwesomeIcons.penToSquare,
+          onTap: () {
+            debugPrint('edit');
+          },
+        ),
         crossAxisCellCount: 2,
         mainAxisCellCount: 2,
         child: Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [_buildTimerType(context), _buildRest(context), _buildIntervals(context)],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _buildTimerType(context),
+              SizedBox(height: 2),
+              _buildRest(context),
+              SizedBox(height: 2),
+              _buildIntervals(context)
+            ],
           ),
         ),
         style: TimerTileStyleConfig.light(context));
@@ -103,27 +115,25 @@ class ExpandableTimerListItem extends ConsumerWidget {
       intervals += item.value.toString() + suffix;
     }
 
-    return _buildRow(context, intervals, FontAwesomeIcons.solidHourglass);
+    return TimerIconTextRow(intervals, FontAwesomeIcons.hourglass
+    );
   }
 
   Widget _buildTimerType(BuildContext context) {
     if (timer.type == TimerType.reps) {
-      return _buildRow(
-          context,
-          timer.sets.toString() + 'x' + timer.reps.toString(),
-          FontAwesomeIcons.dumbbell);
+      return TimerIconTextRow(
+          timer.sets.toString() + 'X' + timer.reps.toString(),
+          FontAwesomeIcons.boltLightning);
     } else {
-      return _buildRow(
-          context, Utils.formatTime(timer.time), FontAwesomeIcons.clock);
+      return TimerIconTextRow(
+          Utils.formatTime(timer.time), FontAwesomeIcons.clock);
     }
   }
 
   Widget _buildRest(BuildContext context) {
     if (timer.rest != 0 && timer.type == TimerType.reps) {
-      return _buildRow(
-          context,
-          Utils.formatTime(timer.rest),
-          FontAwesomeIcons.pause);
+      return TimerIconTextRow(
+          Utils.formatTime(timer.rest), FontAwesomeIcons.circlePause);
     } else {
       return SizedBox();
     }
@@ -133,43 +143,31 @@ class ExpandableTimerListItem extends ConsumerWidget {
     return StaggeredGridTile.count(
       crossAxisCellCount: 2,
       mainAxisCellCount: 1,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: ExpandedTextButton(
-                text: AppLocalizations.start,
-                callback: () {
-                  var activeTimerWatcher = ref.watch(activeTimerProvider);
-                  activeTimerWatcher.setTimer(timer);
+      child: GestureDetector(
+        onTap: () {
+          var activeTimerWatcher = ref.watch(activeTimerProvider);
+          activeTimerWatcher.setTimer(timer);
 
-                  Navigator.of(context).pushNamed(TimerScreen.id);
-                }),
+          Navigator.of(context).pushNamed(TimerScreen.id);
+        },
+        child: Container(
+          color: Colors.transparent,
+          child: Center(
+            child: Icon(FontAwesomeIcons.circlePlay, size: 60, color: Theme.of(context).primaryColor,),
           ),
-        ],
+        ),
       ),
     );
   }
 
   Widget _totalTime(BuildContext context) {
-    var style = TimerTileStyleConfig.dark(context);
-
     return TimerInfoTile(
-      header:  Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            AppLocalizations.totalTime,
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(color: style.textColor),
-          ),
-          FaIcon(
-            FontAwesomeIcons.clock,
-            color: style.textColor,
-            size: 12,
-          )
-        ],
-      ),
+        header: TimerInfoTileHeader(
+          title: AppLocalizations.totalTime,
+          color: TimerTileStyleConfig.dark(context).textColor,
+          icon: FontAwesomeIcons.clock,
+          onTap: () => debugPrint('total time'),
+        ),
         crossAxisCellCount: 2,
         mainAxisCellCount: 1,
         child: Text(
@@ -180,29 +178,5 @@ class ExpandableTimerListItem extends ConsumerWidget {
               .copyWith(color: Theme.of(context).colorScheme.onPrimary),
         ),
         style: TimerTileStyleConfig.dark(context));
-  }
-
-  Widget _buildRow(BuildContext context, String title, IconData icon) {
-    return Row(
-      children: [
-        Container(
-          width: 20,
-          child: Center(
-            child: FaIcon(
-              icon,
-              color: Theme.of(context).primaryColor,
-              size: 20,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headline6,
-        )
-      ],
-    );
   }
 }

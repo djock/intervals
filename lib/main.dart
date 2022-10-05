@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:focus/screens/create_timer_screen.dart';
 import 'package:focus/screens/navigation_screen.dart';
-import 'package:focus/not_used/tiled_timers_screen.dart';
-import 'package:focus/screens/timer_screen.dart';
-import 'package:focus/screens/timers_screen.dart';
-import 'package:focus/utilities/app_theme.dart';
+import 'package:focus/modules/active_timer/timer_screen.dart';
+import 'package:focus/models/app_theme_model.dart';
 import 'package:focus/providers/providers.dart';
 
 import 'handlers/hive_handler.dart';
+import 'modules/create_timer/create_timer_screen.dart';
+import 'modules/timers_list/timers_screen.dart';
 
 void main() {
   HiveHandler.init();
@@ -46,8 +45,8 @@ class AppState extends ConsumerState<App> {
     return MaterialApp(
       debugShowMaterialGrid: false,
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      theme: AppThemeModel.lightTheme,
+      darkTheme: AppThemeModel.darkTheme,
       themeMode:
           appThemeState.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
       initialRoute: NavigationScreen.id,
@@ -56,7 +55,6 @@ class AppState extends ConsumerState<App> {
         TimerScreen.id: (context) => TimerScreen(),
         CreateTimerScreen.id: (context) => CreateTimerScreen(),
         TimersScreen.id: (context) => TimersScreen(),
-        TiledTimersScreen.id: (context) => TiledTimersScreen(),
       },
     );
   }

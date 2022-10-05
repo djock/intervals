@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:focus/models/timer_tile_style.dart';
 import 'package:focus/screens/pop_scope_screen.dart';
-import 'package:focus/not_used/timer_tile_item.dart';
 
-import '../providers/providers.dart';
-import '../utilities/localizations.dart';
-import '../widgets/custom_app_bar.dart';
-import '../widgets/expandable_timer_list_item.dart';
-import 'timer_list_item_tile.dart';
-import '../screens/create_timer_screen.dart';
+import '../../providers/providers.dart';
+import '../../utilities/localizations.dart';
+import '../../widgets/custom_app_bar.dart';
+import '../create_timer/create_timer_screen.dart';
+import 'expandable_timer_list_item.dart';
 
-class TiledTimersScreen extends ConsumerWidget {
-  static const String id = 'TiledTimersScreen';
+class TimersScreen extends ConsumerWidget {
+  static const String id = 'TimersScreen';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,26 +36,20 @@ class TiledTimersScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ref.watch(timersManagerProvider).timers.length == 0 ?
-              Container(
-                width: double.infinity,
-                height: 100,
-
-                child: Center(
-                  child: Text(AppLocalizations.noTimers),
-                ),
-              ) :
               Expanded(
-                child:
-                SingleChildScrollView(
-                  child: StaggeredGrid.count(
-                    crossAxisCount: 4,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: _buildTimers(ref),
                   ),
                 ),
               ),
+              // ExpandedTextButton(
+              //     text: AppLocalizations.createTimer,
+              //     callback: () {
+              //       Navigator.of(context).pushNamed(CreateTimerScreen.id);
+              //     })
             ],
           ),
         ),
@@ -72,8 +62,15 @@ class TiledTimersScreen extends ConsumerWidget {
 
     List<Widget> result = [];
 
-    for (var item in timerManagerWatcher.timers) {
-      result.add(TimerTileItem(item));
+    if (timerManagerWatcher.timers.length == 0) {
+      result.add(Container(width: double.infinity, child: Center(child: Text(AppLocalizations.noTimers))));
+    } else {
+      for (var item in timerManagerWatcher.timers) {
+        result.add(ExpandableTimerListItem(item));
+        result.add(SizedBox(
+          height: 10,
+        ));
+      }
     }
 
     return result;

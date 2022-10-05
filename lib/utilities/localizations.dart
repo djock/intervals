@@ -23,7 +23,7 @@ class AppLocalizations {
   static String closeAppMessage = 'Are you sure you want to close the app?';
   static String close = 'Close';
   static String cancel = 'Cancel';
-  static String saveTimer = 'Save timer';
+  static String saveTimer = 'Save';
   static String timerType = 'Timer type';
   static String forTime = 'Time';
   static String forReps = 'Reps';
@@ -37,6 +37,7 @@ class AppLocalizations {
   static String intervals = 'Intervals';
   static String setsReps = 'Sets x Reps';
   static String target = 'Target';
+  static String timerInfo = 'Timer info';
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);

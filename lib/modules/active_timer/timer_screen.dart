@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/handlers/timer_handler.dart';
+import 'package:focus/modules/active_timer/timer_stat_widget.dart';
 import 'package:focus/providers/providers.dart';
 import 'package:focus/utilities/audio_handler.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import '../models/timer_type_enum.dart';
-import '../utilities/utils.dart';
-import '../widgets/custom_app_bar.dart';
-import '../widgets/timer_stat_widget.dart';
+import '../../models/timer_type_enum.dart';
+import '../../utilities/utils.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class TimerScreen extends ConsumerStatefulWidget {
   static const String id = 'TimerScreen';

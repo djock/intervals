@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/models/timer_model.dart';
-import 'package:focus/screens/edit_interval_bottom_sheet.dart';
+import 'package:focus/modules/create_timer/picker_interval_item.dart';
+import 'package:focus/modules/create_timer/edit_interval_bottom_sheet.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:focus/utilities/picker_config.dart';
 import 'package:focus/providers/providers.dart';
-import 'package:focus/screens/add_interval_bottom_sheet.dart';
+import 'package:focus/modules/create_timer/add_interval_bottom_sheet.dart';
 import 'package:focus/widgets/notification_bar.dart';
-import 'package:focus/widgets/row_text_icon_button.dart';
+import 'package:focus/modules/create_timer/row_text_icon_button.dart';
 
-import '../models/timer_type_enum.dart';
-import '../utilities/custom_style.dart';
-import '../utilities/utils.dart';
-import '../widgets/custom_app_bar.dart';
-import '../widgets/expanded_test_button.dart';
-import '../widgets/picker_interval_item.dart';
-import '../widgets/slider_interval_item.dart';
+import '../../models/timer_type_enum.dart';
+import '../../utilities/custom_style.dart';
+import '../../utilities/utils.dart';
+import '../../widgets/custom_app_bar.dart';
+import '../../widgets/expanded_test_button.dart';
+import 'slider_interval_item.dart';
 
 class CreateTimerScreen extends ConsumerStatefulWidget {
   static const String id = 'CreateTimerScreen';
@@ -48,8 +48,39 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar.buildNormal(
-          context, AppLocalizations.createTimerScreenTitle),
+      appBar: CustomAppBar.buildWithAction(
+          context, AppLocalizations.createTimerScreenTitle, [
+        TextButton(
+            onPressed: () {
+              if (activeTimerWatcher.timer.intervals.isEmpty) {
+                NotificationBar.build(
+                    context,
+                    AppLocalizations.noTemposErrorTitle,
+                    AppLocalizations.noTemposErrorMessage,
+                    Theme.of(context).colorScheme.error);
+              } else {
+                if (_formKey.currentState!.validate()) {
+                  activeTimerWatcher
+                      .updateName(_textEditingController.text);
+
+                  var timersManager = ref.watch(timersManagerProvider);
+
+                  var newTimer = TimerModel.copy(activeTimerWatcher.timer);
+                  activeTimerWatcher.clear();
+
+                  timersManager.saveTimerToHive(newTimer);
+                  Navigator.pop(context);
+                }
+              }
+            },
+            child: Text(
+              AppLocalizations.saveTimer,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600),
+            ))
+      ]),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -78,30 +109,6 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                 _buildIntervalsList(ref),
               ],
             ))),
-            ExpandedTextButton(
-                text: AppLocalizations.saveTimer,
-                callback: () {
-                  if (activeTimerWatcher.timer.intervals.isEmpty) {
-                    NotificationBar.build(
-                        context,
-                        AppLocalizations.noTemposErrorTitle,
-                        AppLocalizations.noTemposErrorMessage,
-                        Theme.of(context).colorScheme.error);
-                  } else {
-                    if (_formKey.currentState!.validate()) {
-                      activeTimerWatcher
-                          .updateName(_textEditingController.text);
-
-                      var timersManager = ref.watch(timersManagerProvider);
-
-                      var newTimer = TimerModel.copy(activeTimerWatcher.timer);
-                      activeTimerWatcher.clear();
-
-                      timersManager.saveTimerToHive(newTimer);
-                      Navigator.pop(context);
-                    }
-                  }
-                }),
           ],
         ),
       ),

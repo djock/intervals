@@ -4,9 +4,9 @@ import 'package:focus/utilities/localizations.dart';
 import 'package:focus/utilities/picker_config.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-import '../providers/providers.dart';
-import '../utilities/custom_style.dart';
-import '../widgets/expanded_test_button.dart';
+import '../../providers/providers.dart';
+import '../../utilities/custom_style.dart';
+import '../../widgets/expanded_test_button.dart';
 
 class AddIntervalBottomSheet extends ConsumerStatefulWidget {
   @override

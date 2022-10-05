@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import '../utilities/utils.dart';
+import '../../utilities/utils.dart';
 
 class SliderIntervalItem extends ConsumerStatefulWidget {
   final int value;

@@ -27,20 +27,7 @@ class TimerInfoTile extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Text(
-              //       title,
-              //       style: Theme.of(context).textTheme.bodyText1!.copyWith(color: style.textColor),
-              //     ),
-              //     FaIcon(
-              //       icon,
-              //       color: style.textColor,
-              //       size: 12,
-              //     )
-              //   ],
-              // ),
+              header,
               Expanded(child : Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
