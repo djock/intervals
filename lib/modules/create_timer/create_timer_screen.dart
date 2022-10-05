@@ -48,7 +48,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar.buildWithAction(
+      appBar: CustomAppBar.buildWithActionAndGoBack(
           context, AppLocalizations.createTimerScreenTitle, [
         TextButton(
             onPressed: () {

@@ -40,16 +40,19 @@ class TimerModel extends HiveObject {
         id = t.id;
 
   int getTotalSeconds() {
-    var totalTime = 0;
+    if (type == TimerType.reps) {
+      var totalTime = 0;
 
-    for (var item in intervals) {
-      totalTime += item.value;
+      for (var item in intervals) {
+        totalTime += item.value;
+      }
+
+      var result = (sets * reps * totalTime) + ((sets - 1) * rest);
+
+      return result;
+    } else {
+      return time;
     }
-
-    var result = (sets * reps * totalTime) +
-        ((sets - 1) * rest);
-
-    return result;
   }
 
   void createMd5() {

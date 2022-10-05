@@ -40,4 +40,18 @@ class CustomAppBar {
         ),
         centerTitle: true,
       );
+
+  static PreferredSizeWidget buildWithActionAndGoBack(BuildContext context, String text, List<Widget> actions,
+      {double elevation = 0.0}) =>
+      AppBar(
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: elevation,
+        actions: actions,
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        title: Text(
+          text.toUpperCase(),
+          style: Theme.of(context).textTheme.headline5,
+        ),
+        centerTitle: true,
+      );
 }
