@@ -77,6 +77,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
               ),
               color: Theme.of(context).errorColor,
               onPressed: () {
+                _activeTimerInstance!.clear();
                 Navigator.of(context).pop();
               })
         ]),
@@ -253,6 +254,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
         //   // audioPlayer.clearCache();
         //   isVoice = false;
         // }
+        _activeTimerInstance!.clear();
         Navigator.pop(context);
       }
     } else {
