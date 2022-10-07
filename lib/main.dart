@@ -8,6 +8,7 @@ import 'package:focus/providers/providers.dart';
 
 import 'handlers/hive_handler.dart';
 import 'modules/create_timer/create_timer_screen.dart';
+import 'modules/create_timer/edit_timer_screen.dart';
 import 'modules/timers_list/timers_screen.dart';
 
 void main() {
@@ -55,6 +56,7 @@ class AppState extends ConsumerState<App> {
         TimerScreen.id: (context) => TimerScreen(),
         CreateTimerScreen.id: (context) => CreateTimerScreen(),
         TimersScreen.id: (context) => TimersScreen(),
+        EditTimerScreen.id: (context) => EditTimerScreen(),
       },
     );
   }

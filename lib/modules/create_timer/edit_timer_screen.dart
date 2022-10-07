@@ -14,17 +14,20 @@ import '../../models/timer_type_enum.dart';
 import '../../utilities/custom_style.dart';
 import '../../utilities/utils.dart';
 import '../../widgets/custom_app_bar.dart';
-import '../../widgets/expanded_test_button.dart';
 import 'slider_interval_item.dart';
 
-class CreateTimerScreen extends ConsumerStatefulWidget {
-  static const String id = 'CreateTimerScreen';
+class EditTimerScreen extends ConsumerStatefulWidget {
+  static const String id = 'EditTimerScreen';
+
+  EditTimerScreen();
 
   @override
-  CreateTimerScreenState createState() => CreateTimerScreenState();
+  EditTimerScreenState createState() => EditTimerScreenState();
 }
 
-class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
+class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
+  bool _firstOpen = true;
+
   List<Widget> _timerTypeTexts = <Widget>[
     Text(AppLocalizations.forReps),
     Text(AppLocalizations.forTime),
@@ -42,13 +45,31 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    log.info('dispose');
+    final activeTimerWatcher = ref.read(activeTimerProvider);
+    activeTimerWatcher.clear();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final activeTimerWatcher = ref.watch(activeTimerProvider);
 
+    log.info('activeTimerWatcher.timer.name ' + activeTimerWatcher.timer.name);
+    _textEditingController.value =
+        TextEditingValue(text: activeTimerWatcher.timer.name);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar.buildWithActionAndGoBack(
-          context, AppLocalizations.createTimerScreenTitle, [
+      appBar: CustomAppBar.buildWithActionAndGoBackClear(
+          context, AppLocalizations.editTimer, [
         TextButton(
             onPressed: () {
               if (activeTimerWatcher.timer.intervals.isEmpty) {
@@ -59,27 +80,29 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                     Theme.of(context).colorScheme.error);
               } else {
                 if (_formKey.currentState!.validate()) {
-                  activeTimerWatcher
-                      .updateName(_textEditingController.text);
+                  activeTimerWatcher.updateName(_textEditingController.text);
 
                   var timersManager = ref.watch(timersManagerProvider);
 
                   var newTimer = TimerModel.copy(activeTimerWatcher.timer);
                   activeTimerWatcher.clear();
 
-                  timersManager.saveTimerToHive(newTimer);
+                  timersManager.updateTimerInHive(newTimer);
                   Navigator.pop(context);
                 }
               }
             },
             child: Text(
-              AppLocalizations.saveTimer,
+              AppLocalizations.updateTimer,
               style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
             ))
-      ]),
+      ], () {
+        activeTimerWatcher.clear();
+        Navigator.pop(context);
+      }),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -90,7 +113,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _buildIconAndInput(),
+                _buildIconAndInput(ref),
                 _buildTimerTypeSelector(),
                 _timerType == TimerType.reps
                     ? _buildTypeSetsReps()
@@ -168,7 +191,9 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
     );
   }
 
-  Widget _buildIconAndInput() {
+  Widget _buildIconAndInput(WidgetRef ref) {
+    final activeTimerWatcher = ref.watch(activeTimerProvider);
+
     return Row(
       children: [
         Container(
@@ -191,9 +216,16 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
           child: Form(
             key: _formKey,
             child: TextFormField(
+              onEditingComplete: () {
+                activeTimerWatcher
+                    .updateName(_textEditingController.value.text);
+
+                log.info('oneditingcomplete');
+                FocusScope.of(context).unfocus();
+              },
               controller: _textEditingController,
               style: Theme.of(context).textTheme.headline6,
-              decoration: CustomStyle.inputDecoration(context, AppLocalizations.timerName),
+              decoration: CustomStyle.inputDecoration(context, ''),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return AppLocalizations.addTimerName;

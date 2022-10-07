@@ -28,7 +28,8 @@ class AppLocalizations {
   static String forTime = 'Time';
   static String forReps = 'Reps';
   static String totalTime = 'Total time';
-  static String addNameHere = 'Add name here';
+  static String timerName = 'Timer name';
+  static String intervalName = 'Interval Name';
   static String addTimerName = 'Please add a name for the timer';
   static String saveInterval = 'Save interval';
   static String progress = 'Progress';
@@ -38,6 +39,8 @@ class AppLocalizations {
   static String setsReps = 'Sets x Reps';
   static String target = 'Target';
   static String timerInfo = 'Timer info';
+  static String editTimer = 'Edit timer';
+  static String updateTimer = 'Update';
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);

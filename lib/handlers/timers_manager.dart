@@ -35,6 +35,19 @@ class TimersManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateTimerInHive(TimerModel timer) {
+
+    log.info('Update existing timer ' + timer.id);
+
+    timers.removeWhere((element) => element.id == timer.id);
+
+    timer.createMd5();
+    timers.add(timer);
+    HiveHandler.saveTimersToBox(timers);
+
+    notifyListeners();
+  }
+
   void deleteTimerFromHive(TimerModel timer) {
     timers.remove(timer);
     HiveHandler.saveTimersToBox(timers);

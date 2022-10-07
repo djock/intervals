@@ -15,6 +15,7 @@ import '../active_timer/timer_screen.dart';
 import '../../utilities/localizations.dart';
 import '../../utilities/utils.dart';
 import '../../widgets/expanded_test_button.dart';
+import '../create_timer/edit_timer_screen.dart';
 
 class ExpandableTimerListItem extends ConsumerWidget {
   final TimerModel timer;
@@ -37,7 +38,12 @@ class ExpandableTimerListItem extends ConsumerWidget {
           ),
           SlidableAction(
             flex: 4,
-            onPressed: (context) => debugPrint('edit'),
+            onPressed: (context) {
+              var activeTimerWatcher = ref.watch(activeTimerProvider);
+              activeTimerWatcher.setTimer(timer);
+
+              Navigator.pushNamed(context, EditTimerScreen.id);
+            },
             backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
             icon: Icons.edit,
@@ -65,7 +71,7 @@ class ExpandableTimerListItem extends ConsumerWidget {
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
               children: [
-                _timerInfo(context),
+                _timerInfo(context, ref),
                 _totalTime(context),
                 _startButton(context, ref),
               ],
@@ -76,14 +82,16 @@ class ExpandableTimerListItem extends ConsumerWidget {
     );
   }
 
-  Widget _timerInfo(BuildContext context) {
+  Widget _timerInfo(BuildContext context, WidgetRef ref) {
     return TimerInfoTile(
         header: TimerInfoTileHeader(
           title: AppLocalizations.timerInfo,
           color: TimerTileStyleConfig.light(context).textColor,
           icon: FontAwesomeIcons.penToSquare,
           onTap: () {
-            debugPrint('edit');
+            var activeTimerWatcher = ref.watch(activeTimerProvider);
+            activeTimerWatcher.setTimer(timer);
+            Navigator.pushNamed(context, EditTimerScreen.id);
           },
         ),
         crossAxisCellCount: 2,
