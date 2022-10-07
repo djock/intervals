@@ -50,19 +50,9 @@ class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
   }
 
   @override
-  void dispose() {
-    log.info('dispose');
-    final activeTimerWatcher = ref.read(activeTimerProvider);
-    activeTimerWatcher.clear();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final activeTimerWatcher = ref.watch(activeTimerProvider);
 
-    log.info('activeTimerWatcher.timer.name ' + activeTimerWatcher.timer.name);
     _textEditingController.value =
         TextEditingValue(text: activeTimerWatcher.timer.name);
 

@@ -13,8 +13,6 @@ class ActiveTimer extends ChangeNotifier {
 
   void clear() {
     _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps, '');
-    log.info('clear');
-
     notifyListeners();
   }
 

@@ -230,7 +230,6 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                     activeTimerWatcher.updateType(_timerType);
 
                     setState(() {
-                      log.info('Selected ' + _timerType.toString());
                     });
                   }
                 }

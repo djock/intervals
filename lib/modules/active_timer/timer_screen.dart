@@ -34,10 +34,12 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   ValueNotifier<int> _timeInSec = ValueNotifier<int>(5);
   ValueNotifier<int> _currentTargetTime = ValueNotifier<int>(5);
   ValueNotifier<double> _progress = ValueNotifier<double>(0);
-  ValueNotifier<bool> _resumeFlag = ValueNotifier<bool>(true);
   ValueNotifier<int> _currentRep = ValueNotifier<int>(1);
   ValueNotifier<int> _currentSet = ValueNotifier<int>(1);
   ValueNotifier<bool> _isLoading = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _hasStarted = ValueNotifier<bool>(false);
+
+  ValueNotifier<bool> _timerRunning = ValueNotifier<bool>(false);
 
   @override
   void dispose() {
@@ -47,10 +49,12 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
     _nextTitle.dispose();
     _timeInSec.dispose();
     _progress.dispose();
-    _resumeFlag.dispose();
     _currentRep.dispose();
     _currentSet.dispose();
     _currentTargetTime.dispose();
+    _hasStarted.dispose();
+    _isLoading.dispose();
+    _timerRunning.dispose();
   }
 
   @override
@@ -60,7 +64,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
     _totalTime = _activeTimerInstance!.getTotalSeconds();
 
     // if(_firstInstance) {
-    _startTimer();
+    // _startTimer();
     // _firstInstance = false;
     // }
 
@@ -114,25 +118,51 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                                 (_currentTargetTime.value - 1) /
                                 100;
 
-                            return CircularPercentIndicator(
-                              radius: 125.0,
-                              backgroundWidth: 15,
-                              animateFromLastPercent: true,
-                              restartAnimation: true,
-                              lineWidth: 28.0,
-                              animation: true,
-                              animationDuration: 1000,
-                              circularStrokeCap: CircularStrokeCap.round,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.secondary,
-                              percent: progress >= 0 ? progress : 0,
-                              center: Text(
-                                _timeInSec.value == _currentTargetTime.value && !_isLoading.value
-                                    ? _titleName.value
-                                    : '${_timeInSec.value}',
-                                style: Theme.of(context).textTheme.headline2,
+                            return GestureDetector(
+                              onTap: () {
+                                log.info('tap');
+
+                                if (!_hasStarted.value) {
+                                  _startTimer();
+                                  _hasStarted.value = true;
+                                } else{
+                                  _timerRunning.value = !_timerRunning.value;
+                                }
+                              },
+                              child: CircularPercentIndicator(
+                                radius: 125.0,
+                                backgroundWidth: 15,
+                                animateFromLastPercent: true,
+                                restartAnimation: true,
+                                lineWidth: 28.0,
+                                animation: _hasStarted.value ? true : false,
+                                animationDuration: 1000,
+                                circularStrokeCap: CircularStrokeCap.round,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                percent: progress >= 0 ? progress : 0,
+                                center: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    _hasStarted.value ? Text(
+                                      _timeInSec.value ==
+                                                  _currentTargetTime.value &&
+                                              !_isLoading.value
+                                          ? _titleName.value
+                                          : '${_timeInSec.value}',
+                                      style:
+                                          Theme.of(context).textTheme.headline2,
+                                    ) : SizedBox(),
+                                    Text(
+                                      _timerRunning.value ? AppLocalizations.tapToPause : AppLocalizations.tapToStart,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1,
+                                    ),
+                                  ],
+                                ),
+                                progressColor: Theme.of(context).primaryColor,
                               ),
-                              progressColor: Theme.of(context).primaryColor,
                             );
                           })
                     ],
@@ -161,14 +191,14 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   Future<void> _runTimer(int? time) async {
     if (this.mounted) {
       while (_timeInSec.value > 0) {
-        while (!_resumeFlag.value) {
+        while (!_timerRunning.value) {
           await Future.delayed(Duration(milliseconds: 10));
         }
 
         if (this.mounted) {
-          if (_timeInSec.value == 0 ||
-              _timeInSec.value == 1 ||
-              _timeInSec.value == 2) {
+          if (_timeInSec.value == 1 ||
+              _timeInSec.value == 2 ||
+              _timeInSec.value == 3) {
             AudioHandler.playTick();
           }
         }
@@ -189,9 +219,9 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
       _isLoading.value = true;
       _timeInSec.value = i;
 
-      if (_timeInSec.value == 0 ||
-          _timeInSec.value == 1 ||
-          _timeInSec.value == 2) {
+      if (_timeInSec.value == 1 ||
+          _timeInSec.value == 2 ||
+          _timeInSec.value == 3) {
         AudioHandler.playTick();
       }
 
@@ -202,6 +232,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
     _runProgressTimer();
 
     _isLoading.value = false;
+    _timerRunning.value = true;
 
     if (_activeTimerInstance!.timer.type == TimerType.reps) {
       if (this.mounted) {
