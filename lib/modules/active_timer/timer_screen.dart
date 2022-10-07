@@ -69,7 +69,8 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
         return true;
       },
       child: Scaffold(
-        appBar: CustomAppBar.buildWithAction(context, _activeTimerInstance!.timer.name, [
+        appBar: CustomAppBar.buildWithAction(
+            context, _activeTimerInstance!.timer.name, [
           IconButton(
               icon: Icon(
                 Icons.close_outlined,
@@ -82,6 +83,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
               })
         ]),
         body: Container(
+          color: Theme.of(context).canvasColor,
           padding: EdgeInsets.all(10),
           child: Center(
             child: Column(
@@ -170,6 +172,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
             AudioHandler.playTick();
           }
         }
+
         await Future.delayed(Duration(seconds: 1));
         if (this.mounted) {
           _timeInSec.value--;
@@ -185,6 +188,13 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
       if (!this.mounted) return;
       _isLoading.value = true;
       _timeInSec.value = i;
+
+      if (_timeInSec.value == 0 ||
+          _timeInSec.value == 1 ||
+          _timeInSec.value == 2) {
+        AudioHandler.playTick();
+      }
+
       await Future.delayed(Duration(seconds: 1));
     }
 
@@ -193,14 +203,18 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
 
     _isLoading.value = false;
 
-    if(_activeTimerInstance!.timer.type == TimerType.reps) {
+    if (_activeTimerInstance!.timer.type == TimerType.reps) {
       if (this.mounted) {
-        for (int setIndex = 1; setIndex <= _activeTimerInstance!.timer.sets; setIndex++) {
+        for (int setIndex = 1;
+            setIndex <= _activeTimerInstance!.timer.sets;
+            setIndex++) {
           if (!this.mounted) return;
           log.info(':::: set ' + setIndex.toString());
           _currentSet.value = setIndex;
 
-          for (int repIndex = 1; repIndex <= _activeTimerInstance!.timer.reps; repIndex++) {
+          for (int repIndex = 1;
+              repIndex <= _activeTimerInstance!.timer.reps;
+              repIndex++) {
             if (!this.mounted) return;
 
             log.info(':::: rep ' + repIndex.toString());
@@ -208,17 +222,19 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
             _currentRep.value = repIndex;
 
             for (int tempoIndex = 0;
-            tempoIndex < _activeTimerInstance!.timer.intervals.length;
-            tempoIndex++) {
+                tempoIndex < _activeTimerInstance!.timer.intervals.length;
+                tempoIndex++) {
               AudioHandler.playSwitch();
 
               if (!this.mounted) return;
-              _titleName.value =
-                  _activeTimerInstance!.timer.intervals.elementAt(tempoIndex).key;
+              _titleName.value = _activeTimerInstance!.timer.intervals
+                  .elementAt(tempoIndex)
+                  .key;
 
               if (!this.mounted) return;
-              var currentTempo =
-                  _activeTimerInstance!.timer.intervals.elementAt(tempoIndex).value;
+              var currentTempo = _activeTimerInstance!.timer.intervals
+                  .elementAt(tempoIndex)
+                  .value;
 
               if (!this.mounted) return;
               {
@@ -258,12 +274,11 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
         Navigator.pop(context);
       }
     } else {
-      if(this.mounted) {
-        while(_timePassedSoFar < _activeTimerInstance!.timer.time) {
-
+      if (this.mounted) {
+        while (_timePassedSoFar < _activeTimerInstance!.timer.time) {
           for (int i = 0;
-          i < _activeTimerInstance!.timer.intervals.length;
-          i++) {
+              i < _activeTimerInstance!.timer.intervals.length;
+              i++) {
             AudioHandler.playSwitch();
 
             if (!this.mounted) return;
@@ -305,9 +320,11 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   Widget _buildHeader() {
     List<Widget> children = [];
 
-    if(_activeTimerInstance!.timer.type == TimerType.reps) {
-      children.add(_buildInfoText(_currentSet, _activeTimerInstance!.timer.sets, AppLocalizations.currentSet));
-      children.add(_buildInfoText(_currentRep, _activeTimerInstance!.timer.reps, AppLocalizations.currentRep));
+    if (_activeTimerInstance!.timer.type == TimerType.reps) {
+      children.add(_buildInfoText(_currentSet, _activeTimerInstance!.timer.sets,
+          AppLocalizations.currentSet));
+      children.add(_buildInfoText(_currentRep, _activeTimerInstance!.timer.reps,
+          AppLocalizations.currentRep));
     } else {
       children.add(TimerStatWidget(
         value: Utils.formatTime(_activeTimerInstance!.timer.time),
@@ -324,8 +341,6 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
     return ValueListenableBuilder(
       valueListenable: _progress,
       builder: (context, dynamic value, child) {
-        debugPrint('progress ' + _progress.value.toString());
-
         return Container(
             height: 85,
             width: double.infinity,
@@ -388,7 +403,11 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                             .copyWith(color: Theme.of(context).primaryColor),
                       ),
                       Text(
-                        ' / ' + Utils.formatTime(_totalTime!),
+                        ' / ' +
+                            (_activeTimerInstance!.timer.type == TimerType.reps
+                                ? Utils.formatTime(_totalTime!)
+                                : Utils.formatTime(
+                                    _activeTimerInstance!.timer.time)),
                         style: Theme.of(context)
                             .textTheme
                             .bodyText2!

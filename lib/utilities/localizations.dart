@@ -41,6 +41,7 @@ class AppLocalizations {
   static String timerInfo = 'Timer info';
   static String editTimer = 'Edit timer';
   static String updateTimer = 'Update';
+  static String tapToStart = 'Tap to start';
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);
