@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/modules/active_timer/timer_end_screen.dart';
 import 'package:focus/screens/navigation_screen.dart';
 import 'package:focus/modules/active_timer/timer_screen.dart';
 import 'package:focus/models/app_theme_model.dart';
@@ -57,6 +58,7 @@ class AppState extends ConsumerState<App> {
         CreateTimerScreen.id: (context) => CreateTimerScreen(),
         TimersScreen.id: (context) => TimersScreen(),
         EditTimerScreen.id: (context) => EditTimerScreen(),
+        TimerEndScreen.id: (context) => TimerEndScreen(),
       },
     );
   }

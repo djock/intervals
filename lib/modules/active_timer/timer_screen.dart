@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/handlers/timer_handler.dart';
+import 'package:focus/modules/active_timer/timer_end_screen.dart';
 import 'package:focus/modules/active_timer/timer_stat_widget.dart';
 import 'package:focus/providers/providers.dart';
 import 'package:focus/utilities/audio_handler.dart';
@@ -23,7 +24,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   // late AudioPlayer audioPlayer;
 
   ActiveTimer? _activeTimerInstance;
-  int? _totalTime;
+  int? _calculatedTotalTime;
 
   int _timePassedSoFar = 0;
 
@@ -61,7 +62,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   Widget build(BuildContext context) {
     _activeTimerInstance = ref.watch(activeTimerProvider);
 
-    _totalTime = _activeTimerInstance!.getTotalSeconds();
+    _calculatedTotalTime = _activeTimerInstance!.getTotalSeconds();
 
     // if(_firstInstance) {
     // _startTimer();
@@ -125,7 +126,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                                 if (!_hasStarted.value) {
                                   _startTimer();
                                   _hasStarted.value = true;
-                                } else{
+                                } else {
                                   _timerRunning.value = !_timerRunning.value;
                                 }
                               },
@@ -144,20 +145,25 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                                 center: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    _hasStarted.value ? Text(
-                                      _timeInSec.value ==
-                                                  _currentTargetTime.value &&
-                                              !_isLoading.value
-                                          ? _titleName.value
-                                          : '${_timeInSec.value}',
-                                      style:
-                                          Theme.of(context).textTheme.headline2,
-                                    ) : SizedBox(),
+                                    _hasStarted.value
+                                        ? Text(
+                                            _timeInSec.value ==
+                                                        _currentTargetTime
+                                                            .value &&
+                                                    !_isLoading.value
+                                                ? _titleName.value
+                                                : '${_timeInSec.value}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline2,
+                                          )
+                                        : SizedBox(),
                                     Text(
-                                      _timerRunning.value ? AppLocalizations.tapToPause : AppLocalizations.tapToStart,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1,
+                                      _timerRunning.value
+                                          ? AppLocalizations.tapToPause
+                                          : AppLocalizations.tapToStart,
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
                                     ),
                                   ],
                                 ),
@@ -178,11 +184,15 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   }
 
   Future<void> _runProgressTimer() async {
-    for (var i = 1; i <= _totalTime!; i++) {
+    for (var i = 1; i <= _calculatedTotalTime!; i++) {
       _timePassedSoFar += 1;
 
       if (this.mounted) {
-        _progress.value = _timePassedSoFar * 100 / _totalTime! / 100;
+        var targetTime = _activeTimerInstance!.timer.type == TimerType.reps
+            ? _calculatedTotalTime
+            : _activeTimerInstance!.timer.time;
+
+        _progress.value = _timePassedSoFar * 100 / targetTime! / 100;
       }
       await Future.delayed(Duration(seconds: 1));
     }
@@ -301,8 +311,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
         //   // audioPlayer.clearCache();
         //   isVoice = false;
         // }
-        _activeTimerInstance!.clear();
-        Navigator.pop(context);
+        endWorkout(context);
       }
     } else {
       if (this.mounted) {
@@ -332,6 +341,8 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
             await _runTimer(_timeInSec.value);
           }
         }
+
+        endWorkout(context);
       }
     }
   }
@@ -400,7 +411,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                   width: 350,
                   lineHeight: 15,
                   barRadius: Radius.circular(10),
-                  percent: _progress.value,
+                  percent: _progress.value <= 1 ? _progress.value : 1,
                   // center: Container(height: 20, width: 20, color: Colors.red,)
                   // widgetIndicator: Container(
                   //   height: 20,
@@ -436,7 +447,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                       Text(
                         ' / ' +
                             (_activeTimerInstance!.timer.type == TimerType.reps
-                                ? Utils.formatTime(_totalTime!)
+                                ? Utils.formatTime(_calculatedTotalTime!)
                                 : Utils.formatTime(
                                     _activeTimerInstance!.timer.time)),
                         style: Theme.of(context)
@@ -452,5 +463,9 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
             ));
       },
     );
+  }
+
+  void endWorkout(BuildContext context) {
+    Navigator.pushNamed(context, TimerEndScreen.id);
   }
 }

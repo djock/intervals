@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class AppLocalizations {
   static String createTimerScreenTitle = 'Create timer';
   static String start = 'Start';
@@ -43,8 +45,17 @@ class AppLocalizations {
   static String updateTimer = 'Update';
   static String tapToStart = 'Tap to start';
   static String tapToPause = 'Tap to pause';
+  static String wellDone = 'Well Done!';
+  static String tapToClose = 'Tap to close';
+  static String youHaveCompleted = 'Finished: {TIMER_NAME}';
+
+  static List<String> timerEndedCongrats = ['Congrats!', 'Well done!', 'Great job!'];
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);
+  }
+
+  static String getCongrats() {
+    return timerEndedCongrats[(timerEndedCongrats.length * Random().nextDouble()).floor()];
   }
 }

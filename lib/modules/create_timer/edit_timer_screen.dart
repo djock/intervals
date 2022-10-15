@@ -41,11 +41,21 @@ class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
   TimerType _timerType = TimerType.reps;
 
   final _formKey = GlobalKey<FormState>();
-  final List<bool> toggleStates = <bool>[true, false];
+  List<bool> toggleStates = <bool>[true, false];
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
+    final activeTimerWatcher = ref.read(activeTimerProvider);
+
+    if (activeTimerWatcher.timer.type == TimerType.reps) {
+      _timerType = TimerType.reps;
+      toggleStates = <bool>[true, false];
+    } else {
+      _timerType = TimerType.time;
+      toggleStates = <bool>[false, true];
+    }
+
     super.initState();
   }
 
