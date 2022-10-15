@@ -30,7 +30,7 @@ class TimerInfoTileHeader extends ConsumerWidget {
               icon: FaIcon(
                 icon,
                 color: color,
-                size: 18,
+                size: 16,
               ),
             ),
           ),

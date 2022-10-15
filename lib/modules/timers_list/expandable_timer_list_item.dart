@@ -14,7 +14,6 @@ import '../../providers/providers.dart';
 import '../active_timer/timer_screen.dart';
 import '../../utilities/localizations.dart';
 import '../../utilities/utils.dart';
-import '../../widgets/expanded_test_button.dart';
 import '../create_timer/edit_timer_screen.dart';
 
 class ExpandableTimerListItem extends ConsumerWidget {
@@ -61,9 +60,11 @@ class ExpandableTimerListItem extends ConsumerWidget {
           backgroundColor: Theme.of(context).colorScheme.secondary,
           collapsedIconColor: Theme.of(context).colorScheme.primary,
           iconColor: Theme.of(context).colorScheme.primary,
-          title: Text(
-            timer.name,
-            style: Theme.of(context).textTheme.headline6,
+          title: Container(
+            child: Text(
+              timer.name,
+              style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 18),
+            ),
           ),
           children: <Widget>[
             StaggeredGrid.count(
@@ -123,7 +124,7 @@ class ExpandableTimerListItem extends ConsumerWidget {
       intervals += item.value.toString() + suffix;
     }
 
-    return TimerIconTextRow(intervals, FontAwesomeIcons.hourglass
+    return TimerIconTextRow(intervals, FontAwesomeIcons.hourglassStart
     );
   }
 
@@ -131,7 +132,7 @@ class ExpandableTimerListItem extends ConsumerWidget {
     if (timer.type == TimerType.reps) {
       return TimerIconTextRow(
           timer.sets.toString() + 'X' + timer.reps.toString(),
-          FontAwesomeIcons.boltLightning);
+          FontAwesomeIcons.dumbbell);
     } else {
       return TimerIconTextRow(
           Utils.formatTime(timer.time), FontAwesomeIcons.clock);
@@ -141,9 +142,10 @@ class ExpandableTimerListItem extends ConsumerWidget {
   Widget _buildRest(BuildContext context) {
     if (timer.rest != 0 && timer.type == TimerType.reps) {
       return TimerIconTextRow(
-          Utils.formatTime(timer.rest), FontAwesomeIcons.circlePause);
+          Utils.formatTime(timer.rest), FontAwesomeIcons.pause);
     } else {
-      return SizedBox();
+      return TimerIconTextRow(
+          '-', FontAwesomeIcons.pause);
     }
   }
 
@@ -173,7 +175,7 @@ class ExpandableTimerListItem extends ConsumerWidget {
         header: TimerInfoTileHeader(
           title: AppLocalizations.totalTime,
           color: TimerTileStyleConfig.dark(context).textColor,
-          icon: FontAwesomeIcons.clock,
+          icon: FontAwesomeIcons.flagCheckered,
           onTap: () => debugPrint('total time'),
         ),
         crossAxisCellCount: 2,

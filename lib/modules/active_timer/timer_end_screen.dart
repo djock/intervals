@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/models/timer_model.dart';
 
 import '../../providers/providers.dart';
+import '../../utilities/audio_handler.dart';
 import '../../utilities/localizations.dart';
 import '../../utilities/utils.dart';
 
@@ -71,6 +73,7 @@ class TimerEndScreenState extends ConsumerState<TimerEndScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     var activeTimerInstance = ref.watch(activeTimerProvider);
     var timer = activeTimerInstance.timer;
 

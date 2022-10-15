@@ -22,11 +22,13 @@ class RowIconTextButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
+            alignment: Alignment.center,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Icon(
                 icon,
                 color: Theme.of(context).colorScheme.primary,
+                size: 10,
               ),
             ),
           ),

@@ -9,12 +9,11 @@ import 'package:focus/providers/providers.dart';
 import 'package:focus/modules/create_timer/add_interval_bottom_sheet.dart';
 import 'package:focus/widgets/notification_bar.dart';
 import 'package:focus/modules/create_timer/row_text_icon_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../models/timer_type_enum.dart';
 import '../../utilities/custom_style.dart';
-import '../../utilities/utils.dart';
 import '../../widgets/custom_app_bar.dart';
-import '../../widgets/expanded_test_button.dart';
 import 'slider_interval_item.dart';
 
 class CreateTimerScreen extends ConsumerStatefulWidget {
@@ -59,8 +58,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                     Theme.of(context).colorScheme.error);
               } else {
                 if (_formKey.currentState!.validate()) {
-                  activeTimerWatcher
-                      .updateName(_textEditingController.text);
+                  activeTimerWatcher.updateName(_textEditingController.text);
 
                   var timersManager = ref.watch(timersManagerProvider);
 
@@ -168,24 +166,27 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
     );
   }
 
+  List<String> list = <String>['1', '2', '3', '4'];
+
   Widget _buildIconAndInput() {
+    final activeTimerWatcher = ref.watch(activeTimerProvider);
+
     return Row(
       children: [
         Container(
+          alignment: Alignment.center,
             width: 50.0,
             height: 50.0,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.secondary,
               shape: BoxShape.circle,
             ),
-            child: Center(
-                child: Text(
-              'icon',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1!
-                  .copyWith(color: Theme.of(context).hintColor),
-            ))),
+            child: FaIcon(
+              activeTimerWatcher.timer.type == TimerType.reps
+                  ? FontAwesomeIcons.dumbbell
+                  : FontAwesomeIcons.clock,
+              color: Theme.of(context).primaryColor,
+            )),
         SizedBox(width: 20.0),
         Expanded(
           child: Form(
@@ -193,7 +194,8 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
             child: TextFormField(
               controller: _textEditingController,
               style: Theme.of(context).textTheme.headline6,
-              decoration: CustomStyle.inputDecoration(context, AppLocalizations.timerName),
+              decoration: CustomStyle.inputDecoration(
+                  context, AppLocalizations.timerName),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return AppLocalizations.addTimerName;
@@ -229,8 +231,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                     var activeTimerWatcher = ref.watch(activeTimerProvider);
                     activeTimerWatcher.updateType(_timerType);
 
-                    setState(() {
-                    });
+                    setState(() {});
                   }
                 }
               }
