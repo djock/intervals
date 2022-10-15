@@ -24,7 +24,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   // late AudioPlayer audioPlayer;
 
   ActiveTimer? _activeTimerInstance;
-  int? _calculatedTotalTime;
+  int? _timerTotalSeconds;
 
   int _timePassedSoFar = 0;
 
@@ -61,13 +61,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   @override
   Widget build(BuildContext context) {
     _activeTimerInstance = ref.watch(activeTimerProvider);
-
-    _calculatedTotalTime = _activeTimerInstance!.getTotalSeconds();
-
-    // if(_firstInstance) {
-    // _startTimer();
-    // _firstInstance = false;
-    // }
+    _timerTotalSeconds = _activeTimerInstance!.timer.getTotalSeconds();
 
     return WillPopScope(
       onWillPop: () async {
@@ -184,15 +178,11 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   }
 
   Future<void> _runProgressTimer() async {
-    for (var i = 1; i <= _calculatedTotalTime!; i++) {
+    for (var i = 1; i <= _timerTotalSeconds!; i++) {
       _timePassedSoFar += 1;
 
       if (this.mounted) {
-        var targetTime = _activeTimerInstance!.timer.type == TimerType.reps
-            ? _calculatedTotalTime
-            : _activeTimerInstance!.timer.time;
-
-        _progress.value = _timePassedSoFar * 100 / targetTime! / 100;
+        _progress.value = _timePassedSoFar * 100 / _timerTotalSeconds! / 100;
       }
       await Future.delayed(Duration(seconds: 1));
     }
@@ -445,11 +435,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                             .copyWith(color: Theme.of(context).primaryColor),
                       ),
                       Text(
-                        ' / ' +
-                            (_activeTimerInstance!.timer.type == TimerType.reps
-                                ? Utils.formatTime(_calculatedTotalTime!)
-                                : Utils.formatTime(
-                                    _activeTimerInstance!.timer.time)),
+                        ' / ' + Utils.formatTime(_timerTotalSeconds!),
                         style: Theme.of(context)
                             .textTheme
                             .bodyText2!

@@ -98,17 +98,4 @@ class ActiveTimer extends ChangeNotifier {
 
     notifyListeners();
   }
-
-  int getTotalSeconds() {
-    var totalTime = 0;
-
-    for (var item in _timer!.intervals) {
-      totalTime += item.value;
-    }
-
-    var result = (_timer!.sets * _timer!.reps * totalTime) +
-        ((_timer!.sets - 1) * _timer!.rest);
-
-    return result;
-  }
 }
