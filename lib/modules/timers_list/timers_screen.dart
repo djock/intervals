@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/modules/timers_list/simple_timer_item.dart';
 import 'package:focus/screens/pop_scope_screen.dart';
 
 import '../../providers/providers.dart';
@@ -66,9 +67,9 @@ class TimersScreen extends ConsumerWidget {
       result.add(Container(width: double.infinity, child: Center(child: Text(AppLocalizations.noTimers))));
     } else {
       for (var item in timerManagerWatcher.timers) {
-        result.add(ExpandableTimerListItem(item));
+        result.add(SimpleTimerItem(item));
         result.add(SizedBox(
-          height: 10,
+          height: 20,
         ));
       }
     }

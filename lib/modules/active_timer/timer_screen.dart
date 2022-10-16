@@ -240,15 +240,12 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
             setIndex <= _activeTimerInstance!.timer.sets;
             setIndex++) {
           if (!this.mounted) return;
-          log.info(':::: set ' + setIndex.toString());
           _currentSet.value = setIndex;
 
           for (int repIndex = 1;
               repIndex <= _activeTimerInstance!.timer.reps;
               repIndex++) {
             if (!this.mounted) return;
-
-            log.info(':::: rep ' + repIndex.toString());
 
             _currentRep.value = repIndex;
 

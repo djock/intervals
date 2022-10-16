@@ -76,6 +76,9 @@ class AppThemeModel {
         subtitle2: TextStyle(
           color: Colors.grey,
         ),
+        caption: TextStyle(
+          color: Colors.grey,
+        ),
         button: TextStyle(color: Colors.white, fontSize: 18)),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
