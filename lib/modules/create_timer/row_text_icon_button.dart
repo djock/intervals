@@ -28,7 +28,7 @@ class RowIconTextButton extends StatelessWidget {
               child: Icon(
                 icon,
                 color: Theme.of(context).colorScheme.primary,
-                size: 10,
+                size: 20,
               ),
             ),
           ),

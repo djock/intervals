@@ -19,7 +19,7 @@ class TimerStatWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               value,
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headline3,
             ),
             Text(
               title,

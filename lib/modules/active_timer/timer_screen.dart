@@ -67,109 +67,125 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
       onWillPop: () async {
         return true;
       },
-      child: Scaffold(
-        appBar: CustomAppBar.buildWithAction(
-            context, _activeTimerInstance!.timer.name, [
-          IconButton(
-              icon: Icon(
-                Icons.close_outlined,
-                size: 30,
-              ),
-              color: Theme.of(context).errorColor,
-              onPressed: () {
-                _activeTimerInstance!.clear();
-                Navigator.of(context).pop();
-              })
-        ]),
-        body: Container(
-          color: Theme.of(context).canvasColor,
-          padding: EdgeInsets.all(10),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildHeader(),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ValueListenableBuilder(
-                        valueListenable: _titleName,
-                        builder: (context, dynamic value, child) {
-                          return Text(
-                            '${_titleName.value}',
-                            style: Theme.of(context).textTheme.headline5,
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      ValueListenableBuilder(
-                          valueListenable: _timeInSec,
-                          builder: (context, dynamic value, child) {
-                            var progress = (_timeInSec.value - 1) *
-                                100 /
-                                (_currentTargetTime.value - 1) /
-                                100;
-
-                            return GestureDetector(
-                              onTap: () {
-                                log.info('tap');
-
-                                if (!_hasStarted.value) {
-                                  _startTimer();
-                                  _hasStarted.value = true;
-                                } else {
-                                  _timerRunning.value = !_timerRunning.value;
-                                }
-                              },
-                              child: CircularPercentIndicator(
-                                radius: 125.0,
-                                backgroundWidth: 15,
-                                animateFromLastPercent: true,
-                                restartAnimation: true,
-                                lineWidth: 28.0,
-                                animation: _hasStarted.value ? true : false,
-                                animationDuration: 1000,
-                                circularStrokeCap: CircularStrokeCap.round,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                percent: progress >= 0 ? progress : 0,
-                                center: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    _hasStarted.value
-                                        ? Text(
-                                            _timeInSec.value ==
-                                                        _currentTargetTime
-                                                            .value &&
-                                                    !_isLoading.value
-                                                ? _titleName.value
-                                                : '${_timeInSec.value}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline2,
-                                          )
-                                        : SizedBox(),
-                                    Text(
-                                      _timerRunning.value
-                                          ? AppLocalizations.tapToPause
-                                          : AppLocalizations.tapToStart,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
-                                    ),
-                                  ],
-                                ),
-                                progressColor: Theme.of(context).primaryColor,
-                              ),
-                            );
-                          })
-                    ],
+      child: Container(
+        color: Theme.of(context).canvasColor,
+        child: SafeArea(
+          top: false,
+          bottom: true,
+          child: Scaffold(
+            appBar: CustomAppBar.buildWithAction(
+                context, _activeTimerInstance!.timer.name, [
+              IconButton(
+                  icon: Icon(
+                    Icons.close_outlined,
+                    size: 30,
                   ),
-                ),
-                _buildProgressStatWidget(),
-              ],
+                  color: Theme.of(context).errorColor,
+                  onPressed: () {
+                    _activeTimerInstance!.clear();
+                    Navigator.of(context).pop();
+                  })
+            ]),
+            body: Container(
+              color: Theme.of(context).canvasColor,
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
+              child: Stack(
+                children: [
+                  Positioned(top: 0, left: 0, right: 0, child: _buildHeader()),
+                  Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      top: 0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ValueListenableBuilder(
+                            valueListenable: _titleName,
+                            builder: (context, dynamic value, child) {
+                              return Text(
+                                '${_titleName.value}',
+                                style: Theme.of(context).textTheme.headline5,
+                              );
+                            },
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          ValueListenableBuilder(
+                              valueListenable: _timeInSec,
+                              builder: (context, dynamic value, child) {
+                                var progress = (_timeInSec.value -1 ) *
+                                    100 /
+                                    (_currentTargetTime.value - 1) /
+                                    100;
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (!_hasStarted.value) {
+                                      _startTimer();
+                                      _hasStarted.value = true;
+                                    } else {
+                                      _timerRunning.value =
+                                          !_timerRunning.value;
+                                    }
+                                  },
+                                  child: CircularPercentIndicator(
+                                    radius: 140.0,
+                                    backgroundWidth: 10,
+                                    animateFromLastPercent: true,
+                                    restartAnimation: true,
+                                    lineWidth: 20.0,
+                                    animation: _hasStarted.value ? true : false,
+                                    animationDuration: 1,
+                                    circularStrokeCap: CircularStrokeCap.round,
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.secondary,
+                                    percent: progress >= 0 ? progress : 0,
+                                    center: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        _hasStarted.value
+                                            ? Text(
+                                          '${_timeInSec.value}',
+                                                // _timeInSec.value ==
+                                                //             _currentTargetTime
+                                                //                 .value &&
+                                                //         !_isLoading.value
+                                                //     ? _titleName.value
+                                                //     : '${_timeInSec.value}',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline1!.copyWith(color: Theme.of(context).primaryColor),
+                                              )
+                                            : SizedBox(),
+                                        Text(
+                                          _timerRunning.value
+                                              ?  AppLocalizations.tapToPause
+                                              : AppLocalizations.tapToStart,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1,
+                                        ),
+                                      ],
+                                    ),
+                                    progressColor:
+                                        Theme.of(context).primaryColor,
+                                  ),
+                                );
+                              })
+                        ],
+                      )),
+                  Positioned(
+                    child: _buildProgressStatWidget(),
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -272,20 +288,16 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
               if (!this.mounted) return;
               _currentTargetTime.value = currentTempo;
 
-              log.info('here');
               await _runTimer(_timeInSec.value);
             }
           }
 
           if (!this.mounted) return;
 
-          log.info('here ' + _activeTimerInstance!.timer.rest.toString());
-
-          if (_activeTimerInstance!.timer.rest != 0) {
+          if (_activeTimerInstance!.timer.rest != 0 && _activeTimerInstance!.timer.type == TimerType.reps) {
             _timeInSec.value = _activeTimerInstance!.timer.rest;
             _currentTargetTime.value = _activeTimerInstance!.timer.rest;
             _titleName.value = AppLocalizations.rest;
-            log.info('here');
             await _runTimer(_timeInSec.value);
           }
         }
@@ -361,8 +373,12 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
       ));
     }
 
-    return Row(
-      children: children,
+    return Container(
+      color: Colors.red,
+      height: 100,
+      child: Row(
+        children: children,
+      ),
     );
   }
 
@@ -395,27 +411,9 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                   animationDuration: 1000,
                   backgroundColor: Theme.of(context).colorScheme.secondary,
                   progressColor: Theme.of(context).primaryColor,
-                  width: 350,
-                  lineHeight: 15,
+                  lineHeight: 13,
                   barRadius: Radius.circular(10),
                   percent: _progress.value <= 1 ? _progress.value : 1,
-                  // center: Container(height: 20, width: 20, color: Colors.red,)
-                  // widgetIndicator: Container(
-                  //   height: 20,
-                  //   width: 20,
-                  //   decoration: BoxDecoration(
-                  //       color: Theme.of(context).colorScheme.primary,
-                  //       borderRadius: BorderRadius.all(Radius.circular(100))),
-                  //   child: Center(
-                  //     child: Container(
-                  //       height: 15,
-                  //       width: 15,
-                  //       decoration: BoxDecoration(
-                  //           color: Theme.of(context).canvasColor,
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(100))),
-                  //     ),
-                  //   ),
                 ),
                 SizedBox(
                   height: 5,

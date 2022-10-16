@@ -27,7 +27,7 @@ class AppThemeModel {
       brightness: Brightness.dark,
       primary: new Color(0XFF4D358B),
       onPrimary: Colors.white,
-      secondary: new Color(0XFFEEEEEE),
+      secondary: new Color(0XFFf2f2f2),
       onSecondary: Colors.white,
       error: Colors.red,
       onError: Colors.white,

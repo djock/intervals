@@ -100,6 +100,9 @@ class SimpleTimerItem extends ConsumerWidget {
                   ),
                   color: Theme.of(context).primaryColor,
                   onPressed: () {
+                    var activeTimerWatcher = ref.watch(activeTimerProvider);
+                    activeTimerWatcher.setTimer(timer);
+
                     Navigator.of(context).pushNamed(TimerScreen.id);
                   })
             ],
@@ -177,7 +180,7 @@ class SimpleTimerItem extends ConsumerWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 7, vertical: 5),
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+          color: Theme.of(context).colorScheme.secondary,
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Row(
         children: [
