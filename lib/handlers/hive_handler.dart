@@ -20,8 +20,6 @@ class HiveHandler {
     var timersList = <TimerModel>[];
 
     var dir = await getApplicationDocumentsDirectory();
-    log.info('dir ' + dir.path);
-
     Hive.init(dir.path);
 
     var hiveTimers = await Hive.openBox('timers');

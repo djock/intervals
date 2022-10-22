@@ -88,27 +88,27 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
             Expanded(
                 child: SingleChildScrollView(
                     child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _buildIconAndInput(),
-                _buildTimerTypeSelector(),
-                _timerType == TimerType.reps
-                    ? _buildTypeSetsReps()
-                    : _buildTypeTime(),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 1,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                _buildIntervalsList(ref),
-              ],
-            ))),
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _buildIconAndInput(),
+                        _buildTimerTypeSelector(),
+                        _timerType == TimerType.reps
+                            ? _buildTypeSetsReps()
+                            : _buildTypeTime(),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        _buildIntervalsList(ref),
+                      ],
+                    ))),
           ],
         ),
       ),

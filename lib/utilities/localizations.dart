@@ -18,7 +18,7 @@ class AppLocalizations {
   static String currentProgress = 'Progress';
   static String createTimer = 'Create new Timer';
   static String noTemposErrorTitle = 'No intervals added';
-  static String noTemposErrorMessage = 'Add intervals tempos to start the timer';
+  static String noTemposErrorMessage = 'Add intervals to create a timer';
   static String resumeTimerButton = 'Resume';
   static String pauseTimerButton = 'Pause';
   static String closeAppTitle = 'Close app';
@@ -50,6 +50,7 @@ class AppLocalizations {
   static String tapToClose = 'Tap to close';
   static String youHaveCompleted = 'Finished: {TIMER_NAME}';
   static String activities = 'Activities';
+  static String done = 'Done';
 
   static List<String> timerEndedCongrats = ['Congrats!', 'Well done!', 'Great job!'];
 

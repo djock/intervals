@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:focus/utilities/constants.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 import '../../utilities/custom_style.dart';
+import '../../utilities/localizations.dart';
 import '../../utilities/picker_config.dart';
 import '../../utilities/utils.dart';
 
@@ -33,6 +36,7 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
 
   final TextEditingController _textController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final FocusNode _focusNode = FocusNode();
 
   int _currentIntValue = 0;
   int _maxIntValue = 0;
@@ -54,10 +58,17 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
   void onInputSubmit() {
     if (_formKey.currentState!.validate()) {
       FocusManager.instance.primaryFocus?.unfocus();
-      _currentIntValue = int.parse(_textController.text);
 
-      if(_currentIntValue > _maxIntValue) {
-        _maxIntValue = _currentIntValue;
+      var tryParse = int.tryParse(_textController.text);
+
+      if(tryParse == null) {
+
+      } else {
+        _currentIntValue = tryParse;
+
+        if (_currentIntValue > _maxIntValue) {
+          _maxIntValue = _currentIntValue;
+        }
       }
 
       _isInput = !_isInput;
@@ -67,38 +78,45 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      key: const ValueKey(0),
-      endActionPane: widget.canSlide
-          ? ActionPane(
-              motion: ScrollMotion(),
-              children: [
-                SlidableAction(
-                  onPressed: doNothing,
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  foregroundColor: Theme.of(context).colorScheme.onError,
-                  icon: Icons.delete,
+    return Container(
+      height: 50,
+      child: KeyboardActions(
+        config: _buildConfig(context),
+        child: Slidable(
+          key: const ValueKey(0),
+          endActionPane: widget.canSlide
+              ? ActionPane(
+            motion: ScrollMotion(),
+            children: [
+              SlidableAction(
+                onPressed: doNothing,
+                backgroundColor: Theme.of(context).colorScheme.error,
+                foregroundColor: Theme.of(context).colorScheme.onError,
+                icon: Icons.delete,
+              ),
+            ],
+          )
+              : null,
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  widget.title,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
+                GestureDetector(
+                  onLongPress: () {
+                    log.info('ontap');
+                    setState(() {
+                      _isInput = !_isInput;
+                    });
+                  },
+                  child: _isInput ? _buildInput() : _buildPicker(),
+                )
               ],
-            )
-          : null,
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              widget.title,
-              style: Theme.of(context).textTheme.headline6,
             ),
-            GestureDetector(
-              onLongPress: () {
-                setState(() {
-                  _isInput = !_isInput;
-                });
-              },
-              child: _isInput ? _buildInput() : _buildPicker(),
-            )
-          ],
+          ),
         ),
       ),
     );
@@ -140,32 +158,47 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
       child: Form(
         key: _formKey,
         child: TextFormField(
+          focusNode: _focusNode,
           controller: _textController,
           textAlign: TextAlign.center,
-          onFieldSubmitted: (value) {
+          onEditingComplete: () {
             onInputSubmit();
           },
-          keyboardType:
-              TextInputType.numberWithOptions(signed: false, decimal: false),
+          keyboardType: TextInputType.numberWithOptions(),
           autofocus: true,
           style: Theme.of(context).textTheme.headline6,
           decoration: CustomStyle.inputDecoration(context, ''),
-          // validator: (value) {
-          //
-          //   if(value == null || value.isEmpty) {
-          //     return 'Please enter a value';
-          //   }
-          //
-          //   var intValue = int.tryParse(value);
-          //
-          //   if(intValue == null) {
-          //     return 'Please enter a valid number';
-          //   }
-          //
-          //   return null;
-          // },
         ),
       ),
+    );
+  }
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+      keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+      keyboardBarColor: Colors.grey[200],
+      nextFocus: true,
+      actions: [
+        KeyboardActionsItem(
+          focusNode: _focusNode,
+          toolbarButtons: [
+                (node) {
+              return TextButton(
+                  onPressed: () {
+                    log.info('test');
+                    onInputSubmit();
+                  },
+                  child: Text(
+                    AppLocalizations.done,
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                  ));
+            }
+          ],
+        ),
+      ],
     );
   }
 }
