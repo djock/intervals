@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/modules/active_timer/timer_end_screen.dart';
+import 'package:focus/screens/activities_screen.dart';
 import 'package:focus/screens/navigation_screen.dart';
 import 'package:focus/modules/active_timer/timer_screen.dart';
 import 'package:focus/models/app_theme_model.dart';
@@ -43,6 +44,7 @@ class AppState extends ConsumerState<App> {
 
     var timersManagerWatcher = ref.read(timersManagerProvider);
     timersManagerWatcher.getHiveTimers();
+    timersManagerWatcher.getHiveActivities();
 
     return MaterialApp(
       debugShowMaterialGrid: false,
@@ -59,6 +61,7 @@ class AppState extends ConsumerState<App> {
         TimersScreen.id: (context) => TimersScreen(),
         EditTimerScreen.id: (context) => EditTimerScreen(),
         TimerEndScreen.id: (context) => TimerEndScreen(),
+        ActivitiesScreen.id: (context) => ActivitiesScreen(),
       },
     );
   }

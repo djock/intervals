@@ -26,8 +26,6 @@ class EditTimerScreen extends ConsumerStatefulWidget {
 }
 
 class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
-  bool _firstOpen = true;
-
   List<Widget> _timerTypeTexts = <Widget>[
     Text(AppLocalizations.forReps),
     Text(AppLocalizations.forTime),

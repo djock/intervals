@@ -6,14 +6,13 @@ import '../models/timer_model.dart';
 import '../utilities/utils.dart';
 
 class ActiveTimer extends ChangeNotifier {
-  TimerModel? _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps, '');
+  TimerModel? _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps, '', DateTime.now().millisecondsSinceEpoch);
   TimerModel get timer => _timer!;
 
   ActiveTimer();
 
   void clear() {
-    _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps, '');
-    log.info('clear');
+    _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps, '', DateTime.now().millisecondsSinceEpoch);
     notifyListeners();
   }
 
@@ -79,13 +78,8 @@ class ActiveTimer extends ChangeNotifier {
         _timer!.intervals.remove(tempoToUpdate);
       }
     } else {
-      log.info('Adding new interval ' + ikvp.toString());
       _timer!.intervals.add(ikvp);
       _timer!.listCount++;
-    }
-
-    for(var item in _timer!.intervals) {
-      log.info(item.key.toString());
     }
 
     notifyListeners();

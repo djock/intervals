@@ -106,7 +106,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                             builder: (context, dynamic value, child) {
                               return Text(
                                 '${_titleName.value}',
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headline4,
                               );
                             },
                           ),
@@ -163,8 +163,8 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                                             : SizedBox(),
                                         Text(
                                           _timerRunning.value
-                                              ?  AppLocalizations.tapToPause
-                                              : AppLocalizations.tapToStart,
+                                              ? AppLocalizations.tapToPause
+                                              : _hasStarted.value ? '' : AppLocalizations.tapToStart,
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle1,
@@ -310,6 +310,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
         //   // audioPlayer.clearCache();
         //   isVoice = false;
         // }
+
         endWorkout(context);
       }
     } else {
@@ -374,7 +375,6 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
     }
 
     return Container(
-      color: Colors.red,
       height: 100,
       child: Row(
         children: children,
@@ -447,6 +447,9 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   }
 
   void endWorkout(BuildContext context) {
+    var timerManagerWatcher = ref.watch(timersManagerProvider);
+    timerManagerWatcher.saveActivitiesToHive(_activeTimerInstance!.timer);
+
     Navigator.pushNamed(context, TimerEndScreen.id);
   }
 }

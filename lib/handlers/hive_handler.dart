@@ -7,6 +7,8 @@ import 'package:focus/models/timer_type_enum_adapter.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../utilities/utils.dart';
+
 class HiveHandler {
   static void init() {
     Hive.registerAdapter(TimerModelAdapter());
@@ -14,10 +16,12 @@ class HiveHandler {
     Hive.registerAdapter(TimerTypeEnumAdapter());
   }
 
-  static Future<List<TimerModel>> openHiveBoxes() async {
+  static Future<List<TimerModel>> openTimersBox() async {
     var timersList = <TimerModel>[];
 
     var dir = await getApplicationDocumentsDirectory();
+    log.info('dir ' + dir.path);
+
     Hive.init(dir.path);
 
     var hiveTimers = await Hive.openBox('timers');
@@ -33,8 +37,32 @@ class HiveHandler {
     return timersList;
   }
 
+  static Future<List<TimerModel>> openActivitiesBox() async {
+    var timersList = <TimerModel>[];
+
+    var dir = await getApplicationDocumentsDirectory();
+    Hive.init(dir.path);
+
+    var hiveTimers = await Hive.openBox('activities');
+
+    if (hiveTimers.isNotEmpty) {
+      var _box = hiveTimers.get('activities');
+
+      for (var item in _box) {
+        timersList.add(item);
+      }
+    }
+
+    return timersList;
+  }
+
   static void saveTimersToBox(List<TimerModel> timers) {
     Box timersBox = Hive.box('timers');
     timersBox.put('timers', timers);
+  }
+
+  static void saveActivitiesToBox(List<TimerModel> activities) {
+    Box timersBox = Hive.box('activities');
+    timersBox.put('activities', activities);
   }
 }

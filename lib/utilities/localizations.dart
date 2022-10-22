@@ -37,6 +37,7 @@ class AppLocalizations {
   static String progress = 'Progress';
   static String timersScreenTitle = 'My timers';
   static String noTimers = 'No saved timers, tap on the + icon to create one';
+  static String noActivities = 'No activities';
   static String intervals = 'Intervals';
   static String setsReps = 'Sets x Reps';
   static String target = 'Target';
@@ -48,6 +49,7 @@ class AppLocalizations {
   static String wellDone = 'Well Done!';
   static String tapToClose = 'Tap to close';
   static String youHaveCompleted = 'Finished: {TIMER_NAME}';
+  static String activities = 'Activities';
 
   static List<String> timerEndedCongrats = ['Congrats!', 'Well done!', 'Great job!'];
 

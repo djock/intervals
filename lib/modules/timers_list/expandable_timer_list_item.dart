@@ -11,10 +11,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../models/timer_model.dart';
 import '../../providers/providers.dart';
-import '../active_timer/timer_screen.dart';
 import '../../utilities/localizations.dart';
 import '../../utilities/utils.dart';
-import '../create_timer/edit_timer_screen.dart';
+import 'package:intl/intl.dart';
+
 
 class ExpandableTimerListItem extends ConsumerWidget {
   final TimerModel timer;
@@ -22,31 +22,35 @@ class ExpandableTimerListItem extends ConsumerWidget {
   ExpandableTimerListItem(this.timer);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var now = new DateTime.fromMillisecondsSinceEpoch(timer.date);
+    var formatter = new DateFormat('dd MMM yyyy  HH:mm');
+    String formattedDate = formatter.format(now);
+
     return Slidable(
       key: const ValueKey(0),
       endActionPane: ActionPane(
         motion: ScrollMotion(),
         children: [
           SlidableAction(
-            flex: 4,
+            flex: 1,
             onPressed: (context) =>
                 ref.read(timersManagerProvider).deleteTimerFromHive(timer),
             backgroundColor: Theme.of(context).colorScheme.error,
             foregroundColor: Theme.of(context).colorScheme.onError,
             icon: Icons.delete,
           ),
-          SlidableAction(
-            flex: 4,
-            onPressed: (context) {
-              var activeTimerWatcher = ref.watch(activeTimerProvider);
-              activeTimerWatcher.setTimer(timer);
-
-              Navigator.pushNamed(context, EditTimerScreen.id);
-            },
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            icon: Icons.edit,
-          ),
+          // SlidableAction(
+          //   flex: 4,
+          //   onPressed: (context) {
+          //     var activeTimerWatcher = ref.watch(activeTimerProvider);
+          //     activeTimerWatcher.setTimer(timer);
+          //
+          //     Navigator.pushNamed(context, EditTimerScreen.id);
+          //   },
+          //   backgroundColor: Theme.of(context).colorScheme.primary,
+          //   foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          //   icon: Icons.edit,
+          // ),
         ],
       ),
       child: ClipRRect(
@@ -66,6 +70,10 @@ class ExpandableTimerListItem extends ConsumerWidget {
               style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 18),
             ),
           ),
+          subtitle: Text(
+            formattedDate,
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
           children: <Widget>[
             StaggeredGrid.count(
               crossAxisCount: 4,
@@ -74,7 +82,7 @@ class ExpandableTimerListItem extends ConsumerWidget {
               children: [
                 _timerInfo(context, ref),
                 _totalTime(context),
-                _startButton(context, ref),
+                // _startButton(context, ref),
               ],
             ),
           ],
@@ -85,22 +93,23 @@ class ExpandableTimerListItem extends ConsumerWidget {
 
   Widget _timerInfo(BuildContext context, WidgetRef ref) {
     return TimerInfoTile(
-        header: TimerInfoTileHeader(
-          title: AppLocalizations.timerInfo,
-          color: TimerTileStyleConfig.light(context).textColor,
-          icon: FontAwesomeIcons.penToSquare,
-          onTap: () {
-            var activeTimerWatcher = ref.watch(activeTimerProvider);
-            activeTimerWatcher.setTimer(timer);
-            Navigator.pushNamed(context, EditTimerScreen.id);
-          },
-        ),
+        // header: TimerInfoTileHeader(
+        //   title: AppLocalizations.timerInfo,
+        //   color: TimerTileStyleConfig.light(context).textColor,
+        //   icon: FontAwesomeIcons.penToSquare,
+        //   onTap: () {
+        //     var activeTimerWatcher = ref.watch(activeTimerProvider);
+        //     activeTimerWatcher.setTimer(timer);
+        //     Navigator.pushNamed(context, EditTimerScreen.id);
+        //   },
+        // ),
+      header: SizedBox(),
         crossAxisCellCount: 2,
         mainAxisCellCount: 2,
         child: Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildTimerType(context),
               SizedBox(height: 2),
@@ -149,26 +158,26 @@ class ExpandableTimerListItem extends ConsumerWidget {
     }
   }
 
-  Widget _startButton(BuildContext context, WidgetRef ref) {
-    return StaggeredGridTile.count(
-      crossAxisCellCount: 2,
-      mainAxisCellCount: 1,
-      child: GestureDetector(
-        onTap: () {
-          var activeTimerWatcher = ref.watch(activeTimerProvider);
-          activeTimerWatcher.setTimer(timer);
-
-          Navigator.of(context).pushNamed(TimerScreen.id);
-        },
-        child: Container(
-          color: Colors.transparent,
-          child: Center(
-            child: Icon(FontAwesomeIcons.circlePlay, size: 60, color: Theme.of(context).primaryColor,),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _startButton(BuildContext context, WidgetRef ref) {
+  //   return StaggeredGridTile.count(
+  //     crossAxisCellCount: 2,
+  //     mainAxisCellCount: 1,
+  //     child: GestureDetector(
+  //       onTap: () {
+  //         var activeTimerWatcher = ref.watch(activeTimerProvider);
+  //         activeTimerWatcher.setTimer(timer);
+  //
+  //         Navigator.of(context).pushNamed(TimerScreen.id);
+  //       },
+  //       child: Container(
+  //         color: Colors.transparent,
+  //         child: Center(
+  //           child: Icon(FontAwesomeIcons.circlePlay, size: 60, color: Theme.of(context).primaryColor,),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _totalTime(BuildContext context) {
     return TimerInfoTile(

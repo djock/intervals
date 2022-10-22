@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'localizations.dart';
-
 class CustomStyle {
   static OutlineInputBorder inputBorder = OutlineInputBorder(
     borderSide: BorderSide.none,

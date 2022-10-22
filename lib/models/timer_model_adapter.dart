@@ -22,6 +22,7 @@ class TimerModelAdapter extends TypeAdapter<TimerModel> {
       fields[6] as int,
       fields[7] as TimerType,
       fields[8] as String,
+      fields[9] as int,
     );
   }
 
@@ -31,7 +32,7 @@ class TimerModelAdapter extends TypeAdapter<TimerModel> {
   @override
   void write(BinaryWriter writer, TimerModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -49,6 +50,8 @@ class TimerModelAdapter extends TypeAdapter<TimerModel> {
       ..writeByte(7)
       ..write(obj.type)
       ..writeByte(8)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(9)
+      ..write(obj.date);
   }
 }

@@ -24,9 +24,11 @@ class TimerModel extends HiveObject {
   TimerType type;
   @HiveField(8)
   String id;
+  @HiveField(9)
+  int date;
 
   TimerModel(this.name, this.sets, this.reps, this.time, this.rest,
-      this.intervals, this.listCount, this.type, this.id);
+      this.intervals, this.listCount, this.type, this.id, this.date);
 
   TimerModel.copy(TimerModel t)
       : name = t.name,
@@ -37,7 +39,8 @@ class TimerModel extends HiveObject {
         intervals = t.intervals,
         type = t.type,
         listCount = t.listCount,
-        id = t.id;
+        id = t.id,
+        date = t.date;
 
   int getTotalSeconds() {
     if (type == TimerType.reps) {
@@ -57,5 +60,9 @@ class TimerModel extends HiveObject {
 
   void createMd5() {
     id = Utils.generateMd5(name);
+  }
+
+  void setDate() {
+    date = DateTime.now().millisecondsSinceEpoch;
   }
 }

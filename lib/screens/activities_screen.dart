@@ -1,33 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:focus/modules/timers_list/simple_timer_item.dart';
 import 'package:focus/screens/pop_scope_screen.dart';
 
 import '../../providers/providers.dart';
 import '../../utilities/localizations.dart';
 import '../../widgets/custom_app_bar.dart';
-import '../create_timer/create_timer_screen.dart';
+import '../modules/timers_list/expandable_timer_list_item.dart';
 
-class TimersScreen extends ConsumerWidget {
-  static const String id = 'TimersScreen';
+class ActivitiesScreen extends ConsumerWidget {
+  static const String id = 'ActivitiesScreen';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopScopeScreen(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: CustomAppBar.buildWithAction(
-            context, AppLocalizations.timersScreenTitle, [
-          IconButton(
-              icon: Icon(
-                Icons.add,
-                size: 30,
-              ),
-              color: Theme.of(context).primaryColor,
-              onPressed: () {
-                Navigator.of(context).pushNamed(CreateTimerScreen.id);
-              })
-        ]),
+        appBar: CustomAppBar.buildNormal(
+            context, AppLocalizations.activities),
         body: Container(
           padding: EdgeInsets.all(20),
           width: double.infinity,
@@ -45,11 +34,6 @@ class TimersScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              // ExpandedTextButton(
-              //     text: AppLocalizations.createTimer,
-              //     callback: () {
-              //       Navigator.of(context).pushNamed(CreateTimerScreen.id);
-              //     })
             ],
           ),
         ),
@@ -62,13 +46,13 @@ class TimersScreen extends ConsumerWidget {
 
     List<Widget> result = [];
 
-    if (timerManagerWatcher.timers.length == 0) {
-      result.add(Container(width: double.infinity, child: Center(child: Text(AppLocalizations.noTimers))));
+    if (timerManagerWatcher.activities.length == 0) {
+      result.add(Container(width: double.infinity, child: Center(child: Text(AppLocalizations.noActivities))));
     } else {
-      for (var item in timerManagerWatcher.timers) {
-        result.add(SimpleTimerItem(item));
+      for (var item in timerManagerWatcher.activities) {
+        result.add(ExpandableTimerListItem(item));
         result.add(SizedBox(
-          height: 20,
+          height: 10,
         ));
       }
     }

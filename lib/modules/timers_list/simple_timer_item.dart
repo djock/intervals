@@ -29,14 +29,6 @@ class SimpleTimerItem extends ConsumerWidget {
         children: [
           SlidableAction(
             flex: 4,
-            onPressed: (context) =>
-                ref.read(timersManagerProvider).deleteTimerFromHive(timer),
-            backgroundColor: Theme.of(context).colorScheme.error,
-            foregroundColor: Theme.of(context).colorScheme.onError,
-            icon: Icons.delete,
-          ),
-          SlidableAction(
-            flex: 4,
             onPressed: (context) {
               var activeTimerWatcher = ref.watch(activeTimerProvider);
               activeTimerWatcher.setTimer(timer);
@@ -47,6 +39,14 @@ class SimpleTimerItem extends ConsumerWidget {
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
             icon: Icons.edit,
           ),
+          SlidableAction(
+            flex: 4,
+            onPressed: (context) =>
+                ref.read(timersManagerProvider).deleteTimerFromHive(timer),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            foregroundColor: Theme.of(context).colorScheme.onError,
+            icon: Icons.delete,
+          )
         ],
       ),
       child: GestureDetector(

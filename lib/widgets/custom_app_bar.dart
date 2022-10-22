@@ -22,7 +22,7 @@ class CustomAppBar {
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         title: Text(
           text.toUpperCase(),
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headline6,
         ),
         centerTitle: true,
       );
