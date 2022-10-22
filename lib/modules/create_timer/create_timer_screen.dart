@@ -46,7 +46,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar.buildWithActionAndGoBack(
+      appBar: CustomAppBar.buildWithActionAndGoBackClear(
           context, AppLocalizations.createTimerScreenTitle, [
         TextButton(
             onPressed: () {
@@ -76,8 +76,11 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
                   color: Theme.of(context).primaryColor,
                   fontSize: 18,
                   fontWeight: FontWeight.w600),
-            ))
-      ]),
+            )),
+      ], () {
+        Navigator.pop(context);
+        activeTimerWatcher.clear();
+      }),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -174,7 +177,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
     return Row(
       children: [
         Container(
-          alignment: Alignment.center,
+            alignment: Alignment.center,
             width: 50.0,
             height: 50.0,
             decoration: BoxDecoration(
