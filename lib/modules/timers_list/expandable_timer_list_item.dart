@@ -39,18 +39,6 @@ class ExpandableTimerListItem extends ConsumerWidget {
             foregroundColor: Theme.of(context).colorScheme.onError,
             icon: Icons.delete,
           ),
-          // SlidableAction(
-          //   flex: 4,
-          //   onPressed: (context) {
-          //     var activeTimerWatcher = ref.watch(activeTimerProvider);
-          //     activeTimerWatcher.setTimer(timer);
-          //
-          //     Navigator.pushNamed(context, EditTimerScreen.id);
-          //   },
-          //   backgroundColor: Theme.of(context).colorScheme.primary,
-          //   foregroundColor: Theme.of(context).colorScheme.onPrimary,
-          //   icon: Icons.edit,
-          // ),
         ],
       ),
       child: ClipRRect(
@@ -58,7 +46,6 @@ class ExpandableTimerListItem extends ConsumerWidget {
         child: ExpansionTile(
           childrenPadding: EdgeInsets.all(10),
           onExpansionChanged: (bool isExpanded) {
-            debugPrint('Timer ' + timer.type.toString());
           },
           collapsedBackgroundColor: Theme.of(context).colorScheme.secondary,
           backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -72,17 +59,15 @@ class ExpandableTimerListItem extends ConsumerWidget {
           ),
           subtitle: Text(
             formattedDate,
-            style: Theme.of(context).textTheme.subtitle1,
+            style: Theme.of(context).textTheme.subtitle2,
           ),
           children: <Widget>[
             StaggeredGrid.count(
               crossAxisCount: 4,
-              mainAxisSpacing: 10,
               crossAxisSpacing: 10,
               children: [
                 _timerInfo(context, ref),
                 _totalTime(context),
-                // _startButton(context, ref),
               ],
             ),
           ],
@@ -93,28 +78,20 @@ class ExpandableTimerListItem extends ConsumerWidget {
 
   Widget _timerInfo(BuildContext context, WidgetRef ref) {
     return TimerInfoTile(
-        // header: TimerInfoTileHeader(
-        //   title: AppLocalizations.timerInfo,
-        //   color: TimerTileStyleConfig.light(context).textColor,
-        //   icon: FontAwesomeIcons.penToSquare,
-        //   onTap: () {
-        //     var activeTimerWatcher = ref.watch(activeTimerProvider);
-        //     activeTimerWatcher.setTimer(timer);
-        //     Navigator.pushNamed(context, EditTimerScreen.id);
-        //   },
-        // ),
-      header: SizedBox(),
+        header: TimerInfoTileHeader(
+          title: AppLocalizations.intervals,
+          color: TimerTileStyleConfig.light(context).textColor,
+          icon: FontAwesomeIcons.hourglassStart,
+          onTap: () {
+          },
+        ),
         crossAxisCellCount: 2,
-        mainAxisCellCount: 2,
+        mainAxisCellCount: 1,
         child: Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _buildTimerType(context),
-              SizedBox(height: 2),
-              _buildRest(context),
-              SizedBox(height: 2),
               _buildIntervals(context)
             ],
           ),
@@ -133,51 +110,14 @@ class ExpandableTimerListItem extends ConsumerWidget {
       intervals += item.value.toString() + suffix;
     }
 
-    return TimerIconTextRow(intervals, FontAwesomeIcons.hourglassStart
+    return Text(
+      intervals,
+      style: Theme.of(context)
+          .textTheme
+          .headline6!
+          .copyWith(color: Theme.of(context).colorScheme.primary),
     );
   }
-
-  Widget _buildTimerType(BuildContext context) {
-    if (timer.type == TimerType.reps) {
-      return TimerIconTextRow(
-          timer.sets.toString() + 'X' + timer.reps.toString(),
-          FontAwesomeIcons.dumbbell);
-    } else {
-      return TimerIconTextRow(
-          Utils.formatTime(timer.time), FontAwesomeIcons.clock);
-    }
-  }
-
-  Widget _buildRest(BuildContext context) {
-    if (timer.rest != 0 && timer.type == TimerType.reps) {
-      return TimerIconTextRow(
-          Utils.formatTime(timer.rest), FontAwesomeIcons.pause);
-    } else {
-      return TimerIconTextRow(
-          '-', FontAwesomeIcons.pause);
-    }
-  }
-
-  // Widget _startButton(BuildContext context, WidgetRef ref) {
-  //   return StaggeredGridTile.count(
-  //     crossAxisCellCount: 2,
-  //     mainAxisCellCount: 1,
-  //     child: GestureDetector(
-  //       onTap: () {
-  //         var activeTimerWatcher = ref.watch(activeTimerProvider);
-  //         activeTimerWatcher.setTimer(timer);
-  //
-  //         Navigator.of(context).pushNamed(TimerScreen.id);
-  //       },
-  //       child: Container(
-  //         color: Colors.transparent,
-  //         child: Center(
-  //           child: Icon(FontAwesomeIcons.circlePlay, size: 60, color: Theme.of(context).primaryColor,),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _totalTime(BuildContext context) {
     return TimerInfoTile(

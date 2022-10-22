@@ -57,7 +57,7 @@ class SimpleTimerItem extends ConsumerWidget {
           Navigator.pushNamed(context, TimerScreen.id);
         },
         child: Container(
-          padding: EdgeInsets.only(bottom: 10),
+          padding: EdgeInsets.only(bottom: 10, left: 10, top: 5),
           decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(

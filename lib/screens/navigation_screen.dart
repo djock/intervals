@@ -27,7 +27,7 @@ class NavigationScreenState extends ConsumerState<NavigationScreen> {
         resizeToAvoidBottomInset: false,
         body: Container(child: _screens[_selectedScreenIndex]),
         bottomNavigationBar: BottomNavigationBar(
-          elevation: 0.0,
+          elevation: 5,
             showSelectedLabels: false,
           showUnselectedLabels: false,
           selectedItemColor: Theme.of(context).primaryColor,
