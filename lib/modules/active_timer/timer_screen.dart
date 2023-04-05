@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/handlers/timer_handler.dart';
@@ -8,6 +9,7 @@ import 'package:focus/utilities/audio_handler.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../../models/timer_type_enum.dart';
 import '../../utilities/utils.dart';
@@ -37,13 +39,21 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
   ValueNotifier<double> _progress = ValueNotifier<double>(0);
   ValueNotifier<int> _currentRep = ValueNotifier<int>(1);
   ValueNotifier<int> _currentSet = ValueNotifier<int>(1);
-  ValueNotifier<bool> _isLoading = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _isLoading = ValueNotifier<bool>(false);
   ValueNotifier<bool> _hasStarted = ValueNotifier<bool>(false);
 
   ValueNotifier<bool> _timerRunning = ValueNotifier<bool>(false);
 
   @override
+  void initState() {
+    super.initState();
+    Wakelock.enable();
+  }
+
+  @override
   void dispose() {
+    Wakelock.disable();
+
     super.dispose();
     _timeInSec.value = 0;
     _titleName.dispose();
@@ -65,6 +75,8 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
 
     return WillPopScope(
       onWillPop: () async {
+        log.info('close');
+
         return true;
       },
       child: Container(
@@ -81,9 +93,33 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                     size: 30,
                   ),
                   color: Theme.of(context).errorColor,
-                  onPressed: () {
-                    _activeTimerInstance!.clear();
-                    Navigator.of(context).pop();
+                  onPressed: () async {
+                    if(_hasStarted.value) {
+                      _timerRunning.value = false;
+
+                      final result = await showOkCancelAlertDialog(
+                        context: context,
+                        okLabel: AppLocalizations.close,
+                        cancelLabel: AppLocalizations.cancel,
+                        title: AppLocalizations.endActivityTitle,
+                        message: AppLocalizations.endActivityMessage,
+                        defaultType: OkCancelAlertDefaultType.cancel,
+                        isDestructiveAction: true,
+                      );
+
+                      if (result == OkCancelResult.ok) {
+                        AudioHandler.stopAudioFile();
+                        _activeTimerInstance!.clear();
+                        Navigator.of(context).pop();
+                      } else {
+                        _timerRunning.value = true;
+                      }
+                    } else {
+                      AudioHandler.stopAudioFile();
+                      _activeTimerInstance!.clear();
+                      Navigator.of(context).pop();
+                    }
+
                   })
             ]),
             body: Container(
@@ -116,7 +152,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                           ValueListenableBuilder(
                               valueListenable: _timeInSec,
                               builder: (context, dynamic value, child) {
-                                var progress = (_timeInSec.value -1 ) *
+                                var progress = (_timeInSec.value - 1) *
                                     100 /
                                     (_currentTargetTime.value - 1) /
                                     100;
@@ -149,7 +185,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                                       children: [
                                         _hasStarted.value
                                             ? Text(
-                                          '${_timeInSec.value}',
+                                                '${_timeInSec.value}',
                                                 // _timeInSec.value ==
                                                 //             _currentTargetTime
                                                 //                 .value &&
@@ -158,13 +194,18 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                                                 //     : '${_timeInSec.value}',
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headline1!.copyWith(color: Theme.of(context).primaryColor),
+                                                    .headline1!
+                                                    .copyWith(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
                                               )
                                             : SizedBox(),
                                         Text(
                                           _timerRunning.value
                                               ? AppLocalizations.tapToPause
-                                              : _hasStarted.value ? '' : AppLocalizations.tapToStart,
+                                              : _isLoading.value
+                                                  ? ''
+                                                  : AppLocalizations.tapToStart,
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle1,
@@ -294,7 +335,8 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
 
           if (!this.mounted) return;
 
-          if (_activeTimerInstance!.timer.rest != 0 && _activeTimerInstance!.timer.type == TimerType.reps) {
+          if (_activeTimerInstance!.timer.rest != 0 &&
+              _activeTimerInstance!.timer.type == TimerType.reps) {
             _timeInSec.value = _activeTimerInstance!.timer.rest;
             _currentTargetTime.value = _activeTimerInstance!.timer.rest;
             _titleName.value = AppLocalizations.rest;

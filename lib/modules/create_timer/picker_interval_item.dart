@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:focus/utilities/constants.dart';
@@ -103,11 +102,10 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
               children: <Widget>[
                 Text(
                   widget.title,
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 GestureDetector(
-                  onLongPress: () {
-                    log.info('ontap');
+                  onTap: () {
                     setState(() {
                       _isInput = !_isInput;
                     });

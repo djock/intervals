@@ -22,7 +22,7 @@ class ExpandedTextButton extends StatelessWidget {
             onPressed: callback,
             child: Text(
               text,
-              style: Theme.of(context).textTheme.button,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimary),
             ),
           )),
         ],

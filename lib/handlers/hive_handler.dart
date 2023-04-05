@@ -7,8 +7,6 @@ import 'package:focus/models/timer_type_enum_adapter.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../utilities/utils.dart';
-
 class HiveHandler {
   static void init() {
     Hive.registerAdapter(TimerModelAdapter());

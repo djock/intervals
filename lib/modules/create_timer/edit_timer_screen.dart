@@ -64,71 +64,85 @@ class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
     _textEditingController.value =
         TextEditingValue(text: activeTimerWatcher.timer.name);
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar.buildWithActionAndGoBackClear(
-          context, AppLocalizations.editTimer, [
-        TextButton(
-            onPressed: () {
-              if (activeTimerWatcher.timer.intervals.isEmpty) {
-                NotificationBar.build(
-                    context,
-                    AppLocalizations.noTemposErrorTitle,
-                    AppLocalizations.noTemposErrorMessage,
-                    Theme.of(context).colorScheme.error);
-              } else {
-                if (_formKey.currentState!.validate()) {
-                  activeTimerWatcher.updateName(_textEditingController.text);
-
-                  var timersManager = ref.watch(timersManagerProvider);
-
-                  var newTimer = TimerModel.copy(activeTimerWatcher.timer);
-                  activeTimerWatcher.clear();
-
-                  timersManager.updateTimerInHive(newTimer);
-                  Navigator.pop(context);
-                }
-              }
-            },
-            child: Text(
-              AppLocalizations.updateTimer,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600),
-            ))
-      ], () {
-        activeTimerWatcher.clear();
-        Navigator.pop(context);
-      }),
-      body: Container(
-        padding: EdgeInsets.all(20),
+    return FractionallySizedBox(
+      heightFactor: 0.93,
+      child: Container(
+        padding: const EdgeInsets.only(top: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(30),
+        ),
         child: Column(
           children: [
+            CustomAppBar.buildWithActionAndGoBackClear(
+                context, AppLocalizations.editTimer, [
+              TextButton(
+                  onPressed: () {
+                    if (activeTimerWatcher.timer.intervals.isEmpty) {
+                      NotificationBar.build(
+                          context,
+                          AppLocalizations.noTemposErrorTitle,
+                          AppLocalizations.noTemposErrorMessage,
+                          Theme.of(context).colorScheme.error);
+                    } else {
+                      if (_formKey.currentState!.validate()) {
+                        activeTimerWatcher.updateName(_textEditingController.text);
+
+                        var timersManager = ref.watch(timersManagerProvider);
+
+                        var newTimer = TimerModel.copy(activeTimerWatcher.timer);
+                        activeTimerWatcher.clear();
+
+                        timersManager.updateTimerInHive(newTimer);
+                        Navigator.pop(context);
+                      }
+                    }
+                  },
+                  child: Text(
+                    AppLocalizations.updateTimer,
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                  ))
+            ], () {
+              activeTimerWatcher.clear();
+              Navigator.pop(context);
+            }),
             Expanded(
-                child: SingleChildScrollView(
-                    child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _buildIconAndInput(ref),
-                _buildTimerTypeSelector(),
-                _timerType == TimerType.reps
-                    ? _buildTypeSetsReps()
-                    : _buildTypeTime(),
-                const SizedBox(
-                  height: 20,
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                _buildIconAndInput(ref),
+                                _buildTimerTypeSelector(),
+                                _timerType == TimerType.reps
+                                    ? _buildTypeSetsReps()
+                                    : _buildTypeTime(),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                _buildIntervalsList(ref),
+                              ],
+                            ))),
+                  ],
                 ),
-                Container(
-                  height: 1,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                _buildIntervalsList(ref),
-              ],
-            ))),
+              ),
+            )
           ],
         ),
       ),

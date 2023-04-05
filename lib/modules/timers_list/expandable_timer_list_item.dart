@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:focus/models/timer_tile_style.dart';
-import 'package:focus/models/timer_type_enum.dart';
-import 'package:focus/modules/timers_list/timer_icon_text_row.dart';
 import 'package:focus/modules/timers_list/timer_info_tile.dart';
 import 'package:focus/modules/timers_list/timer_info_tile_header.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

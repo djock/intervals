@@ -43,13 +43,13 @@ class ActivitiesScreen extends ConsumerWidget {
 
   List<Widget> _buildTimers(WidgetRef ref) {
     var timerManagerWatcher = ref.watch(timersManagerProvider);
-
+    var timers = timerManagerWatcher.activities.reversed.toList();
     List<Widget> result = [];
 
     if (timerManagerWatcher.activities.length == 0) {
       result.add(Container(width: double.infinity, child: Center(child: Text(AppLocalizations.noActivities))));
     } else {
-      for (var item in timerManagerWatcher.activities) {
+      for (var item in timers) {
         result.add(ExpandableTimerListItem(item));
         result.add(SizedBox(
           height: 10,

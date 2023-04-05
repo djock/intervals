@@ -24,6 +24,7 @@ class AppLocalizations {
   static String closeAppTitle = 'Close app';
   static String closeAppMessage = 'Are you sure you want to close the app?';
   static String close = 'Close';
+  static String end = 'End';
   static String cancel = 'Cancel';
   static String saveTimer = 'Save';
   static String timerType = 'Timer type';
@@ -46,11 +47,19 @@ class AppLocalizations {
   static String updateTimer = 'Update';
   static String tapToStart = 'Tap to start';
   static String tapToPause = 'Tap to pause';
+  static String tapToResume = 'Tap to resume';
   static String wellDone = 'Well Done!';
   static String tapToClose = 'Tap to close';
   static String youHaveCompleted = 'Finished: {TIMER_NAME}';
   static String activities = 'Activities';
   static String done = 'Done';
+
+  static String endActivityTitle = 'End activity';
+  static String endActivityMessage = 'Are you sure you want to end the current timer?';
+
+  static String delete = 'Delete';
+  static String deleteTimer = 'Delete Timer?';
+  static String deleteTimerMessage = 'Are you sure you want to delete this timer?';
 
   static List<String> timerEndedCongrats = ['Congrats!', 'Well done!', 'Great job!'];
 

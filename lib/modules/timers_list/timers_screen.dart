@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:focus/modules/timers_list/simple_timer_item.dart';
+import 'package:focus/modules/timers_list/add_grid_timer.dart';
+import 'package:focus/modules/timers_list/grid_timer_item.dart';
 import 'package:focus/screens/pop_scope_screen.dart';
 
 import '../../providers/providers.dart';
 import '../../utilities/localizations.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../create_timer/create_timer_screen.dart';
 
 class TimersScreen extends ConsumerWidget {
   static const String id = 'TimersScreen';
@@ -16,40 +15,20 @@ class TimersScreen extends ConsumerWidget {
     return PopScopeScreen(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: CustomAppBar.buildWithAction(
-            context, AppLocalizations.timersScreenTitle, [
-          IconButton(
-              icon: Icon(
-                Icons.add,
-                size: 30,
-              ),
-              color: Theme.of(context).primaryColor,
-              onPressed: () {
-                Navigator.of(context).pushNamed(CreateTimerScreen.id);
-              })
-        ]),
         body: Container(
-          padding: EdgeInsets.all(20),
-          width: double.infinity,
-          height: double.infinity,
+          padding: EdgeInsets.only(left: 20, right: 20, top: 40, bottom: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: _buildTimers(ref),
-                  ),
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  childAspectRatio: 1.5,
+                  crossAxisSpacing: 30,
+                  mainAxisSpacing: 30,
+                  children: _buildTimers(ref, context),
                 ),
               ),
-              // ExpandedTextButton(
-              //     text: AppLocalizations.createTimer,
-              //     callback: () {
-              //       Navigator.of(context).pushNamed(CreateTimerScreen.id);
-              //     })
             ],
           ),
         ),
@@ -57,22 +36,22 @@ class TimersScreen extends ConsumerWidget {
     );
   }
 
-  List<Widget> _buildTimers(WidgetRef ref) {
+  List<Widget> _buildTimers(WidgetRef ref, BuildContext context) {
     var timerManagerWatcher = ref.watch(timersManagerProvider);
 
     List<Widget> result = [];
 
     if (timerManagerWatcher.timers.length == 0) {
-      result.add(Container(width: double.infinity, child: Center(child: Text(AppLocalizations.noTimers))));
+      result.add(Container(
+          width: double.infinity,
+          child: Center(child: Text(AppLocalizations.noTimers))));
     } else {
       for (var item in timerManagerWatcher.timers) {
-        result.add(SimpleTimerItem(item));
-        result.add(SizedBox(
-          height: 20,
-        ));
+        result.add(GridTimerItem(item));
       }
     }
 
+    result.add(AddGridTimer());
     return result;
   }
 }

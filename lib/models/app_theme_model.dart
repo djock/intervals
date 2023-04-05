@@ -45,7 +45,8 @@ class AppThemeModel {
     fontFamily: 'Poppins',
     textTheme: TextTheme(
         bodyText1: TextStyle(
-          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          color: new Color(0XFF4D358B),
         ),
         bodyText2: TextStyle(
           color: Colors.black,

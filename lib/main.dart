@@ -53,7 +53,7 @@ class AppState extends ConsumerState<App> {
       darkTheme: AppThemeModel.darkTheme,
       themeMode:
           appThemeState.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
-      initialRoute: NavigationScreen.id,
+      initialRoute: TimersScreen.id,
       routes: {
         NavigationScreen.id: (context) => NavigationScreen(),
         TimerScreen.id: (context) => TimerScreen(),

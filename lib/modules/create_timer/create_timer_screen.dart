@@ -44,75 +44,153 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
   Widget build(BuildContext context) {
     final activeTimerWatcher = ref.watch(activeTimerProvider);
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar.buildWithActionAndGoBackClear(
-          context, AppLocalizations.createTimerScreenTitle, [
-        TextButton(
-            onPressed: () {
-              if (activeTimerWatcher.timer.intervals.isEmpty) {
-                NotificationBar.build(
-                    context,
-                    AppLocalizations.noTemposErrorTitle,
-                    AppLocalizations.noTemposErrorMessage,
-                    Theme.of(context).colorScheme.error);
-              } else {
-                if (_formKey.currentState!.validate()) {
-                  activeTimerWatcher.updateName(_textEditingController.text);
-
-                  var timersManager = ref.watch(timersManagerProvider);
-
-                  var newTimer = TimerModel.copy(activeTimerWatcher.timer);
-                  activeTimerWatcher.clear();
-
-                  timersManager.saveTimerToHive(newTimer);
-                  Navigator.pop(context);
-                }
-              }
-            },
-            child: Text(
-              AppLocalizations.saveTimer,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600),
-            )),
-      ], () {
-        Navigator.pop(context);
-        activeTimerWatcher.clear();
-      }),
-      body: Container(
-        padding: EdgeInsets.all(20),
+    return FractionallySizedBox(
+      heightFactor: 0.93,
+      child: Container(
+        padding: const EdgeInsets.only(top: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(30),
+        ),
         child: Column(
           children: [
+            CustomAppBar.buildWithActionAndGoBackClear(
+                context, AppLocalizations.createTimerScreenTitle, [
+              TextButton(
+                  onPressed: () {
+                    if (activeTimerWatcher.timer.intervals.isEmpty) {
+                      NotificationBar.build(
+                          context,
+                          AppLocalizations.noTemposErrorTitle,
+                          AppLocalizations.noTemposErrorMessage,
+                          Theme.of(context).colorScheme.error);
+                    } else {
+                      if (_formKey.currentState!.validate()) {
+                        activeTimerWatcher.updateName(_textEditingController.text);
+
+                        var timersManager = ref.watch(timersManagerProvider);
+
+                        var newTimer = TimerModel.copy(activeTimerWatcher.timer);
+                        activeTimerWatcher.clear();
+
+                        timersManager.saveTimerToHive(newTimer);
+                        Navigator.pop(context);
+                      }
+                    }
+                  },
+                  child: Text(
+                    AppLocalizations.saveTimer,
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                  )),
+            ], () {
+              Navigator.pop(context);
+              activeTimerWatcher.clear();
+            }),
             Expanded(
-                child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _buildIconAndInput(),
-                        _buildTimerTypeSelector(),
-                        _timerType == TimerType.reps
-                            ? _buildTypeSetsReps()
-                            : _buildTypeTime(),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 1,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        _buildIntervalsList(ref),
-                      ],
-                    ))),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          _buildIconAndInput(),
+                          _buildTimerTypeSelector(),
+                          _timerType == TimerType.reps
+                              ? _buildTypeSetsReps()
+                              : _buildTypeTime(),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            height: 1,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          _buildIntervalsList(ref),
+                        ],
+                      )),
+                )),
           ],
         ),
       ),
     );
+
+    // return Scaffold(
+    //   resizeToAvoidBottomInset: false,
+    //   appBar: CustomAppBar.buildWithActionAndGoBackClear(
+    //       context, AppLocalizations.createTimerScreenTitle, [
+    //     TextButton(
+    //         onPressed: () {
+    //           if (activeTimerWatcher.timer.intervals.isEmpty) {
+    //             NotificationBar.build(
+    //                 context,
+    //                 AppLocalizations.noTemposErrorTitle,
+    //                 AppLocalizations.noTemposErrorMessage,
+    //                 Theme.of(context).colorScheme.error);
+    //           } else {
+    //             if (_formKey.currentState!.validate()) {
+    //               activeTimerWatcher.updateName(_textEditingController.text);
+    //
+    //               var timersManager = ref.watch(timersManagerProvider);
+    //
+    //               var newTimer = TimerModel.copy(activeTimerWatcher.timer);
+    //               activeTimerWatcher.clear();
+    //
+    //               timersManager.saveTimerToHive(newTimer);
+    //               Navigator.pop(context);
+    //             }
+    //           }
+    //         },
+    //         child: Text(
+    //           AppLocalizations.saveTimer,
+    //           style: TextStyle(
+    //               color: Theme.of(context).primaryColor,
+    //               fontSize: 18,
+    //               fontWeight: FontWeight.w600),
+    //         )),
+    //   ], () {
+    //     Navigator.pop(context);
+    //     activeTimerWatcher.clear();
+    //   }),
+    //   body: Container(
+    //     padding: EdgeInsets.all(20),
+    //     child: Column(
+    //       children: [
+    //         Expanded(
+    //             child: SingleChildScrollView(
+    //                 child: Column(
+    //                   mainAxisSize: MainAxisSize.min,
+    //                   mainAxisAlignment: MainAxisAlignment.start,
+    //                   children: [
+    //                     _buildIconAndInput(),
+    //                     _buildTimerTypeSelector(),
+    //                     _timerType == TimerType.reps
+    //                         ? _buildTypeSetsReps()
+    //                         : _buildTypeTime(),
+    //                     const SizedBox(
+    //                       height: 20,
+    //                     ),
+    //                     Container(
+    //                       height: 1,
+    //                       color: Theme.of(context).colorScheme.secondary,
+    //                     ),
+    //                     const SizedBox(
+    //                       height: 20,
+    //                     ),
+    //                     _buildIntervalsList(ref),
+    //                   ],
+    //                 ))),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _buildIntervalsList(WidgetRef ref) {
@@ -220,7 +298,7 @@ class CreateTimerScreenState extends ConsumerState<CreateTimerScreen> {
         children: [
           Text(
             AppLocalizations.timerType,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
           ToggleButtons(
             direction: Axis.horizontal,

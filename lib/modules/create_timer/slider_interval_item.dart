@@ -58,7 +58,7 @@ class SliderIntervalItemState extends ConsumerState<SliderIntervalItem> {
           children: <Widget>[
             Text(
               widget.title,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             Text(
               Utils.formatTime(widget.value),

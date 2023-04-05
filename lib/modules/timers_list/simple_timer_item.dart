@@ -112,6 +112,7 @@ class SimpleTimerItem extends ConsumerWidget {
     );
   }
 
+  // ignore: unused_element
   Widget _timerInfo(BuildContext context, WidgetRef ref) {
     return TimerInfoTile(
         header: TimerInfoTileHeader(
