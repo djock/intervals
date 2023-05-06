@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/features/create_timer/models/timer_model_new.dart';
+import 'package:focus/models/timer_type_enum.dart';
 import 'package:focus/utilities/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -30,6 +31,12 @@ class CreateTimerViewModel extends StateNotifier<CreateTimerState> {
   Future<void> setTimerName(String value) async {
     log.info('setTimerName: $value');
     final updatedTimerModel = state.timerModel!.copyWith(name: value);
+    state = CreateTimerState(timerModel: updatedTimerModel);
+  }
+
+  Future<void> setTimerType(TimerType value) async {
+    log.info('setTimerType: $value');
+    final updatedTimerModel = state.timerModel!.copyWith(type: value);
     state = CreateTimerState(timerModel: updatedTimerModel);
   }
 }

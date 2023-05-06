@@ -45,40 +45,35 @@ class AppTheme {
     fontFamily: 'Poppins',
     textTheme: TextTheme(
         bodyLarge: TextStyle(
-          fontWeight: FontWeight.bold,
           color: new Color(0XFF4D358B),
+          fontWeight: FontWeight.bold,
         ),
         bodyMedium: TextStyle(
-          color: Colors.black,
+          color: new Color(0XFF4D358B),
+        ),
+        bodySmall: TextStyle(
+          color: new Color(0XFF4D358B),
         ),
         titleLarge: TextStyle(
           color: new Color(0XFF4D358B),
-            fontWeight: FontWeight.w600
+        ),
+        titleMedium: TextStyle(
+          color: new Color(0XFF4D358B),
+        ),
+        titleSmall: TextStyle(
+          color: new Color(0XFF4D358B),
         ),
         headlineSmall: TextStyle(
           color: new Color(0XFF4D358B),
-          fontWeight: FontWeight.w600,
         ),
         headlineMedium: TextStyle(
             color: new Color(0XFF4D358B),
-            fontWeight: FontWeight.w600
         ),
         displaySmall: TextStyle(
           color: new Color(0XFF4D358B),
-          fontWeight: FontWeight.w600
         ),
         displayMedium: TextStyle(
           color: new Color(0XFF4D358B),
-          fontWeight: FontWeight.w600
-        ),
-        titleMedium: TextStyle(
-          color: Colors.grey,
-        ),
-        titleSmall: TextStyle(
-          color: Colors.grey,
-        ),
-        bodySmall: TextStyle(
-          color: Colors.grey,
         ),
         labelLarge: TextStyle(color: Colors.white, fontSize: 18)),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(

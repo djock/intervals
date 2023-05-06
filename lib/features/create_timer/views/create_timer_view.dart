@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/features/create_timer/view_models/create_timer_view_model.dart';
+import 'package:focus/features/create_timer/view_models/timer_type_selector_view_model.dart';
 import 'package:focus/features/create_timer/views/timer_icon_title_widget.dart';
+import 'package:focus/features/create_timer/views/timer_type_selector_widget.dart';
 import 'package:focus/modules/create_timer/picker_interval_item.dart';
 import 'package:focus/modules/create_timer/edit_interval_bottom_sheet.dart';
 import 'package:focus/modules/create_timer/slider_interval_item.dart';
@@ -23,29 +25,16 @@ class CreateTimerView extends ConsumerStatefulWidget {
 }
 
 class CreateTimerViewState extends ConsumerState<CreateTimerView> {
-  List<Widget> _timerTypeTexts = <Widget>[
-    Text(AppLocalizations.forReps),
-    Text(AppLocalizations.forTime),
-  ];
-
-  List<TimerType> _timerTypes = <TimerType>[
-    TimerType.reps,
-    TimerType.time,
-  ];
-
-  TimerType _timerType = TimerType.reps;
-
-  final _formKey = GlobalKey<FormState>();
-  final List<bool> toggleStates = <bool>[true, false];
-  final TextEditingController _textEditingController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final viewModelProvider = ref.watch(createTimerViewModelProvider.notifier);
     final viewModelState = ref.watch(createTimerViewModelProvider);
 
+    final timerTypeSelectorViewModelState =
+        ref.watch(timerTypeSelectorViewModelProvider);
+
     return FractionallySizedBox(
-      heightFactor: 0.93,
+      heightFactor: 0.8,
       child: Container(
         padding: const EdgeInsets.only(top: 8),
         decoration: BoxDecoration(
@@ -63,6 +52,9 @@ class CreateTimerViewState extends ConsumerState<CreateTimerView> {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          SizedBox(
+                            height: 5,
+                          ),
                           Container(
                             width: 60,
                             height: 4,
@@ -75,8 +67,8 @@ class CreateTimerViewState extends ConsumerState<CreateTimerView> {
                             height: 20,
                           ),
                           TimerIconTitleWidget(),
-                          _buildTimerTypeSelector(),
-                          _timerType == TimerType.reps
+                          TimerTypeSelectorWidget(),
+                          timerTypeSelectorViewModelState.selectedTimerType == TimerType.reps
                               ? _buildTypeSetsReps()
                               : _buildTypeTime(),
                           const SizedBox(
@@ -154,51 +146,6 @@ class CreateTimerViewState extends ConsumerState<CreateTimerView> {
   }
 
   List<String> list = <String>['1', '2', '3', '4'];
-
-
-  Widget _buildTimerTypeSelector() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            AppLocalizations.timerType,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          ToggleButtons(
-            direction: Axis.horizontal,
-            onPressed: (int index) {
-              for (int i = 0; i < toggleStates.length; i++) {
-                toggleStates[i] = i == index;
-
-                if (i == index) {
-                  if (_timerType != _timerTypes[i]) {
-                    _timerType = _timerTypes[i];
-                    var activeTimerWatcher = ref.watch(activeTimerProvider);
-                    activeTimerWatcher.updateType(_timerType);
-
-                    setState(() {});
-                  }
-                }
-              }
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            selectedBorderColor: Theme.of(context).colorScheme.primary,
-            selectedColor: Colors.white,
-            fillColor: Theme.of(context).colorScheme.primary,
-            color: Theme.of(context).colorScheme.primary,
-            constraints: const BoxConstraints(
-              minHeight: 40.0,
-              minWidth: 60.0,
-            ),
-            isSelected: toggleStates,
-            children: _timerTypeTexts,
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildTypeSetsReps() {
     final activeTimerWatcher = ref.watch(activeTimerProvider);

@@ -16,6 +16,7 @@ class TimerIconTitleWidget extends ConsumerWidget {
 
     if(viewModelState.timerModel!.name != null && viewModelState.timerModel!.name!.isNotEmpty) {
       _textEditingController.text = viewModelState.timerModel!.name!;
+      _textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: _textEditingController.text.length));
     }
 
     return Row(
@@ -38,7 +39,7 @@ class TimerIconTitleWidget extends ConsumerWidget {
         Expanded(
           child: TextField(
             controller: _textEditingController,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.bodyLarge,
             decoration: CustomStyle.inputDecoration(
                 context, AppLocalizations.timerName),
             onChanged: (value) {
