@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'timer_model_new.dart';
 
 // **************************************************************************
@@ -20,7 +18,8 @@ _$_TimerModelNew _$$_TimerModelNewFromJson(Map<String, dynamic> json) =>
       intervals: (json['intervals'] as List<dynamic>?)
           ?.map((e) => IntervalModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      type: $enumDecodeNullable(_$TimerTypeEnumMap, json['type']),
+      type: $enumDecodeNullable(_$TimerTypeEnumMap, json['type']) ??
+          TimerType.reps,
       iconIndex: json['iconIndex'] ?? 0,
     );
 
@@ -34,7 +33,7 @@ Map<String, dynamic> _$$_TimerModelNewToJson(_$_TimerModelNew instance) =>
       'time': instance.time,
       'rest': instance.rest,
       'intervals': instance.intervals,
-      'type': _$TimerTypeEnumMap[instance.type],
+      'type': _$TimerTypeEnumMap[instance.type]!,
       'iconIndex': instance.iconIndex,
     };
 

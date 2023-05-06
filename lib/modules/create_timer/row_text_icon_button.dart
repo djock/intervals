@@ -32,13 +32,14 @@ class RowIconTextButton extends StatelessWidget {
               ),
             ),
           ),
+          text.isNotEmpty ?
           Text(
             text,
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 color: Theme.of(context).primaryColor,
                 fontWeight: FontWeight.w600,
                 fontSize: 18),
-          )
+          ) : SizedBox()
         ],
       ),
     );

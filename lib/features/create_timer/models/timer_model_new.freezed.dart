@@ -28,7 +28,7 @@ mixin _$TimerModelNew {
   int? get time => throw _privateConstructorUsedError;
   dynamic get rest => throw _privateConstructorUsedError;
   List<IntervalModel>? get intervals => throw _privateConstructorUsedError;
-  TimerType? get type => throw _privateConstructorUsedError;
+  TimerType get type => throw _privateConstructorUsedError;
   dynamic get iconIndex => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,7 +52,7 @@ abstract class $TimerModelNewCopyWith<$Res> {
       int? time,
       dynamic rest,
       List<IntervalModel>? intervals,
-      TimerType? type,
+      TimerType type,
       dynamic iconIndex});
 }
 
@@ -77,7 +77,7 @@ class _$TimerModelNewCopyWithImpl<$Res, $Val extends TimerModelNew>
     Object? time = freezed,
     Object? rest = freezed,
     Object? intervals = freezed,
-    Object? type = freezed,
+    Object? type = null,
     Object? iconIndex = freezed,
   }) {
     return _then(_value.copyWith(
@@ -113,10 +113,10 @@ class _$TimerModelNewCopyWithImpl<$Res, $Val extends TimerModelNew>
           ? _value.intervals
           : intervals // ignore: cast_nullable_to_non_nullable
               as List<IntervalModel>?,
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as TimerType?,
+              as TimerType,
       iconIndex: freezed == iconIndex
           ? _value.iconIndex
           : iconIndex // ignore: cast_nullable_to_non_nullable
@@ -142,7 +142,7 @@ abstract class _$$_TimerModelNewCopyWith<$Res>
       int? time,
       dynamic rest,
       List<IntervalModel>? intervals,
-      TimerType? type,
+      TimerType type,
       dynamic iconIndex});
 }
 
@@ -165,7 +165,7 @@ class __$$_TimerModelNewCopyWithImpl<$Res>
     Object? time = freezed,
     Object? rest = freezed,
     Object? intervals = freezed,
-    Object? type = freezed,
+    Object? type = null,
     Object? iconIndex = freezed,
   }) {
     return _then(_$_TimerModelNew(
@@ -192,10 +192,10 @@ class __$$_TimerModelNewCopyWithImpl<$Res>
           ? _value._intervals
           : intervals // ignore: cast_nullable_to_non_nullable
               as List<IntervalModel>?,
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as TimerType?,
+              as TimerType,
       iconIndex: freezed == iconIndex ? _value.iconIndex! : iconIndex,
     ));
   }
@@ -213,7 +213,7 @@ class _$_TimerModelNew implements _TimerModelNew {
       this.time,
       this.rest = 60,
       final List<IntervalModel>? intervals,
-      this.type,
+      this.type = TimerType.reps,
       this.iconIndex = 0})
       : _intervals = intervals;
 
@@ -248,7 +248,8 @@ class _$_TimerModelNew implements _TimerModelNew {
   }
 
   @override
-  final TimerType? type;
+  @JsonKey()
+  final TimerType type;
   @override
   @JsonKey()
   final dynamic iconIndex;
@@ -315,7 +316,7 @@ abstract class _TimerModelNew implements TimerModelNew {
       final int? time,
       final dynamic rest,
       final List<IntervalModel>? intervals,
-      final TimerType? type,
+      final TimerType type,
       final dynamic iconIndex}) = _$_TimerModelNew;
 
   factory _TimerModelNew.fromJson(Map<String, dynamic> json) =
@@ -338,7 +339,7 @@ abstract class _TimerModelNew implements TimerModelNew {
   @override
   List<IntervalModel>? get intervals;
   @override
-  TimerType? get type;
+  TimerType get type;
   @override
   dynamic get iconIndex;
   @override

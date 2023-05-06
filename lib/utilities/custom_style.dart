@@ -29,4 +29,12 @@ class CustomStyle {
           errorBorder: errorBorder,
           disabledBorder: inputBorder,
           border: inputBorder);
+
+  static InputDecoration timerInputDecoration(String hintText) =>
+      InputDecoration(
+        contentPadding: EdgeInsets.symmetric(
+            vertical: 0.0, horizontal: 10.0),
+        hintText: hintText,
+        border: InputBorder.none,
+      );
 }

@@ -41,7 +41,7 @@ class SliderIntervalItemState extends ConsumerState<SliderIntervalItem> {
       ),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(10.0),
           // border: Border(
           //   bottom: BorderSide(
           //     color: Theme.of(context).colorScheme.secondary,

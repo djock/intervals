@@ -16,7 +16,7 @@ class TimerModelNew with _$TimerModelNew {
       int? time,
       @Default(60) rest,
       List<IntervalModel>? intervals,
-      TimerType? type,
+      @Default(TimerType.reps) TimerType type,
       @Default(0) iconIndex}) = _TimerModelNew;
 
   factory TimerModelNew.fromJson(Map<String, Object?> json) =>

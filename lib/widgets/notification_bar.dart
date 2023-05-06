@@ -14,6 +14,6 @@ class NotificationBar {
         margin: EdgeInsets.all(10),
         message: message,
         duration: Duration(seconds: 5),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(10.0),
       )..show(context);
 }
