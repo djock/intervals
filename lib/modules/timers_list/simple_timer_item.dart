@@ -77,7 +77,7 @@ class SimpleTimerItem extends ConsumerWidget {
                     timer.name,
                     style: Theme.of(context)
                         .textTheme
-                        .headline6!
+                        .titleLarge!
                         .copyWith(fontSize: 18),
                   ),
                   SizedBox(height: 5,),
@@ -198,7 +198,7 @@ class SimpleTimerItem extends ConsumerWidget {
           SizedBox(width: 3,),
           Text(
             text,
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Theme.of(context).primaryColor),
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).primaryColor),
           ),
         ],
       ),

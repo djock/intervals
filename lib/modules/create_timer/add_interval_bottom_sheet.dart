@@ -59,7 +59,7 @@ class AddIntervalBottomSheetState
                       child: TextFormField(
                         controller: _nameController,
                         keyboardType: TextInputType.text,
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context).textTheme.titleLarge,
                         decoration: CustomStyle.inputDecoration(context, AppLocalizations.intervalName),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -83,9 +83,9 @@ class AddIntervalBottomSheetState
                       axis: Axis.horizontal,
                       textStyle: Theme.of(context)
                           .textTheme
-                          .bodyText1!
+                          .bodyLarge!
                           .copyWith(color: Theme.of(context).hintColor),
-                      selectedTextStyle: Theme.of(context).textTheme.headline6,
+                      selectedTextStyle: Theme.of(context).textTheme.titleLarge,
                       itemWidth: 40,
                       value: _duration,
                       minValue: config.min,

@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:focus/models/timer_model.dart';
+import 'package:focus/features/create_timer/view_models/create_timer_view_model.dart';
+import 'package:focus/features/create_timer/views/timer_icon_title_widget.dart';
 import 'package:focus/modules/create_timer/picker_interval_item.dart';
 import 'package:focus/modules/create_timer/edit_interval_bottom_sheet.dart';
+import 'package:focus/modules/create_timer/slider_interval_item.dart';
 import 'package:focus/utilities/localizations.dart';
 import 'package:focus/utilities/picker_config.dart';
 import 'package:focus/providers/providers.dart';
 import 'package:focus/modules/create_timer/add_interval_bottom_sheet.dart';
-import 'package:focus/widgets/notification_bar.dart';
 import 'package:focus/modules/create_timer/row_text_icon_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../models/timer_type_enum.dart';
-import '../../utilities/custom_style.dart';
-import '../../utilities/utils.dart';
-import '../../widgets/custom_app_bar.dart';
-import 'slider_interval_item.dart';
+import '../../../models/timer_type_enum.dart';
+import '../../../utilities/custom_style.dart';
 
-class EditTimerScreen extends ConsumerStatefulWidget {
-  static const String id = 'EditTimerScreen';
-
-  EditTimerScreen();
+class CreateTimerView extends ConsumerStatefulWidget {
+  static const String id = 'CreateTimerScreen';
 
   @override
-  EditTimerScreenState createState() => EditTimerScreenState();
+  CreateTimerViewState createState() => CreateTimerViewState();
 }
 
-class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
+class CreateTimerViewState extends ConsumerState<CreateTimerView> {
   List<Widget> _timerTypeTexts = <Widget>[
     Text(AppLocalizations.forReps),
     Text(AppLocalizations.forTime),
@@ -39,30 +36,13 @@ class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
   TimerType _timerType = TimerType.reps;
 
   final _formKey = GlobalKey<FormState>();
-  List<bool> toggleStates = <bool>[true, false];
+  final List<bool> toggleStates = <bool>[true, false];
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
-  void initState() {
-    final activeTimerWatcher = ref.read(activeTimerProvider);
-
-    if (activeTimerWatcher.timer.type == TimerType.reps) {
-      _timerType = TimerType.reps;
-      toggleStates = <bool>[true, false];
-    } else {
-      _timerType = TimerType.time;
-      toggleStates = <bool>[false, true];
-    }
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final activeTimerWatcher = ref.watch(activeTimerProvider);
-
-    _textEditingController.value =
-        TextEditingValue(text: activeTimerWatcher.timer.name);
+    final viewModelProvider = ref.watch(createTimerViewModelProvider.notifier);
+    final viewModelState = ref.watch(createTimerViewModelProvider);
 
     return FractionallySizedBox(
       heightFactor: 0.93,
@@ -75,74 +55,44 @@ class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
         ),
         child: Column(
           children: [
-            CustomAppBar.buildWithActionAndGoBackClear(
-                context, AppLocalizations.editTimer, [
-              TextButton(
-                  onPressed: () {
-                    if (activeTimerWatcher.timer.intervals.isEmpty) {
-                      NotificationBar.build(
-                          context,
-                          AppLocalizations.noTemposErrorTitle,
-                          AppLocalizations.noTemposErrorMessage,
-                          Theme.of(context).colorScheme.error);
-                    } else {
-                      if (_formKey.currentState!.validate()) {
-                        activeTimerWatcher.updateName(_textEditingController.text);
-
-                        var timersManager = ref.watch(timersManagerProvider);
-
-                        var newTimer = TimerModel.copy(activeTimerWatcher.timer);
-                        activeTimerWatcher.clear();
-
-                        timersManager.updateTimerInHive(newTimer);
-                        Navigator.pop(context);
-                      }
-                    }
-                  },
-                  child: Text(
-                    AppLocalizations.updateTimer,
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
-                  ))
-            ], () {
-              activeTimerWatcher.clear();
-              Navigator.pop(context);
-            }),
             Expanded(
-              child: Container(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Expanded(
-                        child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                _buildIconAndInput(ref),
-                                _buildTimerTypeSelector(),
-                                _timerType == TimerType.reps
-                                    ? _buildTypeSetsReps()
-                                    : _buildTypeTime(),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Theme.of(context).colorScheme.secondary,
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                _buildIntervalsList(ref),
-                              ],
-                            ))),
-                  ],
-                ),
-              ),
-            )
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF90A0AB).withOpacity(0.32),
+                              borderRadius: BorderRadius.all(Radius.circular(2)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TimerIconTitleWidget(),
+                          _buildTimerTypeSelector(),
+                          _timerType == TimerType.reps
+                              ? _buildTypeSetsReps()
+                              : _buildTypeTime(),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            height: 1,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          _buildIntervalsList(ref),
+                        ],
+                      )),
+                )),
           ],
         ),
       ),
@@ -203,53 +153,8 @@ class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
     );
   }
 
-  Widget _buildIconAndInput(WidgetRef ref) {
-    final activeTimerWatcher = ref.watch(activeTimerProvider);
+  List<String> list = <String>['1', '2', '3', '4'];
 
-    return Row(
-      children: [
-        Container(
-            width: 50.0,
-            height: 50.0,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-                child: Text(
-              'icon',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(color: Theme.of(context).hintColor),
-            ))),
-        SizedBox(width: 20.0),
-        Expanded(
-          child: Form(
-            key: _formKey,
-            child: TextFormField(
-              onEditingComplete: () {
-                activeTimerWatcher
-                    .updateName(_textEditingController.value.text);
-
-                log.info('oneditingcomplete');
-                FocusScope.of(context).unfocus();
-              },
-              controller: _textEditingController,
-              style: Theme.of(context).textTheme.titleLarge,
-              decoration: CustomStyle.inputDecoration(context, ''),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return AppLocalizations.addTimerName;
-                }
-                return null;
-              },
-            ),
-          ),
-        )
-      ],
-    );
-  }
 
   Widget _buildTimerTypeSelector() {
     return Container(
@@ -259,7 +164,7 @@ class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
         children: [
           Text(
             AppLocalizations.timerType,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
           ToggleButtons(
             direction: Axis.horizontal,
@@ -273,9 +178,7 @@ class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
                     var activeTimerWatcher = ref.watch(activeTimerProvider);
                     activeTimerWatcher.updateType(_timerType);
 
-                    setState(() {
-                      log.info('Selected ' + _timerType.toString());
-                    });
+                    setState(() {});
                   }
                 }
               }

@@ -69,7 +69,7 @@ class EditIntervalBottomSheetState extends ConsumerState<EditIntervalBottomSheet
                       child: TextFormField(
                         controller: _nameController,
                         keyboardType: TextInputType.text,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                         decoration: CustomStyle.inputDecoration(context, ''),
                         validator: (value) {
                           if (value == null ||
@@ -94,9 +94,9 @@ class EditIntervalBottomSheetState extends ConsumerState<EditIntervalBottomSheet
                       axis: Axis.horizontal,
                       textStyle: Theme.of(context)
                           .textTheme
-                          .bodyText1!
+                          .bodyLarge!
                           .copyWith(color: Theme.of(context).hintColor),
-                      selectedTextStyle: Theme.of(context).textTheme.headline6,
+                      selectedTextStyle: Theme.of(context).textTheme.titleLarge,
                       itemWidth: 40,
                       value: _duration,
                       minValue: config.min,

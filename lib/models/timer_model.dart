@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 
 import '../utilities/utils.dart';
 import 'index_key_value_pair.dart';
+part 'timer_model.g.dart';
 
 @HiveType(typeId: 0)
 class TimerModel extends HiveObject {
@@ -66,3 +67,4 @@ class TimerModel extends HiveObject {
     date = DateTime.now().millisecondsSinceEpoch;
   }
 }
+

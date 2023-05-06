@@ -20,7 +20,7 @@ class TimerInfoTileHeader extends ConsumerWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(color: color),
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: color),
           ),
           Container(
             width: 15,

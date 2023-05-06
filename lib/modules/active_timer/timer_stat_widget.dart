@@ -19,13 +19,13 @@ class TimerStatWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               value,
-              style: Theme.of(context).textTheme.headline3,
+              style: Theme.of(context).textTheme.displaySmall,
             ),
             Text(
               title,
               style: Theme.of(context)
                   .textTheme
-                  .headline6!
+                  .titleLarge!
                   .copyWith(color: Theme.of(context).hintColor),
             ),
           ],

@@ -14,9 +14,9 @@ import 'package:flutter/material.dart';
 /// caption      12.0  regular  0.4
 /// overline     10.0  regular  1.5
 ///
-class AppThemeModel {
+class AppTheme {
   // Private Constructor
-  AppThemeModel._();
+  AppTheme._();
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     canvasColor: Colors.white,
@@ -44,43 +44,43 @@ class AppThemeModel {
     ),
     fontFamily: 'Poppins',
     textTheme: TextTheme(
-        bodyText1: TextStyle(
+        bodyLarge: TextStyle(
           fontWeight: FontWeight.bold,
           color: new Color(0XFF4D358B),
         ),
-        bodyText2: TextStyle(
+        bodyMedium: TextStyle(
           color: Colors.black,
         ),
-        headline6: TextStyle(
+        titleLarge: TextStyle(
           color: new Color(0XFF4D358B),
             fontWeight: FontWeight.w600
         ),
-        headline5: TextStyle(
+        headlineSmall: TextStyle(
           color: new Color(0XFF4D358B),
           fontWeight: FontWeight.w600,
         ),
-        headline4: TextStyle(
+        headlineMedium: TextStyle(
             color: new Color(0XFF4D358B),
             fontWeight: FontWeight.w600
         ),
-        headline3: TextStyle(
+        displaySmall: TextStyle(
           color: new Color(0XFF4D358B),
           fontWeight: FontWeight.w600
         ),
-        headline2: TextStyle(
+        displayMedium: TextStyle(
           color: new Color(0XFF4D358B),
           fontWeight: FontWeight.w600
         ),
-        subtitle1: TextStyle(
+        titleMedium: TextStyle(
           color: Colors.grey,
         ),
-        subtitle2: TextStyle(
+        titleSmall: TextStyle(
           color: Colors.grey,
         ),
-        caption: TextStyle(
+        bodySmall: TextStyle(
           color: Colors.grey,
         ),
-        button: TextStyle(color: Colors.white, fontSize: 18)),
+        labelLarge: TextStyle(color: Colors.white, fontSize: 18)),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
       selectedItemColor: Colors.black,
@@ -114,31 +114,31 @@ class AppThemeModel {
     ),
     fontFamily: 'Poppins',
     textTheme: TextTheme(
-        bodyText1: TextStyle(
+        bodyLarge: TextStyle(
           color: Colors.white,
         ),
-        bodyText2: TextStyle(
+        bodyMedium: TextStyle(
           color: Colors.white,
         ),
-        headline6: TextStyle(
+        titleLarge: TextStyle(
           color: Colors.white,
         ),
-        headline5: TextStyle(
+        headlineSmall: TextStyle(
           color: Colors.white,
         ),
-        headline3: TextStyle(
+        displaySmall: TextStyle(
           color: Colors.white,
         ),
-        headline2: TextStyle(
+        displayMedium: TextStyle(
           color: Colors.white,
         ),
-        subtitle1: TextStyle(
+        titleMedium: TextStyle(
           color: Colors.grey,
         ),
-        subtitle2: TextStyle(
+        titleSmall: TextStyle(
           color: Colors.grey,
         ),
-        button: TextStyle(color: Colors.white, fontSize: 18)),
+        labelLarge: TextStyle(color: Colors.white, fontSize: 18)),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.black,
       selectedItemColor: Colors.white,

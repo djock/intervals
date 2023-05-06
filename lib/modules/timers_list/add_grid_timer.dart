@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:focus/features/create_timer/views/create_timer_view.dart';
 
 import '../../providers/providers.dart';
-import '../create_timer/create_timer_screen.dart';
 
 class AddGridTimer extends ConsumerWidget {
   @override
@@ -21,7 +21,7 @@ class AddGridTimer extends ConsumerWidget {
           context: context,
           isScrollControlled: true,
           builder: (BuildContext context) {
-            return CreateTimerScreen();
+            return CreateTimerView();
           },
         );
       },
@@ -40,7 +40,7 @@ class AddGridTimer extends ConsumerWidget {
             Expanded(
               child: Center(
                 child: Text("+",
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                         fontSize: 60, fontWeight: FontWeight.w100)),
               )

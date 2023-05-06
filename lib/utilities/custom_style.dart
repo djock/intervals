@@ -17,7 +17,7 @@ class CustomStyle {
           hintText: hintText,
           hintStyle: Theme.of(context)
               .textTheme
-              .bodyText1!
+              .bodyLarge!
               .copyWith(color: Theme.of(context).hintColor),
           filled: true,
           contentPadding: EdgeInsets.all(10.0),

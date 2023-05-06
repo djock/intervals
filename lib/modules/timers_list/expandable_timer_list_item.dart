@@ -52,12 +52,12 @@ class ExpandableTimerListItem extends ConsumerWidget {
           title: Container(
             child: Text(
               timer.name,
-              style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 18),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 18),
             ),
           ),
           subtitle: Text(
             formattedDate,
-            style: Theme.of(context).textTheme.subtitle2,
+            style: Theme.of(context).textTheme.titleSmall,
           ),
           children: <Widget>[
             StaggeredGrid.count(
@@ -112,7 +112,7 @@ class ExpandableTimerListItem extends ConsumerWidget {
       intervals,
       style: Theme.of(context)
           .textTheme
-          .headline6!
+          .titleLarge!
           .copyWith(color: Theme.of(context).colorScheme.primary),
     );
   }
@@ -131,7 +131,7 @@ class ExpandableTimerListItem extends ConsumerWidget {
           Utils.formatTime(timer.getTotalSeconds()),
           style: Theme.of(context)
               .textTheme
-              .headline6!
+              .titleLarge!
               .copyWith(color: Theme.of(context).colorScheme.onPrimary),
         ),
         style: TimerTileStyleConfig.dark(context));

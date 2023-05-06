@@ -36,7 +36,7 @@ class RowIconTextButton extends StatelessWidget {
             text,
             style: Theme.of(context)
                 .textTheme
-                .bodyText1!
+                .bodyLarge!
                 .copyWith(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 18),
           )
         ],

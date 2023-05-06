@@ -119,7 +119,7 @@ class GridTimerItemState extends ConsumerState<GridTimerItem>
                             child: FittedBox(
                               child: Text(
                                 widget.timer.name,
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -132,7 +132,7 @@ class GridTimerItemState extends ConsumerState<GridTimerItem>
                                   'Total time',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText2!
+                                      .bodyMedium!
                                       .copyWith(
                                           color:
                                               Theme.of(context).primaryColor),
@@ -157,7 +157,7 @@ class GridTimerItemState extends ConsumerState<GridTimerItem>
                                   'Intervals',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText2!
+                                      .bodyMedium!
                                       .copyWith(
                                           color:
                                               Theme.of(context).primaryColor),
@@ -225,7 +225,7 @@ class GridTimerItemState extends ConsumerState<GridTimerItem>
                       },
                       icon: Icon(
                         FontAwesomeIcons.trash,
-                        color: Theme.of(context).errorColor,
+                        color: Theme.of(context).colorScheme.error,
                         size: 18,
                       )),
                   bottom: -10,
@@ -274,7 +274,7 @@ class GridTimerItemState extends ConsumerState<GridTimerItem>
             text,
             style: Theme.of(context)
                 .textTheme
-                .caption!
+                .bodySmall!
                 .copyWith(color: Theme.of(context).primaryColor),
           ),
         ],

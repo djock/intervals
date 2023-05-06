@@ -102,7 +102,7 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
               children: <Widget>[
                 Text(
                   widget.title,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -130,9 +130,9 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
           axis: Axis.horizontal,
           textStyle: Theme.of(context)
               .textTheme
-              .bodyText1!
+              .bodyLarge!
               .copyWith(color: Theme.of(context).hintColor),
-          selectedTextStyle: Theme.of(context).textTheme.headline6,
+          selectedTextStyle: Theme.of(context).textTheme.titleLarge,
           itemWidth: 40,
           value: _currentIntValue,
           minValue: widget.config.min,
@@ -164,7 +164,7 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
           },
           keyboardType: TextInputType.numberWithOptions(),
           autofocus: true,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
           decoration: CustomStyle.inputDecoration(context, ''),
         ),
       ),

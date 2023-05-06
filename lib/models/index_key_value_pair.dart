@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 
+part 'index_key_value_pair.g.dart';
+
 @HiveType(typeId: 1)
 class IndexKeyValuePair {
   @HiveField(0)

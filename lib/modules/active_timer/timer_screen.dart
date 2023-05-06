@@ -92,7 +92,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                     Icons.close_outlined,
                     size: 30,
                   ),
-                  color: Theme.of(context).errorColor,
+                  color: Theme.of(context).colorScheme.error,
                   onPressed: () async {
                     if(_hasStarted.value) {
                       _timerRunning.value = false;
@@ -142,7 +142,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                             builder: (context, dynamic value, child) {
                               return Text(
                                 '${_titleName.value}',
-                                style: Theme.of(context).textTheme.headline4,
+                                style: Theme.of(context).textTheme.headlineMedium,
                               );
                             },
                           ),
@@ -194,7 +194,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                                                 //     : '${_timeInSec.value}',
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headline1!
+                                                    .displayLarge!
                                                     .copyWith(
                                                         color: Theme.of(context)
                                                             .primaryColor),
@@ -208,7 +208,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                                                   : AppLocalizations.tapToStart,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle1,
+                                              .titleMedium,
                                         ),
                                       ],
                                     ),
@@ -439,7 +439,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                     AppLocalizations.progress,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2!
+                        .bodyMedium!
                         .copyWith(color: Theme.of(context).primaryColor),
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -468,14 +468,14 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                         '${(_progress.value * 100).toInt()}%',
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2!
+                            .bodyMedium!
                             .copyWith(color: Theme.of(context).primaryColor),
                       ),
                       Text(
                         ' / ' + Utils.formatTime(_timerTotalSeconds!),
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2!
+                            .bodyMedium!
                             .copyWith(color: Theme.of(context).primaryColor)
                             .copyWith(fontWeight: FontWeight.bold),
                       ),

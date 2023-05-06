@@ -94,7 +94,7 @@ class TimerEndScreenState extends ConsumerState<TimerEndScreen> {
                       Text(
                         AppLocalizations.getCongrats(),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       SizedBox(
                         height: 30,
@@ -135,7 +135,7 @@ class TimerEndScreenState extends ConsumerState<TimerEndScreen> {
               child: Text(
                 AppLocalizations.tapToClose,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
           ),
@@ -150,7 +150,7 @@ class TimerEndScreenState extends ConsumerState<TimerEndScreen> {
     widgets.add(Text(
       AppLocalizations.getLocalization(AppLocalizations.youHaveCompleted, '{TIMER_NAME}', timer.name),
       textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.headline6,
+      style: Theme.of(context).textTheme.titleLarge,
     ));
 
     widgets.add(SizedBox(
@@ -160,7 +160,7 @@ class TimerEndScreenState extends ConsumerState<TimerEndScreen> {
     widgets.add(Text(
       AppLocalizations.totalTime + ': ' + Utils.formatTime(timer.getTotalSeconds()),
       textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.headline6,
+      style: Theme.of(context).textTheme.titleLarge,
     ));
 
     widgets.add(SizedBox(
@@ -170,14 +170,14 @@ class TimerEndScreenState extends ConsumerState<TimerEndScreen> {
     widgets.add(Text(
       AppLocalizations.intervals + ': ',
       textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.headline6,
+      style: Theme.of(context).textTheme.titleLarge,
     ));
 
     for(var item in timer.intervals) {
       widgets.add(Text(
         '· ' + item.key + ': ' + Utils.formatTime(item.value),
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context).textTheme.titleLarge,
       ));
     }
 
