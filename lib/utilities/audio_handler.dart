@@ -1,7 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 
 class AudioHandler {
-
   static final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
 
   static void playAudioFile(String fileName) {
@@ -20,7 +19,7 @@ class AudioHandler {
   static void stopAudioFile() {
     _assetsAudioPlayer.stop();
   }
-  
+
   static void playTick() {
     playAudioFile('tick.mp3');
   }

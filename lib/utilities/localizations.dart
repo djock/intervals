@@ -55,19 +55,26 @@ class AppLocalizations {
   static String done = 'Done';
 
   static String endActivityTitle = 'End activity';
-  static String endActivityMessage = 'Are you sure you want to end the current timer?';
+  static String endActivityMessage =
+      'Are you sure you want to end the current timer?';
 
   static String delete = 'Delete';
   static String deleteTimer = 'Delete Timer?';
-  static String deleteTimerMessage = 'Are you sure you want to delete this timer?';
+  static String deleteTimerMessage =
+      'Are you sure you want to delete this timer?';
 
-  static List<String> timerEndedCongrats = ['Congrats!', 'Well done!', 'Great job!'];
+  static List<String> timerEndedCongrats = [
+    'Congrats!',
+    'Well done!',
+    'Great job!'
+  ];
 
   static String getLocalization(String key, String oldText, String newText) {
     return key.replaceAll(oldText, newText);
   }
 
   static String getCongrats() {
-    return timerEndedCongrats[(timerEndedCongrats.length * Random().nextDouble()).floor()];
+    return timerEndedCongrats[
+        (timerEndedCongrats.length * Random().nextDouble()).floor()];
   }
 }

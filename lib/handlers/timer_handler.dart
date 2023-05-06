@@ -6,13 +6,15 @@ import '../models/timer_model.dart';
 import '../utilities/utils.dart';
 
 class ActiveTimer extends ChangeNotifier {
-  TimerModel? _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps, '', DateTime.now().millisecondsSinceEpoch);
+  TimerModel? _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps,
+      '', DateTime.now().millisecondsSinceEpoch);
   TimerModel get timer => _timer!;
 
   ActiveTimer();
 
   void clear() {
-    _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps, '', DateTime.now().millisecondsSinceEpoch);
+    _timer = new TimerModel('', 3, 8, 300, 60, [], 0, TimerType.reps, '',
+        DateTime.now().millisecondsSinceEpoch);
     notifyListeners();
   }
 

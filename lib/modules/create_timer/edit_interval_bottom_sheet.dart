@@ -19,7 +19,8 @@ class EditIntervalBottomSheet extends ConsumerStatefulWidget {
   EditIntervalBottomSheetState createState() => EditIntervalBottomSheetState();
 }
 
-class EditIntervalBottomSheetState extends ConsumerState<EditIntervalBottomSheet> {
+class EditIntervalBottomSheetState
+    extends ConsumerState<EditIntervalBottomSheet> {
   String _intervalName = '';
 
   int _duration = 5;
@@ -72,8 +73,7 @@ class EditIntervalBottomSheetState extends ConsumerState<EditIntervalBottomSheet
                         style: Theme.of(context).textTheme.bodyLarge,
                         decoration: CustomStyle.inputDecoration(context, ''),
                         validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ) {
+                          if (value == null || value.isEmpty) {
                             return '';
                           }
                           return null;
@@ -104,22 +104,24 @@ class EditIntervalBottomSheetState extends ConsumerState<EditIntervalBottomSheet
                       step: config.step,
                       haptics: true,
                       onChanged: (value) => setState(() {
-                        _duration = value;
-                      })),
+                            _duration = value;
+                          })),
                 )
               ],
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           ExpandedTextButton(
               text: AppLocalizations.saveInterval,
               callback: () {
-                activeTimerWatcher.updateInterval(widget.index, _intervalName, _duration);
+                activeTimerWatcher.updateInterval(
+                    widget.index, _intervalName, _duration);
                 Navigator.pop(context);
               }),
         ],
       ),
     );
   }
-
 }

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class RoundButton extends StatelessWidget {
-  RoundButton({required this.child, required this.onPressed, required this.color, this.height = 55.0, this.width = 55.0});
+  RoundButton(
+      {required this.child,
+      required this.onPressed,
+      required this.color,
+      this.height = 55.0,
+      this.width = 55.0});
 
   final Widget child;
   final Color color;

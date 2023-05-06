@@ -11,9 +11,10 @@ class CustomStyle {
     borderRadius: BorderRadius.circular(10.0),
   );
 
-  static InputDecoration inputDecoration(BuildContext context, String hintText) =>
+  static InputDecoration inputDecoration(
+          BuildContext context, String hintText) =>
       InputDecoration(
-        isDense: true,
+          isDense: true,
           hintText: hintText,
           hintStyle: Theme.of(context)
               .textTheme

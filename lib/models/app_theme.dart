@@ -67,7 +67,7 @@ class AppTheme {
           color: new Color(0XFF4D358B),
         ),
         headlineMedium: TextStyle(
-            color: new Color(0XFF4D358B),
+          color: new Color(0XFF4D358B),
         ),
         displaySmall: TextStyle(
           color: new Color(0XFF4D358B),

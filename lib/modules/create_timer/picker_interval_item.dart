@@ -60,8 +60,7 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
 
       var tryParse = int.tryParse(_textController.text);
 
-      if(tryParse == null) {
-
+      if (tryParse == null) {
       } else {
         _currentIntValue = tryParse;
 
@@ -85,16 +84,16 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
           key: const ValueKey(0),
           endActionPane: widget.canSlide
               ? ActionPane(
-            motion: ScrollMotion(),
-            children: [
-              SlidableAction(
-                onPressed: doNothing,
-                backgroundColor: Theme.of(context).colorScheme.error,
-                foregroundColor: Theme.of(context).colorScheme.onError,
-                icon: Icons.delete,
-              ),
-            ],
-          )
+                  motion: ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: doNothing,
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                      foregroundColor: Theme.of(context).colorScheme.onError,
+                      icon: Icons.delete,
+                    ),
+                  ],
+                )
               : null,
           child: Container(
             child: Row(
@@ -180,7 +179,7 @@ class PickerIntervalItemState extends ConsumerState<PickerIntervalItem> {
         KeyboardActionsItem(
           focusNode: _focusNode,
           toolbarButtons: [
-                (node) {
+            (node) {
               return TextButton(
                   onPressed: () {
                     log.info('test');

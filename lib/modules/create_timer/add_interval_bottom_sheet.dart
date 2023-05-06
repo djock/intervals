@@ -60,7 +60,8 @@ class AddIntervalBottomSheetState
                         controller: _nameController,
                         keyboardType: TextInputType.text,
                         style: Theme.of(context).textTheme.titleLarge,
-                        decoration: CustomStyle.inputDecoration(context, AppLocalizations.intervalName),
+                        decoration: CustomStyle.inputDecoration(
+                            context, AppLocalizations.intervalName),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return '';

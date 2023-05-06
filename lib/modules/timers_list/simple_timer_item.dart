@@ -21,7 +21,6 @@ class SimpleTimerItem extends ConsumerWidget {
   SimpleTimerItem(this.timer);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return Slidable(
       key: const ValueKey(0),
       endActionPane: ActionPane(
@@ -60,12 +59,11 @@ class SimpleTimerItem extends ConsumerWidget {
           padding: EdgeInsets.only(bottom: 10, left: 10, top: 5),
           decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).colorScheme.secondary,
-                  width: 0.8,
-                ),
-              )
-          ),
+            bottom: BorderSide(
+              color: Theme.of(context).colorScheme.secondary,
+              width: 0.8,
+            ),
+          )),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -80,10 +78,14 @@ class SimpleTimerItem extends ConsumerWidget {
                         .titleLarge!
                         .copyWith(fontSize: 18),
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     children: [
-                      _buildInfo(context, Utils.formatTime(timer.getTotalSeconds()),
+                      _buildInfo(
+                          context,
+                          Utils.formatTime(timer.getTotalSeconds()),
                           FontAwesomeIcons.clock),
                       SizedBox(
                         width: 10,
@@ -195,10 +197,15 @@ class SimpleTimerItem extends ConsumerWidget {
               ),
             ),
           ),
-          SizedBox(width: 3,),
+          SizedBox(
+            width: 3,
+          ),
           Text(
             text,
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).primaryColor),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: Theme.of(context).primaryColor),
           ),
         ],
       ),

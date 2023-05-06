@@ -15,10 +15,7 @@ class NavigationScreen extends ConsumerStatefulWidget {
 
 class NavigationScreenState extends ConsumerState<NavigationScreen> {
   int _selectedScreenIndex = 0;
-  List<Widget> _screens = [
-    TimersScreen(),
-    ActivitiesScreen()
-  ];
+  List<Widget> _screens = [TimersScreen(), ActivitiesScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +25,18 @@ class NavigationScreenState extends ConsumerState<NavigationScreen> {
         body: Container(child: _screens[_selectedScreenIndex]),
         bottomNavigationBar: BottomNavigationBar(
           elevation: 5,
-            showSelectedLabels: false,
+          showSelectedLabels: false,
           showUnselectedLabels: false,
           selectedItemColor: Theme.of(context).primaryColor,
           items: [
             BottomNavigationBarItem(
                 icon: ImageIcon(
-                   AssetImage('assets/timers-icon.png') ,
+                  AssetImage('assets/timers-icon.png'),
                   size: 25,
                 ),
-              label: 'Timers'
-            ),
+                label: 'Timers'),
             BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.calendarDays),
-                label: 'History'
-            ),
+                icon: FaIcon(FontAwesomeIcons.calendarDays), label: 'History'),
             // BottomNavigationBarItem(
             //   icon: Icon(Icons.settings),
             //   label: 'Settings',

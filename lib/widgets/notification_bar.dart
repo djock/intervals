@@ -2,7 +2,8 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 class NotificationBar {
-  static Flushbar build(BuildContext context, String title, String message, Color color) =>
+  static Flushbar build(
+          BuildContext context, String title, String message, Color color) =>
       Flushbar(
         animationDuration: Duration(milliseconds: 500),
         flushbarPosition: FlushbarPosition.TOP,

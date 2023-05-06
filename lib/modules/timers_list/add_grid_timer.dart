@@ -7,7 +7,6 @@ import '../../providers/providers.dart';
 class AddGridTimer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return GestureDetector(
       onTap: () {
         final activeTimerWatcher = ref.watch(activeTimerProvider);
@@ -38,13 +37,13 @@ class AddGridTimer extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: Center(
-                child: Text("+",
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 60, fontWeight: FontWeight.w100)),
-              )
-            ),
+                child: Center(
+              child: Text("+",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 60,
+                      fontWeight: FontWeight.w100)),
+            )),
           ],
         ),
       ),

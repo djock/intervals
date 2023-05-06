@@ -13,7 +13,6 @@ import '../../utilities/localizations.dart';
 import '../../utilities/utils.dart';
 import 'package:intl/intl.dart';
 
-
 class ExpandableTimerListItem extends ConsumerWidget {
   final TimerModel timer;
 
@@ -43,8 +42,7 @@ class ExpandableTimerListItem extends ConsumerWidget {
         borderRadius: BorderRadius.all(Radius.circular(10)),
         child: ExpansionTile(
           childrenPadding: EdgeInsets.all(10),
-          onExpansionChanged: (bool isExpanded) {
-          },
+          onExpansionChanged: (bool isExpanded) {},
           collapsedBackgroundColor: Theme.of(context).colorScheme.secondary,
           backgroundColor: Theme.of(context).colorScheme.secondary,
           collapsedIconColor: Theme.of(context).colorScheme.primary,
@@ -52,7 +50,10 @@ class ExpandableTimerListItem extends ConsumerWidget {
           title: Container(
             child: Text(
               timer.name,
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 18),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontSize: 18),
             ),
           ),
           subtitle: Text(
@@ -80,8 +81,7 @@ class ExpandableTimerListItem extends ConsumerWidget {
           title: AppLocalizations.intervals,
           color: TimerTileStyleConfig.light(context).textColor,
           icon: FontAwesomeIcons.hourglassStart,
-          onTap: () {
-          },
+          onTap: () {},
         ),
         crossAxisCellCount: 2,
         mainAxisCellCount: 1,
@@ -89,9 +89,7 @@ class ExpandableTimerListItem extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              _buildIntervals(context)
-            ],
+            children: [_buildIntervals(context)],
           ),
         ),
         style: TimerTileStyleConfig.light(context));

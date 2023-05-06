@@ -50,7 +50,6 @@ class SliderIntervalItemState extends ConsumerState<SliderIntervalItem> {
           // )
           color: Theme.of(context).colorScheme.secondary,
         ),
-
         padding: EdgeInsets.symmetric(horizontal: 10),
         height: 40,
         child: Row(

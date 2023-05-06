@@ -71,7 +71,6 @@ class TimerEndScreenState extends ConsumerState<TimerEndScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     var activeTimerInstance = ref.watch(activeTimerProvider);
     var timer = activeTimerInstance.timer;
 
@@ -148,7 +147,8 @@ class TimerEndScreenState extends ConsumerState<TimerEndScreen> {
     List<Widget> widgets = [];
 
     widgets.add(Text(
-      AppLocalizations.getLocalization(AppLocalizations.youHaveCompleted, '{TIMER_NAME}', timer.name),
+      AppLocalizations.getLocalization(
+          AppLocalizations.youHaveCompleted, '{TIMER_NAME}', timer.name),
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleLarge,
     ));
@@ -158,7 +158,9 @@ class TimerEndScreenState extends ConsumerState<TimerEndScreen> {
     ));
 
     widgets.add(Text(
-      AppLocalizations.totalTime + ': ' + Utils.formatTime(timer.getTotalSeconds()),
+      AppLocalizations.totalTime +
+          ': ' +
+          Utils.formatTime(timer.getTotalSeconds()),
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleLarge,
     ));
@@ -173,7 +175,7 @@ class TimerEndScreenState extends ConsumerState<TimerEndScreen> {
       style: Theme.of(context).textTheme.titleLarge,
     ));
 
-    for(var item in timer.intervals) {
+    for (var item in timer.intervals) {
       widgets.add(Text(
         '· ' + item.key + ': ' + Utils.formatTime(item.value),
         textAlign: TextAlign.center,

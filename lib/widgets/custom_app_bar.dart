@@ -15,7 +15,7 @@ class CustomAppBar {
   }
 
   static PreferredSizeWidget buildNormal(BuildContext context, String text,
-      {double elevation = 0.0}) =>
+          {double elevation = 0.0}) =>
       AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         elevation: elevation,
@@ -27,8 +27,9 @@ class CustomAppBar {
         centerTitle: true,
       );
 
-  static PreferredSizeWidget buildWithAction(BuildContext context, String text, List<Widget> actions,
-      {double elevation = 0.0}) =>
+  static PreferredSizeWidget buildWithAction(
+          BuildContext context, String text, List<Widget> actions,
+          {double elevation = 0.0}) =>
       AppBar(
         backgroundColor: Theme.of(context).canvasColor,
         elevation: elevation,
@@ -41,8 +42,9 @@ class CustomAppBar {
         centerTitle: true,
       );
 
-  static PreferredSizeWidget buildWithActionAndGoBack(BuildContext context, String text, List<Widget> actions,
-      {double elevation = 0.0}) =>
+  static PreferredSizeWidget buildWithActionAndGoBack(
+          BuildContext context, String text, List<Widget> actions,
+          {double elevation = 0.0}) =>
       AppBar(
         backgroundColor: Theme.of(context).canvasColor,
         elevation: elevation,
@@ -55,8 +57,9 @@ class CustomAppBar {
         centerTitle: true,
       );
 
-  static PreferredSizeWidget buildWithActionAndGoBackClear(BuildContext context, String text, List<Widget> actions, Function onPressed,
-      {double elevation = 0.0}) =>
+  static PreferredSizeWidget buildWithActionAndGoBackClear(BuildContext context,
+          String text, List<Widget> actions, Function onPressed,
+          {double elevation = 0.0}) =>
       AppBar(
         backgroundColor: Theme.of(context).canvasColor,
         elevation: elevation,

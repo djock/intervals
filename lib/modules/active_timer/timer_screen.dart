@@ -94,7 +94,7 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                   ),
                   color: Theme.of(context).colorScheme.error,
                   onPressed: () async {
-                    if(_hasStarted.value) {
+                    if (_hasStarted.value) {
                       _timerRunning.value = false;
 
                       final result = await showOkCancelAlertDialog(
@@ -119,7 +119,6 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                       _activeTimerInstance!.clear();
                       Navigator.of(context).pop();
                     }
-
                   })
             ]),
             body: Container(
@@ -142,7 +141,8 @@ class TimerScreenState extends ConsumerState<TimerScreen> {
                             builder: (context, dynamic value, child) {
                               return Text(
                                 '${_titleName.value}',
-                                style: Theme.of(context).textTheme.headlineMedium,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
                               );
                             },
                           ),

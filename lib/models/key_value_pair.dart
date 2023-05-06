@@ -3,5 +3,4 @@ class KeyValuePair {
   final int value;
 
   KeyValuePair(this.key, this.value);
-
 }

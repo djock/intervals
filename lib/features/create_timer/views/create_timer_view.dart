@@ -12,10 +12,8 @@ import 'package:focus/utilities/picker_config.dart';
 import 'package:focus/providers/providers.dart';
 import 'package:focus/modules/create_timer/add_interval_bottom_sheet.dart';
 import 'package:focus/modules/create_timer/row_text_icon_button.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../models/timer_type_enum.dart';
-import '../../../utilities/custom_style.dart';
 
 class CreateTimerView extends ConsumerStatefulWidget {
   static const String id = 'CreateTimerScreen';
@@ -27,9 +25,6 @@ class CreateTimerView extends ConsumerStatefulWidget {
 class CreateTimerViewState extends ConsumerState<CreateTimerView> {
   @override
   Widget build(BuildContext context) {
-    final viewModelProvider = ref.watch(createTimerViewModelProvider.notifier);
-    final viewModelState = ref.watch(createTimerViewModelProvider);
-
     final timerTypeSelectorViewModelState =
         ref.watch(timerTypeSelectorViewModelProvider);
 
@@ -46,45 +41,46 @@ class CreateTimerViewState extends ConsumerState<CreateTimerView> {
           children: [
             Expanded(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: 60,
-                            height: 4,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF90A0AB).withOpacity(0.32),
-                              borderRadius: BorderRadius.all(Radius.circular(2)),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TimerIconTitleWidget(),
-                          TimerTypeSelectorWidget(),
-                          timerTypeSelectorViewModelState.selectedTimerType == TimerType.reps
-                              ? _buildTypeSetsReps()
-                              : _buildTypeTime(),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            height: 1,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          _buildIntervalsList(ref),
-                        ],
-                      )),
-                )),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SingleChildScrollView(
+                  child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    width: 60,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF90A0AB).withOpacity(0.32),
+                      borderRadius: BorderRadius.all(Radius.circular(2)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TimerIconTitleWidget(),
+                  TimerTypeSelectorWidget(),
+                  timerTypeSelectorViewModelState.selectedTimerType ==
+                          TimerType.reps
+                      ? _buildTypeSetsReps()
+                      : _buildTypeTime(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 1,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _buildIntervalsList(ref),
+                ],
+              )),
+            )),
           ],
         ),
       ),

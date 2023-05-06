@@ -77,7 +77,7 @@ class GridTimerItemState extends ConsumerState<GridTimerItem>
         }
       },
       onLongPressStart: (details) {
-        if(!_inEditMode) {
+        if (!_inEditMode) {
           _controller.reset();
           _controller.forward();
         }
@@ -186,7 +186,8 @@ class GridTimerItemState extends ConsumerState<GridTimerItem>
                         showModalBottomSheet<void>(
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
                           ),
                           context: context,
                           isScrollControlled: true,

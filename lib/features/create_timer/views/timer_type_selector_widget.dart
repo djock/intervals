@@ -10,7 +10,8 @@ class TimerTypeSelectorWidget extends ConsumerWidget {
   ];
 
   Widget build(BuildContext context, WidgetRef ref) {
-    final viewModelProvider = ref.watch(timerTypeSelectorViewModelProvider.notifier);
+    final viewModelProvider =
+        ref.watch(timerTypeSelectorViewModelProvider.notifier);
     final viewModelState = ref.watch(timerTypeSelectorViewModelProvider);
 
     return Container(

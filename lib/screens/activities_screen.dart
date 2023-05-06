@@ -15,8 +15,7 @@ class ActivitiesScreen extends ConsumerWidget {
     return PopScopeScreen(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: CustomAppBar.buildNormal(
-            context, AppLocalizations.activities),
+        appBar: CustomAppBar.buildNormal(context, AppLocalizations.activities),
         body: Container(
           padding: EdgeInsets.all(20),
           width: double.infinity,
@@ -47,7 +46,9 @@ class ActivitiesScreen extends ConsumerWidget {
     List<Widget> result = [];
 
     if (timerManagerWatcher.activities.length == 0) {
-      result.add(Container(width: double.infinity, child: Center(child: Text(AppLocalizations.noActivities))));
+      result.add(Container(
+          width: double.infinity,
+          child: Center(child: Text(AppLocalizations.noActivities))));
     } else {
       for (var item in timers) {
         result.add(ExpandableTimerListItem(item));

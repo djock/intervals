@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus/models/timer_type_enum.dart';
-import 'package:focus/utilities/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'timer_type_selector_view_model.freezed.dart';
@@ -56,5 +55,4 @@ class TimerTypeSelectorViewModel extends StateNotifier<TimerTypeSelectorState> {
       toggleStates: _toggleStates,
     );
   }
-
 }

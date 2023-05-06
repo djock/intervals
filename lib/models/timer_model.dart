@@ -67,4 +67,3 @@ class TimerModel extends HiveObject {
     date = DateTime.now().millisecondsSinceEpoch;
   }
 }
-

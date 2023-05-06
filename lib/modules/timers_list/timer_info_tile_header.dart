@@ -8,7 +8,11 @@ class TimerInfoTileHeader extends ConsumerWidget {
   final IconData icon;
   final Function onTap;
 
-  TimerInfoTileHeader({required this.title, required this.color, required this.onTap, required this.icon});
+  TimerInfoTileHeader(
+      {required this.title,
+      required this.color,
+      required this.onTap,
+      required this.icon});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +24,8 @@ class TimerInfoTileHeader extends ConsumerWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: color),
+            style:
+                Theme.of(context).textTheme.bodyLarge!.copyWith(color: color),
           ),
           Container(
             width: 15,
@@ -38,5 +43,4 @@ class TimerInfoTileHeader extends ConsumerWidget {
       ),
     );
   }
-
 }

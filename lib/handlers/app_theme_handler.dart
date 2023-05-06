@@ -25,12 +25,14 @@ class AppThemeHandler extends ChangeNotifier {
 
   void setOverlayStyle() {
     Future.delayed(Duration(milliseconds: 1)).then(
-            (value) => SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark,
-          systemNavigationBarColor: isDarkModeEnabled ? Colors.black : Colors.white,
-          systemNavigationBarIconBrightness: Brightness.dark,
-          systemNavigationBarDividerColor: isDarkModeEnabled ? Colors.black : Colors.white,
-        )));
+        (value) => SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: Brightness.dark,
+              systemNavigationBarColor:
+                  isDarkModeEnabled ? Colors.black : Colors.white,
+              systemNavigationBarIconBrightness: Brightness.dark,
+              systemNavigationBarDividerColor:
+                  isDarkModeEnabled ? Colors.black : Colors.white,
+            )));
   }
 }

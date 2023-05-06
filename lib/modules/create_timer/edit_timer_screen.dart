@@ -87,11 +87,13 @@ class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
                           Theme.of(context).colorScheme.error);
                     } else {
                       if (_formKey.currentState!.validate()) {
-                        activeTimerWatcher.updateName(_textEditingController.text);
+                        activeTimerWatcher
+                            .updateName(_textEditingController.text);
 
                         var timersManager = ref.watch(timersManagerProvider);
 
-                        var newTimer = TimerModel.copy(activeTimerWatcher.timer);
+                        var newTimer =
+                            TimerModel.copy(activeTimerWatcher.timer);
                         activeTimerWatcher.clear();
 
                         timersManager.updateTimerInHive(newTimer);
@@ -118,27 +120,27 @@ class EditTimerScreenState extends ConsumerState<EditTimerScreen> {
                     Expanded(
                         child: SingleChildScrollView(
                             child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                _buildIconAndInput(ref),
-                                _buildTimerTypeSelector(),
-                                _timerType == TimerType.reps
-                                    ? _buildTypeSetsReps()
-                                    : _buildTypeTime(),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Theme.of(context).colorScheme.secondary,
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                _buildIntervalsList(ref),
-                              ],
-                            ))),
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _buildIconAndInput(ref),
+                        _buildTimerTypeSelector(),
+                        _timerType == TimerType.reps
+                            ? _buildTypeSetsReps()
+                            : _buildTypeTime(),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        _buildIntervalsList(ref),
+                      ],
+                    ))),
                   ],
                 ),
               ),

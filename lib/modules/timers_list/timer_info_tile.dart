@@ -10,7 +10,12 @@ class TimerInfoTile extends ConsumerWidget {
   final TimerTileStyle style;
   final Widget header;
 
-  const TimerInfoTile( {required this.child, required this.crossAxisCellCount, required this.mainAxisCellCount, required this.style, required this.header });
+  const TimerInfoTile(
+      {required this.child,
+      required this.crossAxisCellCount,
+      required this.mainAxisCellCount,
+      required this.style,
+      required this.header});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +33,8 @@ class TimerInfoTile extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               header,
-              Expanded(child : Column(
+              Expanded(
+                  child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   child,
